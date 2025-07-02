@@ -1,0 +1,115 @@
+package com.example.demo.service;
+
+import com.example.demo.dto.DatumPredmetaDTO;
+import com.example.demo.dto.EvaluacijaZnanjaDTO;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DatumPredmeta;
+import com.example.demo.model.Drzava;
+import com.example.demo.model.EvaluacijaZnanja;
+import com.example.demo.model.Rok;
+import com.example.demo.repository.DatumPredmetaRepository;
+import com.example.demo.repository.EvaluacijaZnanjaRepository;
+import com.example.demo.saveDto.EvaluacijaZnanjaSaveDTO;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+public class EvaluacijaZnanjaService {
+
+    @Autowired
+    private EvaluacijaZnanjaRepository evaluacijaZnanjaRepository;
+
+    @Autowired
+    private DatumPredmetaService datumPredmetaService;
+
+    @Autowired
+    private RokService rokService;
+
+    @Autowired
+    private PohadjanjePredmetaService pohadjanjePredmetaService;
+
+    public List<EvaluacijaZnanjaDTO> findAll() {
+
+        return ((List<EvaluacijaZnanja>) evaluacijaZnanjaRepository.findAll())
+                .stream()
+                .map(EvaluacijaZnanja::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<EvaluacijaZnanjaDTO> findAllActive() {
+
+        return ((List<EvaluacijaZnanja>) evaluacijaZnanjaRepository.findByObrisanoFalse())
+                .stream()
+                .map(EvaluacijaZnanja::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<EvaluacijaZnanjaDTO> findAllDeleted() {
+
+        return ((List<EvaluacijaZnanja>) evaluacijaZnanjaRepository.findByObrisanoTrue())
+                .stream()
+                .map(EvaluacijaZnanja::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<EvaluacijaZnanjaDTO> findById(Long id) {
+        return evaluacijaZnanjaRepository.findById(id).map(EvaluacijaZnanja::toDto);
+    }
+
+    public EvaluacijaZnanjaDTO save(EvaluacijaZnanjaSaveDTO evaluacijaZnanja) {
+
+        EvaluacijaZnanja nova = evaluacijaZnanja.toEntity();
+
+        nova.setRok(rokService.findById(evaluacijaZnanja.getRok_id())
+                .orElseThrow(() -> new EntityNotFoundException("Rok with id:" + evaluacijaZnanja.getRok_id() + " not found")).toEntity());
+
+        nova.setPohadjanjepredmeta(pohadjanjePredmetaService.findById(evaluacijaZnanja.getPohadjanjepredmeta_id())
+                .orElseThrow(() -> new EntityNotFoundException("Pohadjanje predmeta with id:" + evaluacijaZnanja.getPohadjanjepredmeta_id() + " not found")).toEntity());
+
+        //find datum for evaluacija znanja by rok id from evaluacija znanja and predmet id also from evaluacijaZnanja>pohadjanjePredmeta>predmet
+        Optional<DatumPredmetaDTO> datum = datumPredmetaService.findByRokIdAndPredmetId(evaluacijaZnanja.getRok_id(), nova.getPohadjanjepredmeta().getRealizacijaPredmeta().getPredmet().getId());
+
+        //if datum doesn't exist don't change anything
+        if(datum.isEmpty()){
+            throw new ResourceNotFoundException("DatumPredmeta not found");
+        }
+
+        //if datum exists set datum for evaluacijaZnanja
+        nova.setDatum(datum.get().getDatum());
+        return evaluacijaZnanjaRepository.save(nova).toDto();
+    }
+
+    public void delete(EvaluacijaZnanjaDTO evaluacijaZnanja) {
+        evaluacijaZnanja.setObrisano(true);
+        evaluacijaZnanjaRepository.save(evaluacijaZnanja.toEntity());
+    }
+
+    public void delete(Long id) {
+        Optional<EvaluacijaZnanja> optional = evaluacijaZnanjaRepository.findById(id);
+        if (optional.isPresent()) {
+            EvaluacijaZnanja evaluacijaZnanja = optional.get();
+            evaluacijaZnanja.setObrisano(true);
+            evaluacijaZnanjaRepository.save(evaluacijaZnanja);
+        }
+    }
+
+    public void vrati(EvaluacijaZnanjaDTO evaluacijaZnanja) {
+        evaluacijaZnanja.setObrisano(false);
+        evaluacijaZnanjaRepository.save(evaluacijaZnanja.toEntity());
+    }
+
+    public void vrati(Long id) {
+        Optional<EvaluacijaZnanja> optional = evaluacijaZnanjaRepository.findById(id);
+        if (optional.isPresent()) {
+            EvaluacijaZnanja evaluacijaZnanja = optional.get();
+            evaluacijaZnanja.setObrisano(false);
+            evaluacijaZnanjaRepository.save(evaluacijaZnanja);
+        }
+    }
+}
