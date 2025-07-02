@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ObavestenjeDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.NaucnaOblast;
 import com.example.demo.model.Obavestenje;
 import com.example.demo.repository.ObavestenjeRepository;
@@ -57,15 +58,19 @@ public class ObavestenjeService {
         return obavestenjeRepository.findById(id).map(Obavestenje::toDto);
     }
 
+    public Optional<Obavestenje> findEntityById(Long id) {
+        return obavestenjeRepository.findById(id);
+    }
+
     public ObavestenjeDTO save(ObavestenjeSaveDTO obavestenje) {
 
         Obavestenje novo = obavestenje.toEntity();
 
-        novo.setForum(forumService.findById(obavestenje.getForum_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + obavestenje.getForum_id() + " not found")).toEntity());
+        novo.setForum(forumService.findEntityById(obavestenje.getForum_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + obavestenje.getForum_id() + " not found")));
 
-        novo.setKorisnik(ulogovaniKorisnikService.findById(obavestenje.getUlogovaniKorisnik_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Korisnik with id:" + obavestenje.getUlogovaniKorisnik_id() + " not found")).toEntity());
+        novo.setKorisnik(ulogovaniKorisnikService.findEntityById(obavestenje.getUlogovaniKorisnik_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Korisnik with id:" + obavestenje.getUlogovaniKorisnik_id() + " not found")));
 
         return obavestenjeRepository.save(novo).toDto();
     }

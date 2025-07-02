@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.GodinaStudijaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Forum;
 import com.example.demo.model.GodinaStudija;
 import com.example.demo.repository.GodinaStudijaRepository;
@@ -51,6 +52,10 @@ public class GodinaStudijaService {
         return godinaStudijaRepository.findById(id).map(GodinaStudija::toDto);
     }
 
+    public Optional<GodinaStudija> findEntityById(Long id) {
+        return godinaStudijaRepository.findById(id);
+    }
+
     public GodinaStudijaDTO save(GodinaStudijaSaveDTO godinaStudija) {
 
         int trenutnaGodina = Year.now().getValue();  // npr. 2025
@@ -62,8 +67,8 @@ public class GodinaStudijaService {
 
         GodinaStudija nova = godinaStudija.toEntity();
 
-        nova.setStudijskiProgram(studijskiProgramService.findById(godinaStudija.getStudijskiProgram_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Studijski program with id:" + godinaStudija.getStudijskiProgram_id() + " not found")).toEntity());
+        nova.setStudijskiProgram(studijskiProgramService.findEntityById(godinaStudija.getStudijskiProgram_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Studijski program with id:" + godinaStudija.getStudijskiProgram_id() + " not found")));
 
         return godinaStudijaRepository.save(nova).toDto();
     }

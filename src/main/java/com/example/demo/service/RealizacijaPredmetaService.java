@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.PredmetDTO;
 import com.example.demo.dto.RealizacijaPredmetaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Predmet;
 import com.example.demo.model.RealizacijaPredmeta;
 import com.example.demo.repository.RealizacijaPredmetaRepository;
@@ -62,18 +63,22 @@ public class RealizacijaPredmetaService {
         return realizacijaPredmetaRepository.findById(id).map(RealizacijaPredmeta::toDto);
     }
 
+    public Optional<RealizacijaPredmeta> findEntityById(Long id) {
+        return realizacijaPredmetaRepository.findById(id);
+    }
+
     public RealizacijaPredmetaDTO save(RealizacijaPredmetaSaveDTO realizacijaPredmeta) {
 
         RealizacijaPredmeta nova = realizacijaPredmeta.toEntity();
 
-        nova.setGodinaStudija(godinaStudijaService.findById(realizacijaPredmeta.getGodinaStudija_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + realizacijaPredmeta.getGodinaStudija_id() + " not found")).toEntity());
+        nova.setGodinaStudija(godinaStudijaService.findEntityById(realizacijaPredmeta.getGodinaStudija_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + realizacijaPredmeta.getGodinaStudija_id() + " not found")));
 
-        nova.setNastavnik(nastavnikService.findById(realizacijaPredmeta.getNastavnik_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + realizacijaPredmeta.getNastavnik_id() + " not found")).toEntity());
+        nova.setNastavnik(nastavnikService.findEntityById(realizacijaPredmeta.getNastavnik_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + realizacijaPredmeta.getNastavnik_id() + " not found")));
 
-        nova.setPredmet(predmetService.findById(realizacijaPredmeta.getPredmet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Predmet with id:" + realizacijaPredmeta.getPredmet_id() + " not found")).toEntity());
+        nova.setPredmet(predmetService.findEntityById(realizacijaPredmeta.getPredmet_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Predmet with id:" + realizacijaPredmeta.getPredmet_id() + " not found")));
 
         return realizacijaPredmetaRepository.save(nova).toDto();
     }

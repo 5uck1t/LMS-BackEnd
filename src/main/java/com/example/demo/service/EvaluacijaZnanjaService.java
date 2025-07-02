@@ -3,10 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.DatumPredmetaDTO;
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.DatumPredmeta;
-import com.example.demo.model.Drzava;
-import com.example.demo.model.EvaluacijaZnanja;
-import com.example.demo.model.Rok;
+import com.example.demo.model.*;
 import com.example.demo.repository.DatumPredmetaRepository;
 import com.example.demo.repository.EvaluacijaZnanjaRepository;
 import com.example.demo.saveDto.EvaluacijaZnanjaSaveDTO;
@@ -62,15 +59,19 @@ public class EvaluacijaZnanjaService {
         return evaluacijaZnanjaRepository.findById(id).map(EvaluacijaZnanja::toDto);
     }
 
+    public Optional<EvaluacijaZnanja> findEntityById(Long id) {
+        return evaluacijaZnanjaRepository.findById(id);
+    }
+
     public EvaluacijaZnanjaDTO save(EvaluacijaZnanjaSaveDTO evaluacijaZnanja) {
 
         EvaluacijaZnanja nova = evaluacijaZnanja.toEntity();
 
-        nova.setRok(rokService.findById(evaluacijaZnanja.getRok_id())
-                .orElseThrow(() -> new EntityNotFoundException("Rok with id:" + evaluacijaZnanja.getRok_id() + " not found")).toEntity());
+        nova.setRok(rokService.findEntityById(evaluacijaZnanja.getRok_id())
+                .orElseThrow(() -> new EntityNotFoundException("Rok with id:" + evaluacijaZnanja.getRok_id() + " not found")));
 
-        nova.setPohadjanjepredmeta(pohadjanjePredmetaService.findById(evaluacijaZnanja.getPohadjanjepredmeta_id())
-                .orElseThrow(() -> new EntityNotFoundException("Pohadjanje predmeta with id:" + evaluacijaZnanja.getPohadjanjepredmeta_id() + " not found")).toEntity());
+        nova.setPohadjanjepredmeta(pohadjanjePredmetaService.findEntityById(evaluacijaZnanja.getPohadjanjepredmeta_id())
+                .orElseThrow(() -> new EntityNotFoundException("Pohadjanje predmeta with id:" + evaluacijaZnanja.getPohadjanjepredmeta_id() + " not found")));
 
         //find datum for evaluacija znanja by rok id from evaluacija znanja and predmet id also from evaluacijaZnanja>pohadjanjePredmeta>predmet
         Optional<DatumPredmetaDTO> datum = datumPredmetaService.findByRokIdAndPredmetId(evaluacijaZnanja.getRok_id(), nova.getPohadjanjepredmeta().getRealizacijaPredmeta().getPredmet().getId());

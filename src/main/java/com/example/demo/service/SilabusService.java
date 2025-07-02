@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.SilabusDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Rok;
 import com.example.demo.model.Silabus;
 import com.example.demo.repository.SilabusRepository;
@@ -48,12 +49,16 @@ public class SilabusService {
         return silabusRepository.findById(id).map(Silabus::toDto);
     }
 
+    public Optional<Silabus> findEntityById(Long id) {
+        return silabusRepository.findById(id);
+    }
+
     public SilabusDTO save(SilabusSaveDTO silabus) {
 
         Silabus novi = silabus.toEntity();
 
-        novi.setPredmet(predmetService.findById(silabus.getPredmet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Predmet with id:" + silabus.getPredmet_id() + " not found")).toEntity());
+        novi.setPredmet(predmetService.findEntityById(silabus.getPredmet_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Predmet with id:" + silabus.getPredmet_id() + " not found")));
 
         return silabusRepository.save(novi).toDto();
     }

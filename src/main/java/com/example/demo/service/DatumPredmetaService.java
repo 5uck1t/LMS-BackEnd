@@ -55,6 +55,10 @@ public class DatumPredmetaService {
         return datumPredmetaRepository.findById(id).map(DatumPredmeta::toDto);
     }
 
+    public Optional<DatumPredmeta> findEntityById(Long id) {
+        return datumPredmetaRepository.findById(id);
+    }
+
     public Optional<DatumPredmetaDTO> findByRokIdAndPredmetId(Long rokId, Long predmetId) {
         return datumPredmetaRepository.findOneByRokIdAndPredmetId(rokId,predmetId).map(DatumPredmeta::toDto);
     }
@@ -63,11 +67,11 @@ public class DatumPredmetaService {
 
         DatumPredmeta novi = datumPredmeta.toEntity();
 
-        novi.setRok(rokService.findById(datumPredmeta.getRok_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + datumPredmeta.getRok_id() +" not found")).toEntity());
+        novi.setRok(rokService.findEntityById(datumPredmeta.getRok_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + datumPredmeta.getRok_id() +" not found")));
 
-        novi.setRealizacijaPredmeta(realizacijaPredmetaService.findById(datumPredmeta.getRealizacijaPredmeta_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Realizacija Predmeta with id:"+datumPredmeta.getRealizacijaPredmeta_id() + " not found")).toEntity());
+        novi.setRealizacijaPredmeta(realizacijaPredmetaService.findEntityById(datumPredmeta.getRealizacijaPredmeta_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Realizacija Predmeta with id:"+datumPredmeta.getRealizacijaPredmeta_id() + " not found")));
 
         return datumPredmetaRepository.save(novi).toDto();
     }

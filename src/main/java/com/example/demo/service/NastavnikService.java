@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.NastavnikDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Nastavnik;
 import com.example.demo.model.NastavnikHasZvanje;
 import com.example.demo.repository.NastavnikRepository;
@@ -49,15 +50,19 @@ public class NastavnikService {
         return nastavnikRepository.findById(id).map(Nastavnik::toDto);
     }
 
+    public Optional<Nastavnik> findEntityById(Long id) {
+        return nastavnikRepository.findById(id);
+    }
+
     public NastavnikDTO save(NastavnikSaveDTO nastavnik) {
 
         Nastavnik novi = nastavnik.toEntity();
 
-        novi.setFakultet(fakultetService.findById(nastavnik.getFakultet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Fakultet with id:" + nastavnik.getFakultet_id() + " not found")).toEntity());
+        novi.setFakultet(fakultetService.findEntityById(nastavnik.getFakultet_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Fakultet with id:" + nastavnik.getFakultet_id() + " not found")));
 
-        novi.setOsoba(osobaService.findById(nastavnik.getOsoba_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Osoba with id:" + nastavnik.getOsoba_id() + " not found")).toEntity());
+        novi.setOsoba(osobaService.findEntityById(nastavnik.getOsoba_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Osoba with id:" + nastavnik.getOsoba_id() + " not found")));
 
         return nastavnikRepository.save(novi).toDto();
     }

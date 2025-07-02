@@ -46,6 +46,10 @@ public class DrzavaService {
         return drzavaRepository.findById(id).map(Drzava::toDto);
     }
 
+    public Optional<Drzava> findEntityById(Long id) {
+        return drzavaRepository.findById(id);
+    }
+
     public DrzavaDTO save(DrzavaSaveDTO drzava) {
         return drzavaRepository.save(drzava.toEntity()).toDto();
     }

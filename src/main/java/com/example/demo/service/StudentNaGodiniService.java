@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.StudentNaGodiniDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Silabus;
 import com.example.demo.model.StudentNaGodini;
 import com.example.demo.repository.StudentNaGodiniRepository;
@@ -51,15 +52,19 @@ public class StudentNaGodiniService {
         return studentNaGodiniRepository.findById(id).map(StudentNaGodini::toDto);
     }
 
+    public Optional<StudentNaGodini> findEntityById(Long id) {
+        return studentNaGodiniRepository.findById(id);
+    }
+
     public StudentNaGodiniDTO save(StudentNaGodiniSaveDTO studentNaGodini) {
 
         StudentNaGodini novi = studentNaGodini.toEntity();
 
-        novi.setStudent(studentService.findById(studentNaGodini.getStudent_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Student with id:" + studentNaGodini.getStudent_id() + " not found")).toEntity());
+        novi.setStudent(studentService.findEntityById(studentNaGodini.getStudent_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Student with id:" + studentNaGodini.getStudent_id() + " not found")));
 
-        novi.setGodinaStudija(godinaStudijaService.findById(studentNaGodini.getGodinaStudija_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + studentNaGodini.getGodinaStudija_id() + " not found")).toEntity());
+        novi.setGodinaStudija(godinaStudijaService.findEntityById(studentNaGodini.getGodinaStudija_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + studentNaGodini.getGodinaStudija_id() + " not found")));
 
         return studentNaGodiniRepository.save(novi).toDto();
     }

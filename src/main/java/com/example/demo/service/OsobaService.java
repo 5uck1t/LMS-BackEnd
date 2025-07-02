@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.OsobaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Osoba;
 import com.example.demo.repository.OsobaRepository;
 import com.example.demo.saveDto.OsobaSaveDTO;
@@ -55,23 +56,27 @@ public class OsobaService {
         return osobaRepository.findById(id).map(Osoba::toDto);
     }
 
+    public Optional<Osoba> findEntityById(Long id) {
+        return osobaRepository.findById(id);
+    }
+
     public OsobaDTO save(OsobaSaveDTO osoba) {
 
         Osoba nova = osoba.toEntity();
 
-        nova.setAdresa(adresaService.findById(osoba.getAdresa_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + osoba.getAdresa_id() + " not found")).toEntity());
+        nova.setAdresa(adresaService.findEntityById(osoba.getAdresa_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + osoba.getAdresa_id() + " not found")));
 
         if(osoba.getNastavnik_id() == null){
             if (osoba.getStudent_id() == null){
                 throw new IllegalArgumentException("Osoba mora da bude ili Nastavnik ili Student");
             }
-            nova.setStudent(studentService.findById(osoba.getStudent_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("Student with id:" + osoba.getStudent_id() + " not found")).toEntity());
+            nova.setStudent(studentService.findEntityById(osoba.getStudent_id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Student with id:" + osoba.getStudent_id() + " not found")));
         }
 
-        nova.setNastavnik(nastavnikService.findById(osoba.getNastavnik_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + osoba.getNastavnik_id() + " not found")).toEntity());
+        nova.setNastavnik(nastavnikService.findEntityById(osoba.getNastavnik_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + osoba.getNastavnik_id() + " not found")));
 
         return osobaRepository.save(nova).toDto();
     }

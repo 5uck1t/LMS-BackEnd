@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.RokDTO;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.RealizacijaPredmeta;
 import com.example.demo.model.Rok;
 import com.example.demo.repository.RokRepository;
@@ -42,6 +43,10 @@ public class RokService {
 
     public Optional<RokDTO> findById(Long id) {
         return rokRepository.findById(id).map(Rok::toDto);
+    }
+
+    public Optional<Rok> findEntityById(Long id) {
+        return rokRepository.findById(id);
     }
 
     public RokDTO save(RokSaveDTO rok) {

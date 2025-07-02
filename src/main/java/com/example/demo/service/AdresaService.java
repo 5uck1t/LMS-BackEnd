@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.AdresaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Adresa;
+import com.example.demo.model.Drzava;
 import com.example.demo.repository.AdresaRepository;
 import com.example.demo.saveDto.AdresaSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -50,11 +51,15 @@ public class AdresaService {
         return adresaRepository.findById(id).map(Adresa::toDto);
     }
 
+    public Optional<Adresa> findEntityById(Long id) {
+        return adresaRepository.findById(id);
+    }
+
     public AdresaDTO save(AdresaSaveDTO adresa) {
 
         Adresa nova = adresa.toEntity();
-        nova.setMesto(mestoService.findById(adresa.getMesto_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Mesto with id:" + adresa.getMesto_id() + " not found")).toEntity());
+        nova.setMesto(mestoService.findEntityById(adresa.getMesto_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Mesto with id:" + adresa.getMesto_id() + " not found")));
 
         return adresaRepository.save(nova).toDto();
     }

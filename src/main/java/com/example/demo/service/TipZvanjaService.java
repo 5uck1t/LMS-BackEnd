@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.TipZvanjaDTO;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.StudijskiProgram;
 import com.example.demo.model.TipZvanja;
 import com.example.demo.repository.TipZvanjaRepository;
@@ -41,6 +42,10 @@ public class TipZvanjaService {
 
     public Optional<TipZvanjaDTO> findById(Long id) {
         return tipZvanjaRepository.findById(id).map(TipZvanja::toDto);
+    }
+
+    public Optional<TipZvanja> findEntityById(Long id) {
+        return tipZvanjaRepository.findById(id);
     }
 
     public TipZvanjaDTO save(TipZvanjaSaveDTO tipZvanja) {

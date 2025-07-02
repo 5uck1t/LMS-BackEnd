@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.NaucnaOblastDTO;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Nastavnik;
 import com.example.demo.model.NaucnaOblast;
 import com.example.demo.repository.NaucnaOblastRepository;
@@ -41,6 +42,10 @@ public class NaucnaOblastService {
 
     public Optional<NaucnaOblastDTO> findById(Long id) {
         return naucnaOblastRepository.findById(id).map(NaucnaOblast::toDto);
+    }
+
+    public Optional<NaucnaOblast> findEntityById(Long id) {
+        return naucnaOblastRepository.findById(id);
     }
 
     public NaucnaOblastDTO save(NaucnaOblastSaveDTO naucnaOblast) {
