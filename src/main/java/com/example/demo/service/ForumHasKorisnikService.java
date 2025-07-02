@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.ForumDTO;
 import com.example.demo.dto.ForumHasKorisnikDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Fakultet;
 import com.example.demo.model.Forum;
 import com.example.demo.model.ForumHasKorisnik;
@@ -53,15 +54,19 @@ public class ForumHasKorisnikService {
         return forumHasKorisnikRepository.findById(id).map(ForumHasKorisnik::toDto);
     }
 
+    public Optional<ForumHasKorisnik> findEntityById(Long id) {
+        return forumHasKorisnikRepository.findById(id);
+    }
+
     public ForumHasKorisnikDTO save(ForumHasKorisnikSaveDTO forumHasKorisnik) {
 
         ForumHasKorisnik novi = forumHasKorisnik.toEntity();
 
-        novi.setForum(forumService.findById(forumHasKorisnik.getForum_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + forumHasKorisnik.getForum_id() + " not found")).toEntity());
+        novi.setForum(forumService.findEntityById(forumHasKorisnik.getForum_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + forumHasKorisnik.getForum_id() + " not found")));
 
-        novi.setUlogovaniKorisnik(ulogovaniKorisnikService.findById(forumHasKorisnik.getUlogovaniKorisnik_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Korisnik with id:" + forumHasKorisnik.getUlogovaniKorisnik_id() + " not found")).toEntity());
+        novi.setUlogovaniKorisnik(ulogovaniKorisnikService.findEntityById(forumHasKorisnik.getUlogovaniKorisnik_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Korisnik with id:" + forumHasKorisnik.getUlogovaniKorisnik_id() + " not found")));
         return forumHasKorisnikRepository.save(novi).toDto();
     }
 

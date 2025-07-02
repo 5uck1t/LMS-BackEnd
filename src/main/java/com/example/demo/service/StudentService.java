@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.StudentDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Student;
 import com.example.demo.model.StudentNaGodini;
 import com.example.demo.repository.StudentRepository;
@@ -48,12 +49,16 @@ public class StudentService {
         return studentRepository.findById(id).map(Student::toDto);
     }
 
+    public Optional<Student> findEntityById(Long id) {
+        return studentRepository.findById(id);
+    }
+
     public StudentDTO save(StudentSaveDTO student) {
 
         Student novi = student.toEntity();
 
-        novi.setOsoba(osobaService.findById(student.getOsoba_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Osoba with id:" + student.getOsoba_id() + " not found")).toEntity());
+        novi.setOsoba(osobaService.findEntityById(student.getOsoba_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Osoba with id:" + student.getOsoba_id() + " not found")));
 
         return studentRepository.save(novi).toDto();
     }

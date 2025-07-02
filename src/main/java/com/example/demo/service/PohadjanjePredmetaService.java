@@ -4,10 +4,7 @@ import com.example.demo.dto.PohadjanjePredmetaDTO;
 import com.example.demo.dto.PredmetDTO;
 import com.example.demo.dto.StudentNaGodiniDTO;
 import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Osoba;
-import com.example.demo.model.PohadjanjePredmeta;
-import com.example.demo.model.Predmet;
-import com.example.demo.model.StudentNaGodini;
+import com.example.demo.model.*;
 import com.example.demo.repository.PohadjanjePredmetaRepository;
 import com.example.demo.saveDto.PohadjanjePredmetaSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -60,15 +57,19 @@ public class PohadjanjePredmetaService {
         return pohadjanjePredmetaRepository.findById(id).map(PohadjanjePredmeta::toDto);
     }
 
+    public Optional<PohadjanjePredmeta> findEntityById(Long id) {
+        return pohadjanjePredmetaRepository.findById(id);
+    }
+
     public PohadjanjePredmetaDTO save(PohadjanjePredmetaSaveDTO pohadjanjePredmeta) {
 
         PohadjanjePredmeta novo = pohadjanjePredmeta.toEntity();
 
-        novo.setRealizacijaPredmeta(realizacijaPredmetaService.findById(pohadjanjePredmeta.getRealizacijaPredmeta_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Realizacija predmeta with id:" + pohadjanjePredmeta.getRealizacijaPredmeta_id() + " not found")).toEntity());
+        novo.setRealizacijaPredmeta(realizacijaPredmetaService.findEntityById(pohadjanjePredmeta.getRealizacijaPredmeta_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Realizacija predmeta with id:" + pohadjanjePredmeta.getRealizacijaPredmeta_id() + " not found")));
 
-        novo.setStudentNaGodini(studentNaGodiniService.findById(pohadjanjePredmeta.getStudentNaGodini_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Student na godini with id:" + pohadjanjePredmeta.getStudentNaGodini_id() + " not found")).toEntity());
+        novo.setStudentNaGodini(studentNaGodiniService.findEntityById(pohadjanjePredmeta.getStudentNaGodini_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Student na godini with id:" + pohadjanjePredmeta.getStudentNaGodini_id() + " not found")));
 
         return pohadjanjePredmetaRepository.save(novo).toDto();
     }

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.MestoDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Katedra;
 import com.example.demo.model.Mesto;
 import com.example.demo.repository.MestoRepository;
@@ -47,12 +48,16 @@ public class MestoService {
         return mestoRepository.findById(id).map(Mesto::toDto);
     }
 
+    public Optional<Mesto> findEntityById(Long id) {
+        return mestoRepository.findById(id);
+    }
+
     public MestoDTO save(MestoSaveDTO mesto) {
 
         Mesto novo = mesto.toEntity();
 
-        novo.setDrzava(drzavaService.findById(mesto.getDrzava_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Drzava with id:" + mesto.getDrzava_id() + " not found")).toEntity());
+        novo.setDrzava(drzavaService.findEntityById(mesto.getDrzava_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Drzava with id:" + mesto.getDrzava_id() + " not found")));
         return mestoRepository.save(novo).toDto();
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.KatedraDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.GodinaStudija;
 import com.example.demo.model.Katedra;
 import com.example.demo.repository.KatedraRepository;
@@ -51,15 +52,19 @@ public class KatedraService {
         return katedraRepository.findById(id).map(Katedra::toDto);
     }
 
+    public Optional<Katedra> findEntityById(Long id) {
+        return katedraRepository.findById(id);
+    }
+
     public KatedraDTO save(KatedraSaveDTO katedra) {
 
         Katedra nova = katedra.toEntity();
 
-        nova.setFakultet(fakultetService.findById(katedra.getFakultet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Fakultet with id:" + katedra.getFakultet_id() + " not found")).toEntity());
+        nova.setFakultet(fakultetService.findEntityById(katedra.getFakultet_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Fakultet with id:" + katedra.getFakultet_id() + " not found")));
 
-        nova.setSefKatedre(nastavnikService.findById(katedra.getSefKatedre_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Sef katedre/Nastavnik with id:" + katedra.getSefKatedre_id() + " not found")).toEntity());
+        nova.setSefKatedre(nastavnikService.findEntityById(katedra.getSefKatedre_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Sef katedre/Nastavnik with id:" + katedra.getSefKatedre_id() + " not found")));
 
         return katedraRepository.save(nova).toDto();
     }

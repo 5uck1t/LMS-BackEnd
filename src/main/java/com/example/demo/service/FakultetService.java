@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.FakultetDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.EvaluacijaZnanja;
 import com.example.demo.model.Fakultet;
 import com.example.demo.repository.FakultetRepository;
@@ -55,14 +56,18 @@ public class FakultetService {
         return fakultetRepository.findById(id).map(Fakultet::toDto);
     }
 
+    public Optional<Fakultet> findEntityById(Long id) {
+        return fakultetRepository.findById(id);
+    }
+
     public FakultetDTO save(FakultetSaveDTO fakultet) {
 
         Fakultet novi = fakultet.toEntity();
-        novi.setDekan(nastavnikService.findById(fakultet.getDekan_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Dekan/Nastavnik with id:" + fakultet.getDekan_id() + " not found")).toEntity());
+        novi.setDekan(nastavnikService.findEntityById(fakultet.getDekan_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Dekan/Nastavnik with id:" + fakultet.getDekan_id() + " not found")));
 
-        novi.setUniverzitet(univerzitetService.findById(fakultet.getUniverzitet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + fakultet.getUniverzitet_id() + " not found")).toEntity());
+        novi.setUniverzitet(univerzitetService.findEntityById(fakultet.getUniverzitet_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + fakultet.getUniverzitet_id() + " not found")));
         return fakultetRepository.save(novi).toDto();
     }
 
