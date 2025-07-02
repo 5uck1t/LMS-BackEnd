@@ -1,0 +1,36 @@
+package com.example.demo.repository;
+
+import com.example.demo.model.PohadjanjePredmeta;
+import com.example.demo.model.Predmet;
+import com.example.demo.model.Student;
+import com.example.demo.model.StudentNaGodini;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface PohadjanjePredmetaRepository extends CrudRepository<PohadjanjePredmeta, Long> {
+
+    List<PohadjanjePredmeta> findByObrisanoFalse();
+    List<PohadjanjePredmeta> findByObrisanoTrue();
+
+    @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
+            "WHERE pp.studentNaGodini.student.id = :studentId AND pp.obrisano = false")
+    List<Predmet> findPredmetiByStudentId(@Param("studentId") Long studentId);
+
+    @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
+            "WHERE pp.studentNaGodini.student.id = :studentId " +
+            "AND pp.konacnaOcena IS NOT NULL AND pp.obrisano = false")
+    List<Predmet> findPredmetiByStudentIdAndKonacnaOcenaNotNull(@Param("studentId") Long studentId);
+
+    @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
+            "WHERE pp.studentNaGodini.student.id = :studentId " +
+            "AND pp.konacnaOcena IS NULL AND pp.obrisano = false")
+    List<Predmet> findPredmetiByStudentIdAndKonacnaOcenaIsNull(@Param("studentId") Long studentId);
+
+    @Query("SELECT pp.studentNaGodini FROM PohadjanjePredmeta pp WHERE pp.realizacijaPredmeta.predmet.id = :predmetId AND pp.obrisano = false")
+    List<StudentNaGodini> findStudentsByPredmetId(@Param("predmetId") Long predmetId);
+}
