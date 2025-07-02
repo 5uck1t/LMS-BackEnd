@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ZvanjeDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Univerzitet;
 import com.example.demo.model.Zvanje;
 import com.example.demo.repository.ZvanjeRepository;
@@ -51,15 +52,19 @@ public class ZvanjeService {
         return zvanjeRepository.findById(id).map(Zvanje::toDto);
     }
 
+    public Optional<Zvanje> findEntityById(Long id) {
+        return zvanjeRepository.findById(id);
+    }
+
     public ZvanjeDTO save(ZvanjeSaveDTO zvanje) {
 
         Zvanje novo = zvanje.toEntity();
 
-        novo.setNaucnaOblast(naucnaOblastService.findById(zvanje.getNaucnaOblast_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Naucna oblast with id:" + zvanje.getNaucnaOblast_id() + " not found")).toEntity());
+        novo.setNaucnaOblast(naucnaOblastService.findEntityById(zvanje.getNaucnaOblast_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Naucna oblast with id:" + zvanje.getNaucnaOblast_id() + " not found")));
 
-        novo.setTipZvanja(tipZvanjaService.findById(zvanje.getTipZvanja_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Tip Zvajna with id:" + zvanje.getTipZvanja_id() + " not found")).toEntity());
+        novo.setTipZvanja(tipZvanjaService.findEntityById(zvanje.getTipZvanja_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Tip Zvajna with id:" + zvanje.getTipZvanja_id() + " not found")));
 
         return zvanjeRepository.save(novo).toDto();
     }

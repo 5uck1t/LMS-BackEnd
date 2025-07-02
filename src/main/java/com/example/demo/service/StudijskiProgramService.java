@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.StudijskiProgramDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Student;
 import com.example.demo.model.StudijskiProgram;
 import com.example.demo.repository.StudijskiProgramRepository;
@@ -48,12 +49,16 @@ public class StudijskiProgramService {
         return studijskiProgramRepository.findById(id).map(StudijskiProgram::toDto);
     }
 
+    public Optional<StudijskiProgram> findEntityById(Long id) {
+        return studijskiProgramRepository.findById(id);
+    }
+
     public StudijskiProgramDTO save(StudijskiProgramSaveDTO studijskiProgram) {
 
         StudijskiProgram novi = studijskiProgram.toEntity();
 
-        novi.setKatedra(katedraService.findById(studijskiProgram.getKatedra_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Katedra with id:" + studijskiProgram.getKatedra_id() + " not found")).toEntity());
+        novi.setKatedra(katedraService.findEntityById(studijskiProgram.getKatedra_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Katedra with id:" + studijskiProgram.getKatedra_id() + " not found")));
         return studijskiProgramRepository.save(novi).toDto();
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.TipZvanjaDTO;
 import com.example.demo.dto.UlogovaniKorisnikDTO;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.TipZvanja;
 import com.example.demo.model.UlogovaniKorisnik;
 import com.example.demo.repository.UlogovaniKorisnikRepository;
@@ -48,12 +49,16 @@ public class UlogovaniKorisnikService {
         return ulogovaniKorisnikRepository.findById(id).map(UlogovaniKorisnik::toDto);
     }
 
+    public Optional<UlogovaniKorisnik> findEntityById(Long id) {
+        return ulogovaniKorisnikRepository.findById(id);
+    }
+
     public UlogovaniKorisnikDTO save(UlogovaniKorisnikSaveDTO ulogovaniKorisnik) {
 
         UlogovaniKorisnik novi = ulogovaniKorisnik.toEntity();
 
-        novi.setOsoba(osobaService.findById(ulogovaniKorisnik.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Osoba with id:" + ulogovaniKorisnik.getOsoba_id() + " not found")).toEntity());
+        novi.setOsoba(osobaService.findEntityById(ulogovaniKorisnik.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Osoba with id:" + ulogovaniKorisnik.getOsoba_id() + " not found")));
         return ulogovaniKorisnikRepository.save(novi).toDto();
     }
 

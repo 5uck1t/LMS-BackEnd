@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.UniverzitetDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.UlogovaniKorisnik;
 import com.example.demo.model.Univerzitet;
 import com.example.demo.repository.UniverzitetRepository;
@@ -48,12 +49,16 @@ public class UniverzitetService {
         return univerzitetRepository.findById(id).map(Univerzitet::toDto);
     }
 
+    public Optional<Univerzitet> findEntityById(Long id) {
+        return univerzitetRepository.findById(id);
+    }
+
     public UniverzitetDTO save(UniverzitetSaveDTO univerzitet) {
 
         Univerzitet novi = univerzitet.toEntity();
 
-        novi.setAdresa(adresaService.findById(univerzitet.getAdresa_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + univerzitet.getAdresa_id() + " not found")).toEntity());
+        novi.setAdresa(adresaService.findEntityById(univerzitet.getAdresa_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + univerzitet.getAdresa_id() + " not found")));
 
         return univerzitetRepository.save(novi).toDto();
     }

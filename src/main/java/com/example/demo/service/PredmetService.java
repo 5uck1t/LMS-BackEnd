@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.PredmetDTO;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Predmet;
 import com.example.demo.repository.PredmetRepository;
 import com.example.demo.saveDto.PredmetSaveDTO;
@@ -42,6 +43,10 @@ public class PredmetService {
 
     public Optional<PredmetDTO> findById(Long id) {
         return predmetRepository.findById(id).map(Predmet::toDto);
+    }
+
+    public Optional<Predmet> findEntityById(Long id) {
+        return predmetRepository.findById(id);
     }
 
     public PredmetDTO save(PredmetSaveDTO predmet) {

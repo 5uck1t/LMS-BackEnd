@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ForumDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Forum;
 import com.example.demo.model.ForumHasKorisnik;
 import com.example.demo.repository.ForumRepository;
@@ -43,6 +44,10 @@ public class ForumService {
 
     public Optional<ForumDTO> findById(Long id) {
         return forumRepository.findById(id).map(Forum::toDto);
+    }
+
+    public Optional<Forum> findEntityById(Long id) {
+        return forumRepository.findById(id);
     }
 
     public ForumDTO save(ForumSaveDTO forum) {

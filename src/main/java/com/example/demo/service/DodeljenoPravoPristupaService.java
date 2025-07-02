@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.DodeljenoPravoPristupaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Adresa;
+import com.example.demo.model.DatumPredmeta;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.repository.DodeljenoPravoPristupaRepository;
 import com.example.demo.saveDto.DodeljenoPravoPristupaSaveDTO;
@@ -52,15 +53,19 @@ public class DodeljenoPravoPristupaService {
         return dodeljenoPravoPristupaRepository.findById(id).map(DodeljenoPravoPristupa::toDto);
     }
 
+    public Optional<DodeljenoPravoPristupa> findEntityById(Long id) {
+        return dodeljenoPravoPristupaRepository.findById(id);
+    }
+
     public DodeljenoPravoPristupaDTO save(DodeljenoPravoPristupaSaveDTO dodeljenoPravoPristupa) {
 
         DodeljenoPravoPristupa novo = dodeljenoPravoPristupa.toEntity();
 
-        novo.setPravoPristupa(pravoPristupaService.findById(dodeljenoPravoPristupa.getPravoPristupa_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Pravo pristupa with id" + dodeljenoPravoPristupa.getPravoPristupa_id() + " not found")).toEntity());
+        novo.setPravoPristupa(pravoPristupaService.findEntityById(dodeljenoPravoPristupa.getPravoPristupa_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Pravo pristupa with id" + dodeljenoPravoPristupa.getPravoPristupa_id() + " not found")));
 
-        novo.setUlogovaniKorisnik(ulogovaniKorisnikService.findById(dodeljenoPravoPristupa.getUlogovaniKorisnik_id())
-                .orElseThrow(() -> new EntityNotFoundException("Ulogovani korisnik with id:" + dodeljenoPravoPristupa.getUlogovaniKorisnik_id() + " not found")).toEntity());
+        novo.setUlogovaniKorisnik(ulogovaniKorisnikService.findEntityById(dodeljenoPravoPristupa.getUlogovaniKorisnik_id())
+                .orElseThrow(() -> new EntityNotFoundException("Ulogovani korisnik with id:" + dodeljenoPravoPristupa.getUlogovaniKorisnik_id() + " not found")));
         return dodeljenoPravoPristupaRepository.save(dodeljenoPravoPristupa.toEntity()).toDto();
     }
 
