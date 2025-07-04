@@ -110,4 +110,11 @@ public class RealizacijaPredmetaService {
             realizacijaPredmetaRepository.save(realizacijaPredmeta);
         }
     }
+    
+    public List<RealizacijaPredmetaDTO> findByNastavnikId(Long nastavnikId) {
+        return realizacijaPredmetaRepository.findByNastavnikIdAndObrisanoFalse(nastavnikId)
+                .stream()
+                .map(RealizacijaPredmeta::toDto)
+                .toList();
+    }
 }

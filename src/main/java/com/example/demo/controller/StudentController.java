@@ -3,20 +3,27 @@ package com.example.demo.controller;
 import com.example.demo.dto.StudentDTO;
 import com.example.demo.saveDto.StudentSaveDTO;
 import com.example.demo.service.StudentService;
+import com.example.demo.model.Osoba;
 import com.example.demo.model.Student;
+import com.example.demo.model.UlogovaniKorisnik;
+import com.example.demo.repository.UlogovaniKorisnikRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
 
     @Autowired
     private StudentService studentService;
+    
+    @Autowired
+    private UlogovaniKorisnikRepository ulogovaniKorisnikRepository;
 
     @GetMapping
     public Iterable<StudentDTO> getAll() {
@@ -69,5 +76,20 @@ public class StudentController {
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         studentService.vrati(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/studenti/idByUsername/{username}")
+    public ResponseEntity<Long> getStudentIdByUsername(@PathVariable String username) {
+        Optional<UlogovaniKorisnik> korisnikOpt = ulogovaniKorisnikRepository.findUlogovaniKorisnikByUsername(username);
+        if (korisnikOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Osoba osoba = korisnikOpt.get().getOsoba();
+        Optional<Student> studentOpt = studentService.findByOsoba(osoba);
+        if (studentOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(studentOpt.get().getId());
     }
 }

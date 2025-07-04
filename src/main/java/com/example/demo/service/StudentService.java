@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.StudentDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
+import com.example.demo.model.Osoba;
 import com.example.demo.model.Student;
 import com.example.demo.model.StudentNaGodini;
 import com.example.demo.repository.StudentRepository;
@@ -89,5 +90,11 @@ public class StudentService {
             student.setObrisano(false);
             studentRepository.save(student);
         }
+    }
+    
+
+    
+    public Optional<Student> findByOsoba(Osoba osoba) {
+        return studentRepository.findByOsoba(osoba);
     }
 }

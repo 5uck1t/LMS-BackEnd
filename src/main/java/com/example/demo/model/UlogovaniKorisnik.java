@@ -7,6 +7,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -92,6 +93,9 @@ public class UlogovaniKorisnik {
     }
 
     public Set<DodeljenoPravoPristupa> getDodeljenaPravaPristupa() {
+        if (dodeljenaPravaPristupa == null) {
+            dodeljenaPravaPristupa = new HashSet<>();
+        }
         return dodeljenaPravaPristupa;
     }
 

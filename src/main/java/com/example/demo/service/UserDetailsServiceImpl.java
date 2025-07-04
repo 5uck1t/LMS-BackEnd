@@ -24,7 +24,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UlogovaniKorisnik k = ulogovaniKorisnikService.findByUsername(username).toEntity();
+    	UlogovaniKorisnik k = ulogovaniKorisnikService.findByUsernameWithRoles(username)
+    		    .orElseThrow(() -> new UsernameNotFoundException("nepostojeci korisnik!"));
+
 
         if (k != null) {
             ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();

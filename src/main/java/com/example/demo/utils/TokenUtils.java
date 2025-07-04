@@ -52,7 +52,11 @@ public class TokenUtils {
     public String generateToken(UserDetails userDetails) {
         HashMap<String, Object> payload = new HashMap<String, Object>();
         payload.put("sub", userDetails.getUsername());
-        payload.put("authorities", userDetails.getAuthorities());
+        System.out.println("[DEBUG] User authorities: " + userDetails.getAuthorities());
+        payload.put("authorities", userDetails.getAuthorities()
+                .stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .toList());
 
         return Jwts.builder().claims(payload).expiration(new Date(System.currentTimeMillis() + 100000)).signWith(this.getKey()).compact();
     }

@@ -5,6 +5,7 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Nastavnik;
 import com.example.demo.model.NastavnikHasZvanje;
+import com.example.demo.model.Osoba;
 import com.example.demo.repository.NastavnikRepository;
 import com.example.demo.saveDto.NastavnikSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -93,5 +94,10 @@ public class NastavnikService {
             nastavnik.setObrisano(false);
             nastavnikRepository.save(nastavnik);
         }
+    }
+    
+    
+    public Optional<Nastavnik> findByOsoba(Osoba osoba) {
+        return nastavnikRepository.findByOsoba(osoba);
     }
 }

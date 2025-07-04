@@ -7,7 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.util.Set;
 
 @Entity
-public class    RealizacijaPredmeta {
+public class RealizacijaPredmeta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
