@@ -67,16 +67,23 @@ public class OsobaService {
         nova.setAdresa(adresaService.findEntityById(osoba.getAdresa_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + osoba.getAdresa_id() + " not found")));
 
+        if (osoba.getStudent_id() != null && osoba.getNastavnik_id() != null) {
+            throw new IllegalArgumentException("Osoba ne može biti i student i nastavnik istovremeno.");
+        }
+
         if(osoba.getNastavnik_id() == null){
-            if (osoba.getStudent_id() == null){
-                throw new IllegalArgumentException("Osoba mora da bude ili Nastavnik ili Student");
-            }
+            nova.setNastavnik(null);
+        }else {
+            nova.setNastavnik(nastavnikService.findEntityById(osoba.getNastavnik_id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + osoba.getNastavnik_id() + " not found")));
+        }
+        if(osoba.getStudent_id() == null){
+            nova.setStudent(null);
+        }else {
             nova.setStudent(studentService.findEntityById(osoba.getStudent_id())
                     .orElseThrow(() -> new ResourceNotFoundException("Student with id:" + osoba.getStudent_id() + " not found")));
         }
 
-        nova.setNastavnik(nastavnikService.findEntityById(osoba.getNastavnik_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Nastavnik with id:" + osoba.getNastavnik_id() + " not found")));
 
         return osobaRepository.save(nova).toDto();
     }

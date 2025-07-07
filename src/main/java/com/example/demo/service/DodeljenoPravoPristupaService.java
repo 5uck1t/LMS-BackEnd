@@ -34,6 +34,10 @@ public class DodeljenoPravoPristupaService {
                 .collect(Collectors.toList());
     }
 
+    public List<DodeljenoPravoPristupa> findByUlogovaniKorisnikUsername(String username) {
+        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_Username(username));
+    }
+
     public List<DodeljenoPravoPristupaDTO> findAllActive() {
         return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findByObrisanoFalse())
                 .stream()
