@@ -11,4 +11,6 @@ public interface DodeljenoPravoPristupaRepository extends CrudRepository<Dodelje
 
     List<DodeljenoPravoPristupa> findByObrisanoFalse();
     List<DodeljenoPravoPristupa> findByObrisanoTrue();
+
+    List<DodeljenoPravoPristupa> findDodeljenoPravoPristupaByUlogovaniKorisnik_Username(String ulogovaniKorisnikUsername);
 }
