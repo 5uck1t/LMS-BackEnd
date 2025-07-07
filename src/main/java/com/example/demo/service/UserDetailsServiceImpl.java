@@ -21,6 +21,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UlogovaniKorisnikService ulogovaniKorisnikService;
 
+    @Autowired
+    private DodeljenoPravoPristupaService dodeljenoPravoPristupaService;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,7 +32,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (k != null) {
             ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 
-            for (DodeljenoPravoPristupa dodeljenoPravo : k.getDodeljenaPravaPristupa()) {
+            for (DodeljenoPravoPristupa dodeljenoPravo : dodeljenoPravoPristupaService.findByUlogovaniKorisnikUsername(k.getUsername())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
             }
 
