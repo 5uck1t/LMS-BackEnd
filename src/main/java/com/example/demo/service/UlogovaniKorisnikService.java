@@ -54,10 +54,9 @@ public class UlogovaniKorisnikService {
     }
 
     public UlogovaniKorisnikDTO save(UlogovaniKorisnikSaveDTO ulogovaniKorisnik) {
-
         UlogovaniKorisnik novi = ulogovaniKorisnik.toEntity();
 
-        novi.setOsoba(osobaService.findEntityById(ulogovaniKorisnik.getId())
+        novi.setOsoba(osobaService.findEntityById(ulogovaniKorisnik.getOsoba_id())
                 .orElseThrow(() -> new EntityNotFoundException("Osoba with id:" + ulogovaniKorisnik.getOsoba_id() + " not found")));
         return ulogovaniKorisnikRepository.save(novi).toDto();
     }

@@ -80,6 +80,7 @@ public class UlogovaniKorisnikSaveDTO {
         e.setUsername(korisnickoIme);
         e.setPassword(lozinka);
         e.setEmail(email);
+        e.setObrisano(obrisano);
         return e;
     }
 }

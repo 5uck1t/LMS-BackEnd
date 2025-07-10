@@ -1,17 +1,16 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.UlogovaniKorisnikDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Set;
 
 @Entity
 public class UlogovaniKorisnik {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;

@@ -40,6 +40,11 @@ public class DodeljenoPravoPristupaController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/korisnik/{id}")
+    public List<DodeljenoPravoPristupaDTO> getByKorisnikId(@PathVariable Long id) {
+        return dodeljenoPravoPristupaService.findByUlogovaniKorisnikId(id);
+    }
+
     @PostMapping
     public DodeljenoPravoPristupaDTO create(@RequestBody DodeljenoPravoPristupaSaveDTO dodeljenoPravoPristupa) {
         return dodeljenoPravoPristupaService.save(dodeljenoPravoPristupa);
