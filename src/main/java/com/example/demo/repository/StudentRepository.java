@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Osoba;
 import com.example.demo.model.Student;
+import com.example.demo.model.StudentNaGodini;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

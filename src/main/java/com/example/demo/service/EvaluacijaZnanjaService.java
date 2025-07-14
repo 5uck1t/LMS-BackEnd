@@ -1,16 +1,20 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.DatumPredmetaDTO;
+import com.example.demo.dto.EvaluacijaPrijavaDTO;
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.DatumPredmetaRepository;
 import com.example.demo.repository.EvaluacijaZnanjaRepository;
+import com.example.demo.repository.PohadjanjePredmetaRepository;
+import com.example.demo.repository.RokRepository;
 import com.example.demo.saveDto.EvaluacijaZnanjaSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,6 +31,13 @@ public class EvaluacijaZnanjaService {
 
     @Autowired
     private RokService rokService;
+    
+    @Autowired
+    private PohadjanjePredmetaRepository pohadjanjePredmetaRepository;
+
+    @Autowired
+    private RokRepository rokRepository;
+
 
     @Autowired
     private PohadjanjePredmetaService pohadjanjePredmetaService;
@@ -112,5 +123,35 @@ public class EvaluacijaZnanjaService {
             evaluacijaZnanja.setObrisano(false);
             evaluacijaZnanjaRepository.save(evaluacijaZnanja);
         }
+    }
+    
+    public EvaluacijaZnanjaDTO prijaviIspit(EvaluacijaPrijavaDTO dto) {
+        Optional<PohadjanjePredmeta> pohadjanje = pohadjanjePredmetaRepository.findById(dto.getPohadjanjePredmetaId());
+        Optional<Rok> rok = rokRepository.findById(dto.getRokId());
+
+        if (pohadjanje.isEmpty() || rok.isEmpty()) {
+            throw new IllegalArgumentException("Nepostojeći pohadjanjePredmeta ili rok.");
+        }
+
+        Date danas = new Date();
+        if (danas.before(rok.get().getPocetak()) || danas.after(rok.get().getKraj())) {
+            throw new IllegalStateException("Rok trenutno nije aktivan.");
+        }
+
+        // Proveri da li već postoji prijava za isti predmet i rok
+        boolean postoji = evaluacijaZnanjaRepository.existsByPohadjanjepredmetaAndRok(pohadjanje.get(), rok.get());
+        if (postoji) {
+            throw new IllegalStateException("Već ste prijavili ispit za ovaj predmet u datom roku.");
+        }
+
+        EvaluacijaZnanja nova = new EvaluacijaZnanja();
+        nova.setNaziv(dto.getNaziv());
+        nova.setDatum(dto.getDatum());
+        nova.setBrojBodova(null); // Prijava bez ocene
+        nova.setPohadjanjepredmeta(pohadjanje.get());
+        nova.setRok(rok.get());
+        nova.setObrisano(false);
+
+        return evaluacijaZnanjaRepository.save(nova).toDto();
     }
 }

@@ -100,6 +100,6 @@ public class Forum {
     }
 
     public ForumDTO toDto() {
-        return new ForumDTO(this.id, this.naziv, this.forum.toDto(), null, null, null, this.obrisano);
+        return new ForumDTO(this.id, this.naziv, null, null, null, null, this.obrisano);
     }
 }

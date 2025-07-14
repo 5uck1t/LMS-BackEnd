@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.StudentNaGodiniDTO;
+import com.example.demo.dto.StudentSearchDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Silabus;
@@ -95,5 +96,14 @@ public class StudentNaGodiniService {
             studentNaGodini.setObrisano(false);
             studentNaGodiniRepository.save(studentNaGodini);
         }
+    }
+    
+    public List<StudentNaGodiniDTO> search(StudentSearchDTO dto) {
+        return studentNaGodiniRepository.searchStudents(
+            dto.getIme(),
+            dto.getPrezime(),
+            dto.getBrojIndeksa(),
+            dto.getGodinaUpisa()
+        ).stream().map(StudentNaGodini::toDto).collect(Collectors.toList());
     }
 }

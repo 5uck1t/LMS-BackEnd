@@ -66,7 +66,7 @@ public class ForumDTO {
         ForumSaveDTO e = new ForumSaveDTO();
         e.setId(id);
         e.setNaziv(naziv);
-        e.setForum_id(forum.getId());
+        e.setForum_id(null);
         e.setObrisano(obrisano);
         return e;
     }

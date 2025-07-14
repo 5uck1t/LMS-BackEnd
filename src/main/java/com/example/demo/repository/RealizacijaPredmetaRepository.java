@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Nastavnik;
 import com.example.demo.model.Predmet;
 import com.example.demo.model.RealizacijaPredmeta;
 import com.example.demo.model.Student;
@@ -20,5 +21,11 @@ public interface RealizacijaPredmetaRepository extends CrudRepository<Realizacij
     List<Predmet> findPredmetiByNastavnikId(@Param("nastavnikId") Long nastavnikId);
     
     List<RealizacijaPredmeta> findByNastavnikIdAndObrisanoFalse(Long nastavnikId);
+    
+    List<RealizacijaPredmeta> findByNastavnik(Nastavnik nastavnik);
+    
+    List<RealizacijaPredmeta> findByPredmetId(Long predmetId);
+
+
 
 }

@@ -3,9 +3,16 @@ package com.example.demo.controller;
 import com.example.demo.dto.SilabusDTO;
 import com.example.demo.saveDto.SilabusSaveDTO;
 import com.example.demo.service.SilabusService;
+
+import io.jsonwebtoken.Jwt;
+
+
 import com.example.demo.model.Silabus;
+import com.example.demo.repository.SilabusRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +24,9 @@ public class SilabusController {
 
     @Autowired
     private SilabusService silabusService;
+    
+    @Autowired
+    private SilabusRepository silabusRepository;
 
     @GetMapping
     public Iterable<SilabusDTO> getAll() {
@@ -70,5 +80,10 @@ public class SilabusController {
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         silabusService.vrati(id);
         return ResponseEntity.noContent().build();
+    }
+    
+    @GetMapping("/byPredmet/{predmetId}")
+    public List<SilabusDTO> getByPredmetId(@PathVariable Long predmetId) {
+        return silabusService.findByPredmetId(predmetId);
     }
 }

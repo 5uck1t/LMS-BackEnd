@@ -23,14 +23,14 @@ public interface PohadjanjePredmetaRepository extends CrudRepository<PohadjanjeP
 
     @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
             "WHERE pp.studentNaGodini.student.id = :studentId " +
-            "AND pp.konacnaOcena IS NOT NULL AND pp.obrisano = false")
+            "AND pp.konacnaOcena > 5")
     List<Predmet> findPredmetiByStudentIdAndKonacnaOcenaNotNull(@Param("studentId") Long studentId);
 
     @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
             "WHERE pp.studentNaGodini.student.id = :studentId " +
-            "AND pp.konacnaOcena IS NULL AND pp.obrisano = false")
+            "AND pp.konacnaOcena < 6")
     List<Predmet> findPredmetiByStudentIdAndKonacnaOcenaIsNull(@Param("studentId") Long studentId);
 
-    @Query("SELECT pp.studentNaGodini FROM PohadjanjePredmeta pp WHERE pp.realizacijaPredmeta.predmet.id = :predmetId AND pp.obrisano = false")
+    @Query("SELECT pp.studentNaGodini FROM PohadjanjePredmeta pp WHERE pp.realizacijaPredmeta.predmet.id = :predmetId")
     List<StudentNaGodini> findStudentsByPredmetId(@Param("predmetId") Long predmetId);
 }

@@ -78,7 +78,7 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
     
-    @GetMapping("/studenti/idByUsername/{username}")
+    @GetMapping("/idByUsername/{username}")
     public ResponseEntity<Long> getStudentIdByUsername(@PathVariable String username) {
         Optional<UlogovaniKorisnik> korisnikOpt = ulogovaniKorisnikRepository.findUlogovaniKorisnikByUsername(username);
         if (korisnikOpt.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.StudentNaGodiniDTO;
+import com.example.demo.dto.StudentSearchDTO;
 import com.example.demo.saveDto.StudentNaGodiniSaveDTO;
 import com.example.demo.service.StudentNaGodiniService;
 import com.example.demo.model.StudentNaGodini;
@@ -31,6 +32,11 @@ public class StudentNaGodiniController {
     @GetMapping("/deleted")
     public List<StudentNaGodiniDTO> getAllDeleted() {
         return studentNaGodiniService.findAllDeleted();
+    }
+    
+    @PostMapping("/search")
+    public List<StudentNaGodiniDTO> search(@RequestBody StudentSearchDTO dto) {
+        return studentNaGodiniService.search(dto);
     }
 
     @GetMapping("/{id}")

@@ -73,4 +73,15 @@ public class UlogovaniKorisnikController {
         ulogovaniKorisnikService.vrati(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/idByUsername/{username}")
+    public ResponseEntity<Long> getUlogovaniKorisnikIdByUsername(@PathVariable String username) {
+    	UlogovaniKorisnikDTO korisnikDto = ulogovaniKorisnikService.findByUsername(username);
+    	if (korisnikDto == null) {
+    	    return ResponseEntity.notFound().build();
+    	}
+    	return ResponseEntity.ok(korisnikDto.getId());
+    }
+
+
 }

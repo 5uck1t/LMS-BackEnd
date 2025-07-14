@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.EvaluacijaPrijavaDTO;
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
 import com.example.demo.saveDto.EvaluacijaZnanjaSaveDTO;
 import com.example.demo.service.EvaluacijaZnanjaService;
@@ -31,6 +32,16 @@ public class EvaluacijaZnanjaController {
     @GetMapping("/deleted")
     public List<EvaluacijaZnanjaDTO> getAllDeleted() {
         return evaluacijaZnanjaService.findAllDeleted();
+    }
+    
+    @PostMapping("/prijava")
+    public ResponseEntity<EvaluacijaZnanjaDTO> prijaviIspit(@RequestBody EvaluacijaPrijavaDTO dto) {
+        try {
+            EvaluacijaZnanjaDTO created = evaluacijaZnanjaService.prijaviIspit(dto);
+            return ResponseEntity.ok(created);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.StudentNaPredmetuDTO;
 import com.example.demo.dto.PredmetDTO;
 import com.example.demo.dto.RealizacijaPredmetaDTO;
 import com.example.demo.saveDto.RealizacijaPredmetaSaveDTO;
@@ -13,6 +14,7 @@ import com.example.demo.repository.UlogovaniKorisnikRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +90,13 @@ public class RealizacijaPredmetaController {
         realizacijaPredmetaService.vrati(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/studentipredmet/{predmetId}")
+    public ResponseEntity<List<StudentNaPredmetuDTO>> getStudentiZaPredmet(@PathVariable Long predmetId) {
+        return ResponseEntity.ok(realizacijaPredmetaService.getStudentiZaPredmet(predmetId));
+    }
+
+
     
 //    @GetMapping("/nastavnik/{nastavnikId}")
 //    public ResponseEntity<List<RealizacijaPredmetaDTO>> getByNastavnikId(@PathVariable Long nastavnikId) {
