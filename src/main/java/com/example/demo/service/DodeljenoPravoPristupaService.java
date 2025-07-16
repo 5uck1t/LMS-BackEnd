@@ -35,7 +35,14 @@ public class DodeljenoPravoPristupaService {
     }
 
     public List<DodeljenoPravoPristupa> findByUlogovaniKorisnikUsername(String username) {
-        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_Username(username));
+        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_UsernameAndObrisanoFalse(username));
+    }
+
+    public List<DodeljenoPravoPristupaDTO> findByUlogovaniKorisnikId(Long id) {
+        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_IdAndObrisanoFalse(id))
+                .stream()
+                .map(DodeljenoPravoPristupa::toDto)
+                .collect(Collectors.toList());
     }
 
     public List<DodeljenoPravoPristupaDTO> findAllActive() {
@@ -64,13 +71,12 @@ public class DodeljenoPravoPristupaService {
     public DodeljenoPravoPristupaDTO save(DodeljenoPravoPristupaSaveDTO dodeljenoPravoPristupa) {
 
         DodeljenoPravoPristupa novo = dodeljenoPravoPristupa.toEntity();
-
         novo.setPravoPristupa(pravoPristupaService.findEntityById(dodeljenoPravoPristupa.getPravoPristupa_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Pravo pristupa with id" + dodeljenoPravoPristupa.getPravoPristupa_id() + " not found")));
 
         novo.setUlogovaniKorisnik(ulogovaniKorisnikService.findEntityById(dodeljenoPravoPristupa.getUlogovaniKorisnik_id())
                 .orElseThrow(() -> new EntityNotFoundException("Ulogovani korisnik with id:" + dodeljenoPravoPristupa.getUlogovaniKorisnik_id() + " not found")));
-        return dodeljenoPravoPristupaRepository.save(dodeljenoPravoPristupa.toEntity()).toDto();
+        return dodeljenoPravoPristupaRepository.save(novo).toDto();
     }
 
     public void delete(DodeljenoPravoPristupaDTO dodeljenoPravoPristupa) {

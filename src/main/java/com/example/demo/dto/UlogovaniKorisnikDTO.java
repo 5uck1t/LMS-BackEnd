@@ -81,6 +81,7 @@ public class UlogovaniKorisnikDTO {
         e.setKorisnickoIme(korisnickoIme);
         e.setLozinka(lozinka);
         e.setEmail(email);
+        e.setObrisano(obrisano);
         e.setOsoba_id(this.osoba.getId());
         return e;
     }
