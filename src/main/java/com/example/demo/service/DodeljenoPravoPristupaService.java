@@ -35,7 +35,7 @@ public class DodeljenoPravoPristupaService {
     }
 
     public List<DodeljenoPravoPristupa> findByUlogovaniKorisnikUsername(String username) {
-        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_Username(username));
+        return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_UsernameAndObrisanoFalse(username));
     }
 
     public List<DodeljenoPravoPristupaDTO> findByUlogovaniKorisnikId(Long id) {

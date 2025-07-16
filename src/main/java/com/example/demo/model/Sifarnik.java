@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 public class Sifarnik {
@@ -16,6 +17,7 @@ public class Sifarnik {
 
     private String tekst;
 
+    @ColumnDefault("false")
     private Boolean obrisano;
 
     public Sifarnik(long id, String naziv, String tekst, Boolean obrisano) {
