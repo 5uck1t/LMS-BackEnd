@@ -30,5 +30,14 @@ public interface StudentNaGodiniRepository extends CrudRepository<StudentNaGodin
     	    @Param("brojIndeksa") Long brojIndeksa,
     	    @Param("godinaUpisa") Integer godinaUpisa
     	);
+    
+    
+    @Query("SELECT s FROM StudentNaGodini s WHERE " +
+    	       "LOWER(s.student.osoba.ime) LIKE %:query% OR " +
+    	       "LOWER(s.student.osoba.prezime) LIKE %:query% OR " +
+    	       "CAST(s.brojIndeksa AS string) LIKE %:query% OR " +
+    	       "CAST(YEAR(s.datumUpisa) AS string) LIKE %:query%")
+    	List<StudentNaGodini> searchStudentsByQuery(@Param("query") String query);
+
 
 }

@@ -3,6 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.dto.UlogovaniKorisnikDTO;
 import com.example.demo.saveDto.UlogovaniKorisnikSaveDTO;
 import com.example.demo.service.UlogovaniKorisnikService;
+import com.example.demo.utils.TokenUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.example.demo.model.UlogovaniKorisnik;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +19,9 @@ import java.util.Optional;
 @RequestMapping("/api/ulogovanikorisniks")
 public class UlogovaniKorisnikController {
 
+	@Autowired
+	private TokenUtils tokenUtils;
+	
     @Autowired
     private UlogovaniKorisnikService ulogovaniKorisnikService;
 
@@ -32,6 +39,40 @@ public class UlogovaniKorisnikController {
     public List<UlogovaniKorisnikDTO> getAllDeleted() {
         return ulogovaniKorisnikService.findAllDeleted();
     }
+    
+    
+    @GetMapping("/profil")
+    public ResponseEntity<UlogovaniKorisnikDTO> getProfil(HttpServletRequest request) {
+        String token = extractToken(request);
+        String username = tokenUtils.getUsername(token);
+
+        UlogovaniKorisnikDTO korisnik = ulogovaniKorisnikService.findByUsername(username);
+        if (korisnik == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(korisnik);
+    }
+
+    @PutMapping("/profil")
+    public ResponseEntity<UlogovaniKorisnikDTO> updateProfil(HttpServletRequest request, @RequestBody UlogovaniKorisnikSaveDTO updatedData) {
+        String token = extractToken(request);
+        String username = tokenUtils.getUsername(token);
+
+        UlogovaniKorisnikDTO korisnik = ulogovaniKorisnikService.findByUsername(username);
+        if (korisnik == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        updatedData.setId(korisnik.getId()); // ključno da se ne menja ID
+        return ResponseEntity.ok(ulogovaniKorisnikService.save(updatedData));
+    }
+
+    private String extractToken(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        return header != null && header.startsWith("Bearer ") ? header.substring(7) : null;
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<UlogovaniKorisnikDTO> getById(@PathVariable Long id) {

@@ -12,6 +12,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -99,11 +100,13 @@ public class StudentNaGodiniService {
     }
     
     public List<StudentNaGodiniDTO> search(StudentSearchDTO dto) {
-        return studentNaGodiniRepository.searchStudents(
-            dto.getIme(),
-            dto.getPrezime(),
-            dto.getBrojIndeksa(),
-            dto.getGodinaUpisa()
-        ).stream().map(StudentNaGodini::toDto).collect(Collectors.toList());
+        String q = dto.getQuery();
+        if (q == null || q.isBlank()) return new ArrayList<>();
+
+        return studentNaGodiniRepository.searchStudentsByQuery(q.toLowerCase())
+            .stream()
+            .map(StudentNaGodini::toDto)
+            .collect(Collectors.toList());
     }
+
 }

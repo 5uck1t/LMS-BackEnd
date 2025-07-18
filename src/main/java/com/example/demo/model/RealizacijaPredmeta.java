@@ -7,7 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import java.util.Set;
 
 @Entity
-public class RealizacijaPredmeta {
+public class    RealizacijaPredmeta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,13 @@ public class RealizacijaPredmeta {
     @OneToMany(mappedBy = "realizacijaPredmeta")
     private Set<DatumPredmeta> datumiPredmeta;
 
+    @OneToMany(mappedBy = "realizacijaPredmeta")
+    private Set<Termin> termini;
+
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public RealizacijaPredmeta(GodinaStudija godinaStudija, Long id, Boolean obrisano, Nastavnik nastavnik, Set<PohadjanjePredmeta> pohadjanjaPredmeta, Set<DatumPredmeta> datumiPredmeta, Predmet predmet) {
+    public RealizacijaPredmeta(GodinaStudija godinaStudija, Long id, Boolean obrisano, Nastavnik nastavnik, Set<PohadjanjePredmeta> pohadjanjaPredmeta, Set<DatumPredmeta> datumiPredmeta, Predmet predmet, Set<Termin> termini) {
         this.godinaStudija = godinaStudija;
         this.id = id;
         this.obrisano = obrisano;
@@ -39,6 +42,7 @@ public class RealizacijaPredmeta {
         this.pohadjanjaPredmeta = pohadjanjaPredmeta;
         this.datumiPredmeta = datumiPredmeta;
         this.predmet = predmet;
+        this.termini = termini;
     }
 
     public RealizacijaPredmeta() {
@@ -98,6 +102,14 @@ public class RealizacijaPredmeta {
 
     public void setDatumiPredmeta(Set<DatumPredmeta> datumiPredmeta) {
         this.datumiPredmeta = datumiPredmeta;
+    }
+
+    public Set<Termin> getTermini() {
+        return termini;
+    }
+
+    public void setTermini(Set<Termin> termini) {
+        this.termini = termini;
     }
 
     public RealizacijaPredmetaDTO toDto() {
