@@ -52,10 +52,7 @@ public class EvaluacijaZnanjaController {
 
             existing.setId(id);
             existing.setNaziv(updatedEvaluacijaZnanja.getNaziv());
-            existing.setBrojBodova(updatedEvaluacijaZnanja.getBrojBodova());
-            existing.setDatum(updatedEvaluacijaZnanja.getDatum());
-            existing.setPohadjanjepredmeta_id(updatedEvaluacijaZnanja.getPohadjanjepredmeta_id());
-            existing.setRok_id(updatedEvaluacijaZnanja.getRok_id());
+            existing.setRealizacijaPredmeta_id(updatedEvaluacijaZnanja.getRealizacijaPredmeta_id());
             existing.setObrisano(updatedEvaluacijaZnanja.getObrisano());
 
             return ResponseEntity.ok(evaluacijaZnanjaService.save(existing));

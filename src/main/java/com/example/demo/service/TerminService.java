@@ -1,16 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.StudijskiProgramDTO;
 import com.example.demo.dto.TerminDTO;
-import com.example.demo.dto.TipZvanjaDTO;
-import com.example.demo.dto.UlogovaniKorisnikDTO;
-import com.example.demo.model.StudijskiProgram;
 import com.example.demo.model.Termin;
-import com.example.demo.model.TipZvanja;
-import com.example.demo.model.UlogovaniKorisnik;
 import com.example.demo.repository.TerminRepository;
 import com.example.demo.saveDto.TerminSaveDTO;
-import com.example.demo.saveDto.UlogovaniKorisnikSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

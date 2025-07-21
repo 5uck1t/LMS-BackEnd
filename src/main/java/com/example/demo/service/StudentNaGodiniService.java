@@ -66,6 +66,14 @@ public class StudentNaGodiniService {
         novi.setGodinaStudija(godinaStudijaService.findEntityById(studentNaGodini.getGodinaStudija_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + studentNaGodini.getGodinaStudija_id() + " not found")));
 
+        StudentNaGodini sn = studentNaGodiniRepository.save(novi);
+
+        String godinaPrefix = sn.getGodinaStudija().getGodina().split("/")[0]; // "2024"
+        String brojIndeksaStr = godinaPrefix + sn.getId();
+        Long brojIndeksa = Long.parseLong(brojIndeksaStr);
+
+        sn.setBrojIndeksa(brojIndeksa);
+
         return studentNaGodiniRepository.save(novi).toDto();
     }
 

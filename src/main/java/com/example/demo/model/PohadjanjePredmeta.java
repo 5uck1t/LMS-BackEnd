@@ -21,14 +21,13 @@ public class PohadjanjePredmeta {
     @ManyToOne
     private RealizacijaPredmeta realizacijaPredmeta;
 
-    @OneToMany(mappedBy = "pohadjanjepredmeta")
-    private Set<EvaluacijaZnanja> evaluacijeZnanja;
+    @OneToMany(mappedBy = "pohadjanjePredmeta")
+    private Set<PrijavaPolaganja> prijave;
 
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public PohadjanjePredmeta(Set<EvaluacijaZnanja> evaluacijeZnanja, Long id, int konacnaOcena, Boolean obrisano, RealizacijaPredmeta realizacijaPredmeta, StudentNaGodini studentNaGodini) {
-        this.evaluacijeZnanja = evaluacijeZnanja;
+    public PohadjanjePredmeta(Long id, int konacnaOcena, Boolean obrisano, RealizacijaPredmeta realizacijaPredmeta, StudentNaGodini studentNaGodini) {
         this.id = id;
         this.konacnaOcena = konacnaOcena;
         this.obrisano = obrisano;
@@ -68,14 +67,6 @@ public class PohadjanjePredmeta {
 
     public void setStudentNaGodini(StudentNaGodini studentNaGodini) {
         this.studentNaGodini = studentNaGodini;
-    }
-
-    public Set<EvaluacijaZnanja> getEvaluacijeZnanja() {
-        return evaluacijeZnanja;
-    }
-
-    public void setEvaluacijeZnanja(Set<EvaluacijaZnanja> evaluacijeZnanja) {
-        this.evaluacijeZnanja = evaluacijeZnanja;
     }
 
     public Boolean getObrisano() {
