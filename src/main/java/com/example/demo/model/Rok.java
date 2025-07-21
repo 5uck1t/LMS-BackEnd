@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.PolaganjeDTO;
 import com.example.demo.dto.RokDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -21,7 +22,7 @@ public class Rok {
     private Date kraj;
 
     @OneToMany(mappedBy = "rok")
-    private Set<EvaluacijaZnanja> evaluacijeZnanja;
+    private Set<Polaganje> polaganja;
 
     @OneToMany(mappedBy = "rok")
     private Set<DatumPredmeta> datumiPredmeta;
@@ -29,8 +30,8 @@ public class Rok {
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public Rok(Set<EvaluacijaZnanja> evaluacijeZnanja, Long id, Date kraj, String naziv, Boolean obrisano, Date pocetak, Set<DatumPredmeta> datumiPredmeta) {
-        this.evaluacijeZnanja = evaluacijeZnanja;
+    public Rok(Set<Polaganje> polaganja, Long id, Date kraj, String naziv, Boolean obrisano, Date pocetak, Set<DatumPredmeta> datumiPredmeta) {
+        this.polaganja = polaganja;
         this.id = id;
         this.kraj = kraj;
         this.naziv = naziv;
@@ -42,12 +43,12 @@ public class Rok {
     public Rok() {
     }
 
-    public Set<EvaluacijaZnanja> getEvaluacijeZnanja() {
-        return evaluacijeZnanja;
+    public Set<Polaganje> getPolaganja() {
+        return polaganja;
     }
 
-    public void setEvaluacijeZnanja(Set<EvaluacijaZnanja> evaluacijeZnanja) {
-        this.evaluacijeZnanja = evaluacijeZnanja;
+    public void setPolaganja(Set<Polaganje> polaganja) {
+        this.polaganja = polaganja;
     }
 
     public Long getId() {

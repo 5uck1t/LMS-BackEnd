@@ -1,9 +1,11 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
+import com.example.demo.dto.PolaganjeDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
@@ -16,46 +18,28 @@ public class EvaluacijaZnanja {
 
     private String naziv;
 
-    private Float brojBodova;
-
-    private Date datum;
-
     @ManyToOne
-    private PohadjanjePredmeta pohadjanjepredmeta;
+    private RealizacijaPredmeta realizacijaPredmeta;
 
-    @ManyToOne
-    private Rok rok;
+    @OneToMany(mappedBy = "evaluacijaZnanja")
+    private Set<Zadatak> zadaci;
+
+    @OneToMany(mappedBy = "evaluacijaZnanja")
+    private Set<Polaganje> polaganja;
 
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public EvaluacijaZnanja(Float brojBodova, Date datum, Long id, String naziv, Boolean obrisano, PohadjanjePredmeta pohadjanjepredmeta, Rok rok) {
-        this.brojBodova = brojBodova;
-        this.datum = datum;
+    public EvaluacijaZnanja(Long id, String naziv, RealizacijaPredmeta realizacijaPredmeta, Set<Zadatak> zadaci, Set<Polaganje> polaganja, Boolean obrisano) {
         this.id = id;
         this.naziv = naziv;
+        this.realizacijaPredmeta = realizacijaPredmeta;
+        this.zadaci = zadaci;
         this.obrisano = obrisano;
-        this.pohadjanjepredmeta = pohadjanjepredmeta;
-        this.rok = rok;
+        this.polaganja = polaganja;
     }
 
     public EvaluacijaZnanja() {
-    }
-
-    public Float getBrojBodova() {
-        return brojBodova;
-    }
-
-    public void setBrojBodova(Float brojBodova) {
-        this.brojBodova = brojBodova;
-    }
-
-    public Date getDatum() {
-        return datum;
-    }
-
-    public void setDatum(Date datum) {
-        this.datum = datum;
     }
 
     public Long getId() {
@@ -74,20 +58,20 @@ public class EvaluacijaZnanja {
         this.naziv = naziv;
     }
 
-    public PohadjanjePredmeta getPohadjanjepredmeta() {
-        return pohadjanjepredmeta;
+    public RealizacijaPredmeta getRealizacijaPredmeta() {
+        return realizacijaPredmeta;
     }
 
-    public void setPohadjanjepredmeta(PohadjanjePredmeta pohadjanjepredmeta) {
-        this.pohadjanjepredmeta = pohadjanjepredmeta;
+    public void setRealizacijaPredmeta(RealizacijaPredmeta realizacijaPredmeta) {
+        this.realizacijaPredmeta = realizacijaPredmeta;
     }
 
-    public Rok getRok() {
-        return rok;
+    public Set<Zadatak> getZadaci() {
+        return zadaci;
     }
 
-    public void setRok(Rok rok) {
-        this.rok = rok;
+    public void setZadaci(Set<Zadatak> zadaci) {
+        this.zadaci = zadaci;
     }
 
     public Boolean getObrisano() {
@@ -98,7 +82,15 @@ public class EvaluacijaZnanja {
         this.obrisano = obrisano;
     }
 
+    public Set<Polaganje> getPolaganja() {
+        return polaganja;
+    }
+
+    public void setPolaganja(Set<Polaganje> polaganja) {
+        this.polaganja = polaganja;
+    }
+
     public EvaluacijaZnanjaDTO toDto() {
-        return new EvaluacijaZnanjaDTO(this.id, this.naziv, this.brojBodova, this.datum, this.pohadjanjepredmeta.toDto(), this.rok.toDto(), this.obrisano);
+        return new EvaluacijaZnanjaDTO(this.id, this.naziv, this.realizacijaPredmeta.toDto(), this.obrisano);
     }
 }
