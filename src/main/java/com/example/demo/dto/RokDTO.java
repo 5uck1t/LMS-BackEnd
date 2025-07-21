@@ -60,7 +60,6 @@ public class RokDTO {
         e.setNaziv(naziv);
         e.setPocetak(pocetak);
         e.setKraj(kraj);
-        e.setEvaluacijeZnanja(null);
         e.setObrisano(obrisano);
         e.setDatumiPredmeta(null);
         return e;

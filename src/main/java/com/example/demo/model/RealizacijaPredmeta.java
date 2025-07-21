@@ -29,12 +29,15 @@ public class    RealizacijaPredmeta {
     private Set<DatumPredmeta> datumiPredmeta;
 
     @OneToMany(mappedBy = "realizacijaPredmeta")
+    private Set<EvaluacijaZnanja> evaluacije;
+
+    @OneToMany(mappedBy = "realizacijaPredmeta")
     private Set<Termin> termini;
 
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public RealizacijaPredmeta(GodinaStudija godinaStudija, Long id, Boolean obrisano, Nastavnik nastavnik, Set<PohadjanjePredmeta> pohadjanjaPredmeta, Set<DatumPredmeta> datumiPredmeta, Predmet predmet, Set<Termin> termini) {
+    public RealizacijaPredmeta(GodinaStudija godinaStudija, Long id, Boolean obrisano, Nastavnik nastavnik, Set<PohadjanjePredmeta> pohadjanjaPredmeta, Set<DatumPredmeta> datumiPredmeta, Predmet predmet, Set<Termin> termini, Set<EvaluacijaZnanja> evaluacije) {
         this.godinaStudija = godinaStudija;
         this.id = id;
         this.obrisano = obrisano;
@@ -43,6 +46,7 @@ public class    RealizacijaPredmeta {
         this.datumiPredmeta = datumiPredmeta;
         this.predmet = predmet;
         this.termini = termini;
+        this.evaluacije = evaluacije;
     }
 
     public RealizacijaPredmeta() {
@@ -110,6 +114,14 @@ public class    RealizacijaPredmeta {
 
     public void setTermini(Set<Termin> termini) {
         this.termini = termini;
+    }
+
+    public Set<EvaluacijaZnanja> getEvaluacije() {
+        return evaluacije;
+    }
+
+    public void setEvaluacije(Set<EvaluacijaZnanja> evaluacije) {
+        this.evaluacije = evaluacije;
     }
 
     public RealizacijaPredmetaDTO toDto() {

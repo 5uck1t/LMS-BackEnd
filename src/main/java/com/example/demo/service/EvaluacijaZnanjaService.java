@@ -23,13 +23,7 @@ public class EvaluacijaZnanjaService {
     private EvaluacijaZnanjaRepository evaluacijaZnanjaRepository;
 
     @Autowired
-    private DatumPredmetaService datumPredmetaService;
-
-    @Autowired
-    private RokService rokService;
-
-    @Autowired
-    private PohadjanjePredmetaService pohadjanjePredmetaService;
+    private RealizacijaPredmetaService realizacijaPredmeta;
 
     public List<EvaluacijaZnanjaDTO> findAll() {
 
@@ -67,22 +61,9 @@ public class EvaluacijaZnanjaService {
 
         EvaluacijaZnanja nova = evaluacijaZnanja.toEntity();
 
-        nova.setRok(rokService.findEntityById(evaluacijaZnanja.getRok_id())
-                .orElseThrow(() -> new EntityNotFoundException("Rok with id:" + evaluacijaZnanja.getRok_id() + " not found")));
+        nova.setRealizacijaPredmeta(realizacijaPredmeta.findEntityById(evaluacijaZnanja.getRealizacijaPredmeta_id())
+                .orElseThrow(() -> new EntityNotFoundException("Realizacija predmeta with id:" + evaluacijaZnanja.getRealizacijaPredmeta_id() + " not found")));
 
-        nova.setPohadjanjepredmeta(pohadjanjePredmetaService.findEntityById(evaluacijaZnanja.getPohadjanjepredmeta_id())
-                .orElseThrow(() -> new EntityNotFoundException("Pohadjanje predmeta with id:" + evaluacijaZnanja.getPohadjanjepredmeta_id() + " not found")));
-
-        //find datum for evaluacija znanja by rok id from evaluacija znanja and predmet id also from evaluacijaZnanja>pohadjanjePredmeta>predmet
-        Optional<DatumPredmetaDTO> datum = datumPredmetaService.findByRokIdAndPredmetId(evaluacijaZnanja.getRok_id(), nova.getPohadjanjepredmeta().getRealizacijaPredmeta().getPredmet().getId());
-
-        //if datum doesn't exist don't change anything
-        if(datum.isEmpty()){
-            throw new ResourceNotFoundException("DatumPredmeta not found");
-        }
-
-        //if datum exists set datum for evaluacijaZnanja
-        nova.setDatum(datum.get().getDatum());
         return evaluacijaZnanjaRepository.save(nova).toDto();
     }
 

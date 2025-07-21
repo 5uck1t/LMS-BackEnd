@@ -50,7 +50,6 @@ public class PohadjanjePredmetaDTO {
         e.setKonacnaOcena(konacnaOcena);
         e.setStudentNaGodini(studentNaGodini.toEntity());
         e.setRealizacijaPredmeta(realizacijaPredmeta.toEntity());
-        e.setEvaluacijeZnanja(null);
         e.setObrisano(obrisano);
         return e;
     }

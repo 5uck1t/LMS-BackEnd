@@ -11,4 +11,6 @@ public interface GodinaStudijaRepository extends CrudRepository<GodinaStudija, L
 
     List<GodinaStudija> findByObrisanoFalse();
     List<GodinaStudija> findByObrisanoTrue();
+
+
 }

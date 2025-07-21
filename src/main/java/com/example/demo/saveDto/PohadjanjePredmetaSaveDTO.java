@@ -70,7 +70,6 @@ public class PohadjanjePredmetaSaveDTO {
         PohadjanjePredmeta e = new PohadjanjePredmeta();
         e.setId(id);
         e.setKonacnaOcena(konacnaOcena);
-        e.setEvaluacijeZnanja(null);
         e.setObrisano(obrisano);
         return e;
     }
