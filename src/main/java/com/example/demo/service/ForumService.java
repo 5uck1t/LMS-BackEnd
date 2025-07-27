@@ -46,6 +46,10 @@ public class ForumService {
         return forumRepository.findById(id).map(Forum::toDto);
     }
 
+    public Optional<ForumDTO> findByNaziv(String naziv) {
+        return forumRepository.findByForum_Naziv(naziv).map(Forum::toDto);
+    }
+
     public Optional<Forum> findEntityById(Long id) {
         return forumRepository.findById(id);
     }

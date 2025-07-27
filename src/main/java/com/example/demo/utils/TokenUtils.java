@@ -4,6 +4,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.example.demo.model.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -53,6 +54,11 @@ public class TokenUtils {
         HashMap<String, Object> payload = new HashMap<String, Object>();
         payload.put("sub", userDetails.getUsername());
         payload.put("authorities", userDetails.getAuthorities());
+
+        if (userDetails instanceof UserDetailsImpl) {
+            UserDetailsImpl customUser = (UserDetailsImpl) userDetails;
+            payload.put("userId", customUser.getUlogovaniKorisnikId());
+        }
 
         return Jwts.builder().claims(payload).expiration(new Date(System.currentTimeMillis() + 100000)).signWith(this.getKey()).compact();
     }

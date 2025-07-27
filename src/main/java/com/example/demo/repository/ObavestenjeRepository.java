@@ -13,4 +13,6 @@ public interface ObavestenjeRepository extends CrudRepository<Obavestenje, Long>
     List<Obavestenje> findByObrisanoTrue();
 
     List<Obavestenje> findByForum_Id(Long forumId);
+
+    List<Obavestenje> findByForum_Naziv(String forumNaziv);
 }

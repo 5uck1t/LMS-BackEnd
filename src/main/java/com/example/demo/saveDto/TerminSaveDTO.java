@@ -18,7 +18,7 @@ public class TerminSaveDTO {
 
     private Long realizacijaPredmeta_id;
 
-    private Boolean obrisano;
+    private Boolean obrisano = false;
 
     public TerminSaveDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, Long realizacijaPredmeta_id, Boolean obrisano) {
         this.id = id;

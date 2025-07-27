@@ -15,6 +15,7 @@ public class Obavestenje {
 
     private String naslov;
 
+    @Column(length = 10000)
     private String tekstObavjestenja;
 
     private Date vremePostavljanja;
