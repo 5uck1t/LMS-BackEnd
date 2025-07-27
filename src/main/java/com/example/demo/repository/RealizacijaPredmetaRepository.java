@@ -19,4 +19,7 @@ public interface RealizacijaPredmetaRepository extends CrudRepository<Realizacij
     @Query("SELECT rp.predmet FROM RealizacijaPredmeta rp WHERE rp.nastavnik.id = :nastavnikId AND rp.obrisano = false")
     List<Predmet> findPredmetiByNastavnikId(@Param("nastavnikId") Long nastavnikId);
 
+    @Query("SELECT rp FROM RealizacijaPredmeta rp WHERE rp.godinaStudija.id = :godinaStudijaid AND rp.obrisano = false")
+    List<RealizacijaPredmeta> findRealizacijaPredmetaByGodinaStudijaId(@Param("godinaStudijaid") Long godinaStudijaid);
+
 }

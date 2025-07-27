@@ -39,6 +39,13 @@ public class ForumController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/naziv/{naziv}")
+    public ResponseEntity<ForumDTO> getByNaziv(@PathVariable String naziv) {
+        Optional<ForumDTO> result = forumService.findByNaziv(naziv);
+        System.out.println(result);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ForumDTO create(@RequestBody ForumSaveDTO forum) {
         return forumService.save(forum);
