@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.UlogovaniKorisnik;
+import com.example.demo.model.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
             }
 
-            return new User(k.getUsername(), k.getPassword(), grantedAuthorities);
+            return new UserDetailsImpl(k, grantedAuthorities);
         }
         throw new UsernameNotFoundException("nepostojeci korisnik!");
     }
