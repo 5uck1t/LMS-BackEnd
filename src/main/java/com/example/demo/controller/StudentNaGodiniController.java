@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/studentnagodinis")
 public class StudentNaGodiniController {
@@ -33,18 +33,17 @@ public class StudentNaGodiniController {
     public List<StudentNaGodiniDTO> getAllDeleted() {
         return studentNaGodiniService.findAllDeleted();
     }
-    
-    @PostMapping("/search")
-    public List<StudentNaGodiniDTO> search(@RequestBody StudentSearchDTO dto) {
-        return studentNaGodiniService.search(dto);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentNaGodiniDTO> getById(@PathVariable Long id) {
         Optional<StudentNaGodiniDTO> result = studentNaGodiniService.findById(id);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
+    
+    @PostMapping("/search")
+    public List<StudentNaGodiniDTO> search(@RequestBody StudentSearchDTO dto) {
+        return studentNaGodiniService.search(dto);
+    }
     @PostMapping
     public StudentNaGodiniDTO create(@RequestBody StudentNaGodiniSaveDTO studentNaGodini) {
         return studentNaGodiniService.save(studentNaGodini);

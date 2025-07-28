@@ -1,16 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.StudijskiProgramDTO;
 import com.example.demo.dto.TerminDTO;
-import com.example.demo.dto.TipZvanjaDTO;
-import com.example.demo.dto.UlogovaniKorisnikDTO;
-import com.example.demo.model.StudijskiProgram;
 import com.example.demo.model.Termin;
-import com.example.demo.model.TipZvanja;
-import com.example.demo.model.UlogovaniKorisnik;
 import com.example.demo.repository.TerminRepository;
 import com.example.demo.saveDto.TerminSaveDTO;
-import com.example.demo.saveDto.UlogovaniKorisnikSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,26 +51,12 @@ public class TerminService {
     }
 
     public TerminDTO save(TerminSaveDTO termin) {
-        System.out.println("==> Saving Termin:");
-        System.out.println("ID: " + termin.getId());
-        System.out.println("Datum: " + termin.getDatum());
-        System.out.println("VremePocetka: " + termin.getVremePocetka());
-        System.out.println("VremeKraja: " + termin.getVremeKraja());
-        System.out.println("RealizacijaPredmeta ID: " + termin.getRealizacijaPredmeta_id());
-
         Termin novi = termin.toEntity();
-
-        // Ako se desi da `termin.getId()` nije null, moraš ga postaviti na entitet:
-        if (termin.getId() != null) {
-            novi.setId(termin.getId());
-        }
 
         novi.setRealizacijaPredmeta(realizacijaPredmetaService.findEntityById(termin.getRealizacijaPredmeta_id())
                 .orElseThrow(() -> new EntityNotFoundException("Realizacija predmeta with id:" + termin.getRealizacijaPredmeta_id() + " not found")));
-
         return terminRepository.save(novi).toDto();
     }
-
 
     public void delete(TerminDTO termin) {
         termin.setObrisano(true);
@@ -106,11 +85,4 @@ public class TerminService {
             terminRepository.save(termin);
         }
     }
-    public List<TerminDTO> findByRealizacijaPredmeta(Long predmetId) {
-        return terminRepository.findByRealizacijaPredmeta_Id(predmetId)
-            .stream()
-            .map(Termin::toDto)
-            .collect(Collectors.toList());
-    }
-
 }

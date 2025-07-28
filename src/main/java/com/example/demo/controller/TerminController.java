@@ -2,8 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.StudijskiProgramDTO;
 import com.example.demo.dto.TerminDTO;
-import com.example.demo.model.Termin;
-import com.example.demo.repository.TerminRepository;
 import com.example.demo.saveDto.StudijskiProgramSaveDTO;
 import com.example.demo.saveDto.TerminSaveDTO;
 import com.example.demo.service.TerminService;
@@ -20,9 +18,6 @@ public class TerminController {
 
     @Autowired
     private TerminService terminService;
-    
-    @Autowired
-    private TerminRepository terminRepository;
 
     @GetMapping
     public Iterable<TerminDTO> getAll() {
@@ -51,23 +46,22 @@ public class TerminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TerminDTO> update(@PathVariable Long id, @RequestBody TerminDTO dto) {
-        Optional<Termin> optional = terminRepository.findById(id);
-        if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<TerminDTO> update(@PathVariable Long id, @RequestBody TerminSaveDTO updatedTermin) {
+        Optional<TerminDTO> optional = terminService.findById(id);
+        if (optional.isPresent()) {
+            TerminSaveDTO existing = optional.get().toSaveDto();
+
+            existing.setId(id);
+            existing.setDatum(updatedTermin.getDatum());
+            existing.setVremePocetka(updatedTermin.getVremePocetka());
+            existing.setVremeKraja(updatedTermin.getVremeKraja());
+            existing.setRealizacijaPredmeta_id(updatedTermin.getRealizacijaPredmeta_id());
+            existing.setObrisano(updatedTermin.getObrisano());
+
+            return ResponseEntity.ok(terminService.save(existing));
         }
-
-        Termin termin = optional.get();
-        
-        termin.setDatum(dto.getDatum());
-        termin.setVremePocetka(dto.getVremePocetka());
-        termin.setVremeKraja(dto.getVremeKraja());
-        termin.setIshod(dto.getIshod());
-        
-        terminRepository.save(termin);
-        return ResponseEntity.ok(termin.toDto());
+        return ResponseEntity.notFound().build();
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -80,10 +74,4 @@ public class TerminController {
         terminService.vrati(id);
         return ResponseEntity.noContent().build();
     }
-    
-    @GetMapping("/predmet/{id}")
-    public List<TerminDTO> getByRealizacijaPredmeta(@PathVariable Long id) {
-        return terminService.findByRealizacijaPredmeta(id);
-    }
-
 }

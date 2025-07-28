@@ -19,12 +19,10 @@ public class TokenUtils {
     }
 
     public Claims getClaims(String token) {
-    	System.out.println(token);
         Claims claims = null;
         try {
             claims = (Claims) Jwts.parser().setSigningKey(this.getKey()).build().parse(token).getPayload();
         } catch (Exception e) {
-        	System.out.println("OVO GLEDAM"+claims);
         }
         return claims;
     }

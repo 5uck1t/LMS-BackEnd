@@ -50,7 +50,6 @@ public class PohadjanjePredmetaDTO {
         e.setKonacnaOcena(konacnaOcena);
         e.setStudentNaGodini(studentNaGodini.toEntity());
         e.setRealizacijaPredmeta(realizacijaPredmeta.toEntity());
-        e.setEvaluacijeZnanja(null);
         e.setObrisano(obrisano);
         return e;
     }
@@ -63,6 +62,18 @@ public class PohadjanjePredmetaDTO {
         e.setRealizacijaPredmeta_id(realizacijaPredmeta.getId());
         e.setObrisano(obrisano);
         return e;
+    }
+    
+    public static PohadjanjePredmetaDTO toDto(PohadjanjePredmeta pohadjanjePredmeta) {
+        if (pohadjanjePredmeta == null) return null;
+
+        PohadjanjePredmetaDTO dto = new PohadjanjePredmetaDTO();
+        dto.setId(pohadjanjePredmeta.getId());
+        dto.setObrisano(pohadjanjePredmeta.getObrisano());
+
+        // Dodaj ostala polja po potrebi
+
+        return dto;
     }
 
 }

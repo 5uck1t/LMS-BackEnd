@@ -29,6 +29,7 @@ public class StudentNaGodiniService {
     @Autowired
     private GodinaStudijaService godinaStudijaService;
 
+
     public List<StudentNaGodiniDTO> findAll() {
         return ((List<StudentNaGodini>) studentNaGodiniRepository.findAll())
                 .stream()
@@ -42,7 +43,17 @@ public class StudentNaGodiniService {
                 .map(StudentNaGodini::toDto)
                 .collect(Collectors.toList());
     }
+    
+    public List<StudentNaGodiniDTO> search(StudentSearchDTO dto) {
+        String q = dto.getQuery();
+        if (q == null || q.isBlank()) return new ArrayList<>();
+        return studentNaGodiniRepository.searchStudentsByQuery(q.toLowerCase())
+            .stream()
+            .map(StudentNaGodini::toDto)
+            .collect(Collectors.toList());
+    }
 
+    
     public List<StudentNaGodiniDTO> findAllDeleted() {
         return ((List<StudentNaGodini>) studentNaGodiniRepository.findByObrisanoTrue())
                 .stream()
@@ -67,6 +78,14 @@ public class StudentNaGodiniService {
 
         novi.setGodinaStudija(godinaStudijaService.findEntityById(studentNaGodini.getGodinaStudija_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Godina studija with id:" + studentNaGodini.getGodinaStudija_id() + " not found")));
+
+        StudentNaGodini sn = studentNaGodiniRepository.save(novi);
+
+        String godinaPrefix = sn.getGodinaStudija().getGodina().split("/")[0]; // "2024"
+        String brojIndeksaStr = godinaPrefix + sn.getId();
+        Long brojIndeksa = Long.parseLong(brojIndeksaStr);
+
+        sn.setBrojIndeksa(brojIndeksa);
 
         return studentNaGodiniRepository.save(novi).toDto();
     }
@@ -98,15 +117,4 @@ public class StudentNaGodiniService {
             studentNaGodiniRepository.save(studentNaGodini);
         }
     }
-    
-    public List<StudentNaGodiniDTO> search(StudentSearchDTO dto) {
-        String q = dto.getQuery();
-        if (q == null || q.isBlank()) return new ArrayList<>();
-
-        return studentNaGodiniRepository.searchStudentsByQuery(q.toLowerCase())
-            .stream()
-            .map(StudentNaGodini::toDto)
-            .collect(Collectors.toList());
-    }
-
-}
+}	

@@ -9,54 +9,56 @@ public class EvaluacijaZnanjaDTO {
 
     private Long id;
     private String naziv;
-    private Float brojBodova;
-    private Date datum;
-    private PohadjanjePredmetaDTO pohadjanjepredmeta;
-    private RokDTO rok;
+    private RealizacijaPredmetaDTO realizacijaPredmeta;
     private Boolean obrisano = false;
 
     public EvaluacijaZnanjaDTO() {
     }
 
-    public EvaluacijaZnanjaDTO(Long id, String naziv, Float brojBodova, Date datum, PohadjanjePredmetaDTO pohadjanjepredmeta, RokDTO rok, Boolean obrisano) {
+    public EvaluacijaZnanjaDTO(Long id, String naziv, RealizacijaPredmetaDTO realizacijaPredmeta, Boolean obrisano) {
         this.id = id;
         this.naziv = naziv;
-        this.brojBodova = brojBodova;
-        this.datum = datum;
-        this.pohadjanjepredmeta = pohadjanjepredmeta;
-        this.rok = rok;
+        this.realizacijaPredmeta = realizacijaPredmeta;
         this.obrisano = obrisano;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getNaziv() { return naziv; }
-    public void setNaziv(String naziv) { this.naziv = naziv; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Float getBrojBodova() { return brojBodova; }
-    public void setBrojBodova(Float brojBodova) { this.brojBodova = brojBodova; }
+    public String getNaziv() {
+        return naziv;
+    }
 
-    public Date getDatum() { return datum; }
-    public void setDatum(Date datum) { this.datum = datum; }
+    public void setNaziv(String naziv) {
+        this.naziv = naziv;
+    }
 
-    public PohadjanjePredmetaDTO getPohadjanjepredmeta() { return pohadjanjepredmeta; }
-    public void setPohadjanjepredmeta(PohadjanjePredmetaDTO pohadjanjepredmeta) { this.pohadjanjepredmeta = pohadjanjepredmeta; }
+    public RealizacijaPredmetaDTO getRealizacijaPredmeta() {
+        return realizacijaPredmeta;
+    }
 
-    public RokDTO getRok() { return rok; }
-    public void setRok(RokDTO rok) { this.rok = rok; }
+    public void setRealizacijaPredmeta(RealizacijaPredmetaDTO realizacijaPredmeta) {
+        this.realizacijaPredmeta = realizacijaPredmeta;
+    }
 
-    public Boolean getObrisano() { return obrisano; }
-    public void setObrisano(Boolean obrisano) { this.obrisano = obrisano; }
+    public Boolean getObrisano() {
+        return obrisano;
+    }
+
+    public void setObrisano(Boolean obrisano) {
+        this.obrisano = obrisano;
+    }
 
     public EvaluacijaZnanja toEntity() {
         EvaluacijaZnanja e = new EvaluacijaZnanja();
         e.setId(id);
         e.setNaziv(naziv);
-        e.setBrojBodova(brojBodova);
-        e.setDatum(datum);
-        e.setPohadjanjepredmeta(pohadjanjepredmeta.toEntity());
-        e.setRok(rok.toEntity());
+        e.setRealizacijaPredmeta(realizacijaPredmeta.toEntity());
         e.setObrisano(obrisano);
         return e;
     }
@@ -65,10 +67,7 @@ public class EvaluacijaZnanjaDTO {
         EvaluacijaZnanjaSaveDTO e = new EvaluacijaZnanjaSaveDTO();
         e.setId(id);
         e.setNaziv(naziv);
-        e.setBrojBodova(brojBodova);
-        e.setDatum(datum);
-        e.setPohadjanjepredmeta_id(pohadjanjepredmeta.getId());
-        e.setRok_id(rok.getId());
+        e.setRealizacijaPredmeta_id(realizacijaPredmeta.getId());
         e.setObrisano(obrisano);
         return e;
     }

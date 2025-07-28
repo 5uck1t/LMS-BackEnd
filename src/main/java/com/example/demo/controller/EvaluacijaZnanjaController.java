@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EvaluacijaPrijavaDTO;
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
 import com.example.demo.saveDto.EvaluacijaZnanjaSaveDTO;
 import com.example.demo.service.EvaluacijaZnanjaService;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-@CrossOrigin(origins = "http://localhost:4200")
+
 @RestController
 @RequestMapping("/api/evaluacijaznanjas")
 public class EvaluacijaZnanjaController {
@@ -33,16 +32,6 @@ public class EvaluacijaZnanjaController {
     public List<EvaluacijaZnanjaDTO> getAllDeleted() {
         return evaluacijaZnanjaService.findAllDeleted();
     }
-    
-    @PostMapping("/prijava")
-    public ResponseEntity<EvaluacijaZnanjaDTO> prijaviIspit(@RequestBody EvaluacijaPrijavaDTO dto) {
-        try {
-            EvaluacijaZnanjaDTO created = evaluacijaZnanjaService.prijaviIspit(dto);
-            return ResponseEntity.ok(created);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<EvaluacijaZnanjaDTO> getById(@PathVariable Long id) {
@@ -63,10 +52,7 @@ public class EvaluacijaZnanjaController {
 
             existing.setId(id);
             existing.setNaziv(updatedEvaluacijaZnanja.getNaziv());
-            existing.setBrojBodova(updatedEvaluacijaZnanja.getBrojBodova());
-            existing.setDatum(updatedEvaluacijaZnanja.getDatum());
-            existing.setPohadjanjepredmeta_id(updatedEvaluacijaZnanja.getPohadjanjepredmeta_id());
-            existing.setRok_id(updatedEvaluacijaZnanja.getRok_id());
+            existing.setRealizacijaPredmeta_id(updatedEvaluacijaZnanja.getRealizacijaPredmeta_id());
             existing.setObrisano(updatedEvaluacijaZnanja.getObrisano());
 
             return ResponseEntity.ok(evaluacijaZnanjaService.save(existing));

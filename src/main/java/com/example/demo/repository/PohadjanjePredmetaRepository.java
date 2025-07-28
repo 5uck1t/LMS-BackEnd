@@ -16,6 +16,10 @@ public interface PohadjanjePredmetaRepository extends CrudRepository<PohadjanjeP
 
     List<PohadjanjePredmeta> findByObrisanoFalse();
     List<PohadjanjePredmeta> findByObrisanoTrue();
+    
+    List<PohadjanjePredmeta> findByStudentNaGodiniStudentIdAndObrisanoFalse(Long studentId);
+    
+    
 
     @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
             "WHERE pp.studentNaGodini.student.id = :studentId AND pp.obrisano = false")

@@ -1,9 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.EvaluacijaZnanja;
-import com.example.demo.model.PohadjanjePredmeta;
-import com.example.demo.model.Rok;
-
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,6 +11,4 @@ public interface EvaluacijaZnanjaRepository extends CrudRepository<EvaluacijaZna
 
     List<EvaluacijaZnanja> findByObrisanoFalse();
     List<EvaluacijaZnanja> findByObrisanoTrue();
-    
-    boolean existsByPohadjanjepredmetaAndRok(PohadjanjePredmeta pohadjanjePredmeta, Rok rok);
 }
