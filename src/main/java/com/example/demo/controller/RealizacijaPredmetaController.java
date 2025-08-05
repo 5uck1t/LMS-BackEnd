@@ -52,6 +52,11 @@ public class RealizacijaPredmetaController {
         return realizacijaPredmetaService.findPredmetiByNastavnikId(nastavnikId);
     }
 
+    @GetMapping("/godinastudija/{godinastudijaid}")
+    public List<RealizacijaPredmetaDTO> getRealizacijaPredmetaByGodinaStudijaId(@PathVariable Long godinastudijaid) {
+        return realizacijaPredmetaService.findRealizacijaPredmetaByGodinaStudijaId(godinastudijaid);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<RealizacijaPredmetaDTO> getById(@PathVariable Long id) {
         Optional<RealizacijaPredmetaDTO> result = realizacijaPredmetaService.findById(id);

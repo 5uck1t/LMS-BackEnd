@@ -7,6 +7,10 @@ import com.example.demo.dto.PrijavaPolaganjaDTO;
 import com.example.demo.saveDto.PolaganjeSaveDTO;
 import com.example.demo.saveDto.PrijavaPolaganjaSaveDTO;
 import com.example.demo.service.PolaganjeService;
+import com.example.demo.dto.PrijavaPolaganjaDTO;
+import com.example.demo.dto.PrijavaPolaganjaDTO;
+import com.example.demo.saveDto.PolaganjeSaveDTO;
+import com.example.demo.saveDto.PrijavaPolaganjaSaveDTO;
 import com.example.demo.service.PrijavaPolaganjaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +28,7 @@ public class PrijavaPolaganjaController {
     
     @Autowired
     private PolaganjeService polaganjeService;
+
 
     @GetMapping
     public Iterable<PrijavaPolaganjaDTO> getAll() {

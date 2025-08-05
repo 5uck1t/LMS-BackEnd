@@ -7,7 +7,11 @@ import java.util.List;
 public interface DodeljenoPravoPristupaRepository extends CrudRepository<DodeljenoPravoPristupa, Long> {
     List<DodeljenoPravoPristupa> findByObrisanoFalse();
     List<DodeljenoPravoPristupa> findByObrisanoTrue();
+
+
     List<DodeljenoPravoPristupa> findDodeljenoPravoPristupaByUlogovaniKorisnik_Username(String ulogovaniKorisnikUsername);
+
     List<DodeljenoPravoPristupa> findDodeljenoPravoPristupaByUlogovaniKorisnik_UsernameAndObrisanoFalse(String ulogovaniKorisnikUsername);
+
     List<DodeljenoPravoPristupa> findDodeljenoPravoPristupaByUlogovaniKorisnik_IdAndObrisanoFalse(Long ulogovaniKorisnikId);
 }

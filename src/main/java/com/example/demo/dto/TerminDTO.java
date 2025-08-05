@@ -25,6 +25,7 @@ public class TerminDTO {
     private String ishod;
 
     public TerminDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, RealizacijaPredmetaDTO realizacijaPredmeta, Boolean obrisano, String ishod) {
+
         this.id = id;
         this.datum = datum;
         this.vremePocetka = vremePocetka;
@@ -105,6 +106,7 @@ public class TerminDTO {
         e.setVremeKraja(vremeKraja);
         e.setRealizacijaPredmeta_id(realizacijaPredmeta.getId());
         e.setObrisano(obrisano);
+
         e.setIshod(ishod);
         return e;
     }

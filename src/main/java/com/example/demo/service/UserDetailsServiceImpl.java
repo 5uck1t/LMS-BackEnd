@@ -18,6 +18,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UlogovaniKorisnikService ulogovaniKorisnikService;
     @Autowired
     private DodeljenoPravoPristupaService dodeljenoPravoPristupaService;
+
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,6 +28,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             for (DodeljenoPravoPristupa dodeljenoPravo : dodeljenoPravoPristupaService.findByUlogovaniKorisnikUsername(k.getUsername())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
             }
+
+            for (DodeljenoPravoPristupa dodeljenoPravo : dodeljenoPravoPristupaService.findByUlogovaniKorisnikUsername(k.getUsername())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
+            }
+
             return new UserDetailsImpl(k, grantedAuthorities);
         }
         throw new UsernameNotFoundException("nepostojeci korisnik!");

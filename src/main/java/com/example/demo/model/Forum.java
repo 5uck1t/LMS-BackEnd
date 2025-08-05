@@ -100,6 +100,13 @@ public class Forum {
     }
 
     public ForumDTO toDto() {
-        return new ForumDTO(this.id, this.naziv, null, null, null, null, this.obrisano);
+        ForumDTO e = new ForumDTO();
+        e.setId(id);
+        e.setNaziv(naziv);
+        e.setObrisano(obrisano);
+        if(this.forum != null){
+            e.setForum(this.forum.toDto());
+        }
+        return e;
     }
 }

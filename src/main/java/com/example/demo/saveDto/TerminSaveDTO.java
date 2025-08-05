@@ -43,6 +43,7 @@ public class TerminSaveDTO {
 	public TerminSaveDTO() {
     }
 
+
     public Long getId() {
         return id;
     }

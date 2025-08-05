@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PolaganjeRepository extends CrudRepository<Polaganje, Long> {
@@ -31,7 +35,6 @@ public interface PolaganjeRepository extends CrudRepository<Polaganje, Long> {
     	    @Param("dozvoljeniRokovi") Set<String> dozvoljeniRokovi,
     	    @Param("trenutnoVreme") LocalDateTime trenutnoVreme
     	);
-
 
 
 }

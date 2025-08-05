@@ -47,6 +47,13 @@ public class ObavestenjeService {
                 .collect(Collectors.toList());
     }
 
+    public List<ObavestenjeDTO> findByForumNaziv(String forumNaziv) {
+        return ((List<Obavestenje>) obavestenjeRepository.findByForum_Naziv(forumNaziv))
+                .stream()
+                .map(Obavestenje::toDto)
+                .collect(Collectors.toList());
+    }
+
     public List<ObavestenjeDTO> findAllDeleted() {
         return ((List<Obavestenje>) obavestenjeRepository.findByObrisanoTrue())
                 .stream()

@@ -55,7 +55,7 @@ public class AdresaController {
         Optional<AdresaDTO> optional = adresaService.findById(id);
         if (optional.isPresent()) {
             AdresaSaveDTO existing = optional.get().toSaveDto();
-
+            System.out.println(updatedAdresa.getMesto_id());
             //TODO ovo treba dodati u ostale kontrolere
             existing.setBroj(updatedAdresa.getBroj());
             existing.setId(id);

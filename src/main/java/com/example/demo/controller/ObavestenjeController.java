@@ -38,6 +38,11 @@ public class ObavestenjeController {
         return obavestenjeService.findByForumId(id);
     }
 
+    @GetMapping("/forum/naziv/{forumNaziv}")
+    public List<ObavestenjeDTO> getByForumNaziv(@PathVariable String forumNaziv) {
+        return obavestenjeService.findByForumNaziv(forumNaziv);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ObavestenjeDTO> getById(@PathVariable Long id) {
         Optional<ObavestenjeDTO> result = obavestenjeService.findById(id);

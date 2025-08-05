@@ -13,6 +13,10 @@ import com.example.demo.repository.PohadjanjePredmetaRepository;
 import com.example.demo.repository.PolaganjeRepository;
 import com.example.demo.repository.PrijavaPolaganjaRepository;
 import com.example.demo.repository.StudentRepository;
+import com.example.demo.dto.PrijavaPolaganjaDTO;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.PrijavaPolaganja;
+import com.example.demo.repository.PrijavaPolaganjaRepository;
 import com.example.demo.saveDto.PrijavaPolaganjaSaveDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,7 +55,7 @@ public class PrijavaPolaganjaService {
     @Autowired
     private PolaganjeRepository polaganjeRepository;
 
-    
+
     public List<PrijavaPolaganjaDTO> findAll() {
         return ((List<PrijavaPolaganja>) prijavaPolaganjaRepository.findAll())
                 .stream()
@@ -92,7 +98,7 @@ public class PrijavaPolaganjaService {
     public Optional<PrijavaPolaganja> findEntityById(Long id) {
         return prijavaPolaganjaRepository.findById(id);
     }
-    
+  
     public List<PolaganjeDTO> findDostupnaPolaganja(Long studentId) {
         List<PohadjanjePredmeta> pohadjanja = pohadjanjePredmetaRepository.findByStudentNaGodiniStudentIdAndObrisanoFalse(studentId);
 
@@ -245,9 +251,4 @@ public class PrijavaPolaganjaService {
             })
             .collect(Collectors.toList());
     }
-
-
-
-    
-    
 }

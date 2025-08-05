@@ -10,6 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import com.example.demo.model.Polaganje;
+import com.example.demo.model.PrijavaPolaganja;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
@@ -33,6 +38,5 @@ public interface PrijavaPolaganjaRepository extends CrudRepository<PrijavaPolaga
     	    WHERE p.pohadjanjePredmeta.studentNaGodini.student.id = :studentId
     	""")
     	List<PrijavaPolaganja> findByStudentId(@Param("studentId") Long studentId);
-
 
 }

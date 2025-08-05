@@ -22,10 +22,10 @@ public class Osoba {
     @ManyToOne
     private Adresa adresa;
 
-    @OneToOne(mappedBy = "osoba")
+    @OneToOne(mappedBy = "osoba", optional = true)
     private Nastavnik nastavnik;
 
-    @OneToOne(mappedBy = "osoba")
+    @OneToOne(mappedBy = "osoba", optional = true)
     private Student student;
 
     @ColumnDefault("false")

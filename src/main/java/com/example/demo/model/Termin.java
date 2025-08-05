@@ -34,6 +34,7 @@ public class Termin {
         this.obrisano = obrisano;
         this.realizacijaPredmeta = realizacijaPredmeta;
         this.ishod = ishod;
+
     }
 
     public Termin() {

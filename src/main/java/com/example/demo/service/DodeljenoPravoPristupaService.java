@@ -26,15 +26,19 @@ public class DodeljenoPravoPristupaService {
                 .map(DodeljenoPravoPristupa::toDto)
                 .collect(Collectors.toList());
     }
+
     public List<DodeljenoPravoPristupa> findByUlogovaniKorisnikUsername(String username) {
         return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_UsernameAndObrisanoFalse(username));
     }
+    
+    
     public List<DodeljenoPravoPristupaDTO> findByUlogovaniKorisnikId(Long id) {
         return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findDodeljenoPravoPristupaByUlogovaniKorisnik_IdAndObrisanoFalse(id))
                 .stream()
                 .map(DodeljenoPravoPristupa::toDto)
                 .collect(Collectors.toList());
     }
+    
     public List<DodeljenoPravoPristupaDTO> findAllActive() {
         return ((List<DodeljenoPravoPristupa>) dodeljenoPravoPristupaRepository.findByObrisanoFalse())
                 .stream()
