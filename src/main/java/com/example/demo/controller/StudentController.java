@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.IstorijaStudiranjaDTO;
 import com.example.demo.dto.StudentDTO;
 import com.example.demo.saveDto.StudentSaveDTO;
+import com.example.demo.service.PohadjanjePredmetaService;
 import com.example.demo.service.StudentService;
 import com.example.demo.model.Osoba;
 import com.example.demo.model.Student;
@@ -23,6 +25,9 @@ public class StudentController {
     private StudentService studentService;
     
     @Autowired
+    private PohadjanjePredmetaService pohadjanjePredmetaService;
+    
+    @Autowired
     private UlogovaniKorisnikRepository ulogovaniKorisnikRepository;
 
     @GetMapping
@@ -39,6 +44,14 @@ public class StudentController {
     public List<StudentDTO> getAllDeleted() {
         return studentService.findAllDeleted();
     }
+    
+    
+    @GetMapping("/{id}/istorija")
+    public ResponseEntity<IstorijaStudiranjaDTO> getIstorija(@PathVariable Long id) {
+    	return ResponseEntity.ok(pohadjanjePredmetaService.getIstorijaStudenta(id));
+
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id) {

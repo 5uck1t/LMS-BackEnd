@@ -1,11 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.IstorijaPredmetaDTO;
+import com.example.demo.dto.IstorijaStudiranjaDTO;
 import com.example.demo.dto.PohadjanjePredmetaDTO;
 import com.example.demo.dto.PredmetDTO;
 import com.example.demo.dto.StudentNaGodiniDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.*;
 import com.example.demo.repository.PohadjanjePredmetaRepository;
+import com.example.demo.repository.StudentRepository;
 import com.example.demo.saveDto.PohadjanjePredmetaSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -26,6 +32,9 @@ public class PohadjanjePredmetaService {
 
     @Autowired
     private StudentNaGodiniService studentNaGodiniService;
+    
+    @Autowired
+    private StudentRepository studentRepository;
 
     @Autowired
     private RealizacijaPredmetaService realizacijaPredmetaService;
@@ -132,4 +141,52 @@ public class PohadjanjePredmetaService {
                 .map(StudentNaGodini::toDto)
                 .collect(Collectors.toList());
     }
+    
+    public IstorijaStudiranjaDTO getIstorijaStudenta(Long studentId) {
+        Optional<Student> studentOpt = studentRepository.findById(studentId);
+        if (studentOpt.isEmpty()) {
+            throw new RuntimeException("Student ne postoji");
+        }
+
+        Student student = studentOpt.get();
+
+        List<PohadjanjePredmeta> pohadjanja = pohadjanjePredmetaRepository
+            .findByStudentNaGodini_Student_IdAndObrisanoFalse(studentId);
+
+        List<IstorijaPredmetaDTO> predmeti = new ArrayList<>();
+
+        for (PohadjanjePredmeta pohadjanje : pohadjanja) {
+            String nazivPredmeta = pohadjanje.getRealizacijaPredmeta().getPredmet().getNaziv();
+            int espb = pohadjanje.getRealizacijaPredmeta().getPredmet().getEspb();
+
+            Map<Object, Optional<PrijavaPolaganja>> najnovijePrijaveMap = pohadjanje.getPrijave()
+            	    .stream()
+            	    .filter(p -> !p.getObrisano() && p.getBrojBodova() != null)
+            	    .collect(Collectors.groupingBy(
+            	        p -> p.getPolaganje().getEvaluacijaZnanja().getId(),
+            	        Collectors.maxBy(Comparator.comparing(PrijavaPolaganja::getDatum))
+            	    ));
+
+            	List<PrijavaPolaganja> prijave = najnovijePrijaveMap.values().stream()
+            	    .filter(Optional::isPresent)
+            	    .map(Optional::get)
+            	    .toList();
+
+
+            int brojPolaganja = prijave.size();
+            double ukupnoPoena = prijave.stream().mapToDouble(PrijavaPolaganja::getBrojBodova).sum(); // koristi tvoje polje
+
+            Integer ocena = pohadjanje.getKonacnaOcena();
+
+            predmeti.add(new IstorijaPredmetaDTO(nazivPredmeta, brojPolaganja, ukupnoPoena, espb, ocena));
+        }
+
+        return new IstorijaStudiranjaDTO(
+            student.getId(),
+            student.getOsoba().getIme(),
+            student.getOsoba().getPrezime(),
+            predmeti
+        );
+    }
+
 }

@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -216,6 +217,37 @@ public class PrijavaPolaganjaService {
 
         System.out.println("=== KRAJ prijaviIspit: Uspešna prijava ===");
     }
+    
+    
+    public List<PrijavaPolaganjaDTO> findByStudentId(Long studentId) {
+        return prijavaPolaganjaRepository.findByPohadjanjePredmeta_StudentNaGodini_Student_Id(studentId)
+                .stream()
+                .map(PrijavaPolaganja::toDto)
+                .collect(Collectors.toList());
+    }
+    
+    public List<PrijavaPolaganjaDTO> findAllForStudentWithin15Days(Long studentId) {
+        List<PrijavaPolaganjaDTO> svePrijave = findByStudentId(studentId);
+        LocalDateTime granica = LocalDateTime.now().minusDays(15);
+
+        return svePrijave.stream()
+            .filter(prijava -> {
+                Date datumPolaganjaRaw = prijava.getPolaganje().getDatum();
+                if (datumPolaganjaRaw == null) {
+                    return false;
+                }
+
+                LocalDateTime datumPolaganja = datumPolaganjaRaw.toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+
+                return datumPolaganja.isAfter(granica);
+            })
+            .collect(Collectors.toList());
+    }
+
+
+
     
     
 }

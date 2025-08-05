@@ -40,6 +40,7 @@ public class PrijavaPolaganjaController {
         return prijavaPolaganjaService.findAllDeleted();
     }
     
+    
     @PutMapping("/ocena/{id}")
     public ResponseEntity<PrijavaPolaganjaDTO> update(@PathVariable Long id,
                                                       @RequestBody PrijavaPolaganjaSaveDTO updated) {
@@ -66,6 +67,14 @@ public class PrijavaPolaganjaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<List<PrijavaPolaganjaDTO>> findAllForStudentWithTimeLimit(@PathVariable Long studentId) {
+        List<PrijavaPolaganjaDTO> prijave = prijavaPolaganjaService.findAllForStudentWithin15Days(studentId);
+        return ResponseEntity.ok(prijave);
+    }
+
+
     
     @GetMapping("/dostupna/{studentId}")
     public ResponseEntity<List<PolaganjeDTO>> getDostupnaPolaganja(@PathVariable Long studentId) {

@@ -60,6 +60,14 @@ public class PohadjanjePredmeta {
     public void setRealizacijaPredmeta(RealizacijaPredmeta realizacijaPredmeta) {
         this.realizacijaPredmeta = realizacijaPredmeta;
     }
+    
+    public Set<PrijavaPolaganja> getPrijave() {
+        return prijave;
+    }
+
+    public void setPrijave(Set<PrijavaPolaganja> prijave) {
+        this.prijave = prijave;
+    }
 
     public StudentNaGodini getStudentNaGodini() {
         return studentNaGodini;
