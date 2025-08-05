@@ -55,7 +55,6 @@ public class PrijavaPolaganjaController {
 
             existing.setId(id); // već setovano ali radi jasnoće
             existing.setBrojBodova(updated.getBrojBodova());
-            existing.setObrisano(updated.getObrisano());
 
             return ResponseEntity.ok(prijavaPolaganjaService.save(existing));
         }
