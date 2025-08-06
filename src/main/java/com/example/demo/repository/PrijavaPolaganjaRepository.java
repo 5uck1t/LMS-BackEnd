@@ -38,5 +38,8 @@ public interface PrijavaPolaganjaRepository extends CrudRepository<PrijavaPolaga
     	    WHERE p.pohadjanjePredmeta.studentNaGodini.student.id = :studentId
     	""")
     	List<PrijavaPolaganja> findByStudentId(@Param("studentId") Long studentId);
+    
+    List<PrijavaPolaganja> findByPohadjanjePredmeta_StudentNaGodini_Id(Long studentId);
+
 
 }

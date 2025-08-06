@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.StudentNaGodiniDTO;
+import com.example.demo.dto.StudentPregledDTO;
 import com.example.demo.dto.StudentSearchDTO;
 import com.example.demo.saveDto.StudentNaGodiniSaveDTO;
 import com.example.demo.service.StudentNaGodiniService;
@@ -39,6 +40,13 @@ public class StudentNaGodiniController {
         Optional<StudentNaGodiniDTO> result = studentNaGodiniService.findById(id);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    @GetMapping("/{id}/pregled")
+    public ResponseEntity<StudentPregledDTO> pregledStudenta(@PathVariable Long id) {
+        StudentPregledDTO dto = studentNaGodiniService.getStudentPregled(id);
+        return ResponseEntity.ok(dto);
+    }
+
     
     @PostMapping("/search")
     public List<StudentNaGodiniDTO> search(@RequestBody StudentSearchDTO dto) {

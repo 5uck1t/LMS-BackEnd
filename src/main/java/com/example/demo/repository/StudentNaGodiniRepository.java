@@ -38,6 +38,9 @@ public interface StudentNaGodiniRepository extends CrudRepository<StudentNaGodin
     	       "CAST(s.brojIndeksa AS string) LIKE %:query% OR " +
     	       "CAST(YEAR(s.datumUpisa) AS string) LIKE %:query%")
     	List<StudentNaGodini> searchStudentsByQuery(@Param("query") String query);
+    
+    List<StudentNaGodini> findByStudentId(Long studentId);
+
 
 
 }

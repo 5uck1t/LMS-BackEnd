@@ -1,11 +1,19 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.IspitDTO;
 import com.example.demo.dto.StudentNaGodiniDTO;
+import com.example.demo.dto.StudentPregledDTO;
 import com.example.demo.dto.StudentSearchDTO;
+import com.example.demo.dto.UpisDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
+import com.example.demo.model.Osoba;
+import com.example.demo.model.Predmet;
+import com.example.demo.model.PrijavaPolaganja;
 import com.example.demo.model.Silabus;
+import com.example.demo.model.Student;
 import com.example.demo.model.StudentNaGodini;
+import com.example.demo.repository.PrijavaPolaganjaRepository;
 import com.example.demo.repository.StudentNaGodiniRepository;
 import com.example.demo.saveDto.StudentNaGodiniSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -29,6 +37,9 @@ public class StudentNaGodiniService {
 
     @Autowired
     private GodinaStudijaService godinaStudijaService;
+    
+    @Autowired
+    private PrijavaPolaganjaRepository prijavaPolaganjaRepository;
 
 
     public List<StudentNaGodiniDTO> findAll() {
@@ -119,4 +130,69 @@ public class StudentNaGodiniService {
             studentNaGodiniRepository.save(studentNaGodini);
         }
     }
+    
+    public StudentPregledDTO getStudentPregled(Long id) {
+        StudentNaGodini sng = studentNaGodiniRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("StudentNaGodini not found"));
+
+        Student student = sng.getStudent();
+        Osoba osoba = student.getOsoba();
+
+        // 1. Osnovni podaci
+        String ime = osoba.getIme();
+        String prezime = osoba.getPrezime();
+        String jmbg = osoba.getJmbg();
+        Long brojIndeksa = sng.getBrojIndeksa();
+        String studijskiProgram = sng.getGodinaStudija().getStudijskiProgram().getNaziv();
+
+        // 2. Prijave polaganja
+        List<PrijavaPolaganja> prijave = prijavaPolaganjaRepository.findByPohadjanjePredmeta_StudentNaGodini_Id(sng.getId());
+
+        List<IspitDTO> polozeni = new ArrayList<>();
+        List<IspitDTO> neuspesni = new ArrayList<>();
+        double zbirOcena = 0;
+        int brojPolozenih = 0;
+        int ukupnoEspb = 0;
+
+        for (PrijavaPolaganja pp : prijave) {
+            if (pp.getBrojBodova() == null) continue;
+
+            boolean polozio = pp.getBrojBodova() >= 51;
+            Predmet predmet = pp.getPohadjanjePredmeta().getRealizacijaPredmeta().getPredmet();
+            int espb = predmet.getEspb();
+
+            IspitDTO ispit = new IspitDTO(
+                predmet.getNaziv(),
+                pp.getBrojBodova(),
+                pp.getPolaganje().getRok().getNaziv(),
+                pp.getDatum()
+            );
+
+            if (polozio) {
+                polozeni.add(ispit);
+                brojPolozenih++;
+                zbirOcena += pp.getPohadjanjePredmeta().getKonacnaOcena(); // ako imaš ocenu u entitetu
+                ukupnoEspb += espb;
+            } else {
+                neuspesni.add(ispit);
+            }
+        }
+
+        double prosecnaOcena = brojPolozenih == 0 ? 0 : zbirOcena / brojPolozenih;
+
+        // 3. Upisi
+        List<StudentNaGodini> sviUpisi = studentNaGodiniRepository.findByStudentId(student.getId());
+        List<UpisDTO> upisi = sviUpisi.stream()
+            .map(upis -> new UpisDTO(
+                upis.getGodinaStudija().getGodina(),
+                upis.getDatumUpisa()
+            )).collect(Collectors.toList());
+
+        return new StudentPregledDTO(
+            ime, prezime, jmbg, brojIndeksa, studijskiProgram,
+            prosecnaOcena, ukupnoEspb,
+            upisi, polozeni, neuspesni
+        );
+    }
+
 }	
