@@ -7,24 +7,48 @@ import java.util.HashMap;
 import com.example.demo.model.UserDetailsImpl;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
 @Component
 public class TokenUtils {
 
+    private final Key key;
+
+    public TokenUtils() {
+        this.key = generateRandomKey();
+    }
+
+    private Key generateRandomKey() {
+        try {
+            KeyGenerator keyGen = KeyGenerator.getInstance("HmacSha256");
+            keyGen.init(256); // 256-bit key for HS256
+            SecretKey secretKey = keyGen.generateKey();
+            return secretKey;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to generate key", e);
+        }
+    }
+
     public Key getKey() {
-        return Keys.hmacShaKeyFor("Adlkhjwdawd awdklwKHJ dklwdL=eOQWP2231".getBytes());
+        return key;
     }
 
     public Claims getClaims(String token) {
         Claims claims = null;
         try {
-            claims = (Claims) Jwts.parser().setSigningKey(this.getKey()).build().parse(token).getPayload();
+            claims = Jwts.parser()
+                    .verifyWith((SecretKey) this.getKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
         } catch (Exception e) {
-
+            throw e;
         }
         return claims;
     }
@@ -39,7 +63,6 @@ public class TokenUtils {
 
     public boolean validateToken(String token) {
         boolean valid = true;
-
         if(this.getClaims(token) == null) {
             valid = false;
         }
@@ -55,12 +78,11 @@ public class TokenUtils {
         payload.put("sub", userDetails.getUsername());
         payload.put("authorities", userDetails.getAuthorities());
 
-        if (userDetails instanceof UserDetailsImpl) {
-            UserDetailsImpl customUser = (UserDetailsImpl) userDetails;
+        if (userDetails instanceof UserDetailsImpl customUser) {
             payload.put("userId", customUser.getUlogovaniKorisnikId());
         }
 
-        return Jwts.builder().claims(payload).expiration(new Date(System.currentTimeMillis() + 100000)).signWith(this.getKey()).compact();
+        return Jwts.builder().claims(payload).expiration(new Date(System.currentTimeMillis() + 86_400_000)).signWith(this.getKey()).compact();
     }
 }
 

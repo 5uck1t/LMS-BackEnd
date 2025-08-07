@@ -51,6 +51,14 @@ public class DatumPredmetaService {
                 .collect(Collectors.toList());
     }
 
+    public List<DatumPredmetaDTO> findByRokId(Long rokId) {
+
+        return ((List<DatumPredmeta>) datumPredmetaRepository.findByRokId(rokId))
+                .stream()
+                .map(DatumPredmeta::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<DatumPredmetaDTO> findById(Long id) {
         return datumPredmetaRepository.findById(id).map(DatumPredmeta::toDto);
     }

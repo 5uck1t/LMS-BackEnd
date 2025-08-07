@@ -48,6 +48,12 @@ public class KatedraService {
                 .map(Katedra::toDto)
                 .collect(Collectors.toList());    }
 
+    public List<KatedraDTO> findByFakultetId(Long id) {
+        return ((List<Katedra>) katedraRepository.findByFakultet_Id(id))
+                .stream()
+                .map(Katedra::toDto)
+                .collect(Collectors.toList());    }
+
     public Optional<KatedraDTO> findById(Long id) {
         return katedraRepository.findById(id).map(Katedra::toDto);
     }

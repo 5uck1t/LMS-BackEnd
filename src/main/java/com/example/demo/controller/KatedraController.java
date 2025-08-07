@@ -33,6 +33,11 @@ public class KatedraController {
         return katedraService.findAllDeleted();
     }
 
+    @GetMapping("/fakultet/{id}")
+    public List<KatedraDTO> getByFakultetId(@PathVariable Long id) {
+        return katedraService.findByFakultetId(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<KatedraDTO> getById(@PathVariable Long id) {
         Optional<KatedraDTO> result = katedraService.findById(id);

@@ -18,6 +18,9 @@ public class Fakultet {
     @ManyToOne
     private Univerzitet univerzitet;
 
+    @ManyToOne
+    private Adresa adresa;
+
     @OneToOne
     private Nastavnik dekan;
 
@@ -27,13 +30,14 @@ public class Fakultet {
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public Fakultet(Nastavnik dekan, Long id, Set<Katedra> katedre, String naziv, Boolean obrisano, Univerzitet univerzitet) {
+    public Fakultet(Nastavnik dekan, Long id, Set<Katedra> katedre, String naziv, Boolean obrisano, Univerzitet univerzitet, Adresa adresa) {
         this.dekan = dekan;
         this.id = id;
         this.katedre = katedre;
         this.naziv = naziv;
         this.obrisano = obrisano;
         this.univerzitet = univerzitet;
+        this.adresa = adresa;
     }
 
     public Fakultet() {
@@ -87,7 +91,15 @@ public class Fakultet {
         this.obrisano = obrisano;
     }
 
+    public Adresa getAdresa() {
+        return adresa;
+    }
+
+    public void setAdresa(Adresa adresa) {
+        this.adresa = adresa;
+    }
+
     public FakultetDTO toDto(){
-        return new FakultetDTO(this.id, this.naziv, this.univerzitet.toDto(), this.dekan.toDto(), null, this.obrisano);
+        return new FakultetDTO(this.id, this.naziv, this.univerzitet.toDto(), this.dekan.toDto(), null, this.obrisano,this.adresa.toDto());
     }
 }

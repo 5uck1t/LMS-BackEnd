@@ -11,4 +11,6 @@ public interface KatedraRepository extends CrudRepository<Katedra, Long> {
 
     List<Katedra> findByObrisanoFalse();
     List<Katedra> findByObrisanoTrue();
+
+    List<Katedra> findByFakultet_Id(Long fakultetId);
 }

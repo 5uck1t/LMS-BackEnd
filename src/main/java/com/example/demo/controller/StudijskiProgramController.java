@@ -33,6 +33,11 @@ public class StudijskiProgramController {
         return studijskiProgramService.findAllDeleted();
     }
 
+    @GetMapping("/katedra/{id}")
+    public List<StudijskiProgramDTO> getByKatedraId(@PathVariable Long id) {
+        return studijskiProgramService.findByKatedraId(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<StudijskiProgramDTO> getById(@PathVariable Long id) {
         Optional<StudijskiProgramDTO> result = studijskiProgramService.findById(id);

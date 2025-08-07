@@ -1,9 +1,6 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -15,10 +12,11 @@ public class Sifarnik {
 
     private String naziv;
 
+    @Column(length = 1000)
     private String tekst;
 
     @ColumnDefault("false")
-    private Boolean obrisano;
+    private Boolean obrisano = false;
 
     public Sifarnik(long id, String naziv, String tekst, Boolean obrisano) {
         this.id = id;

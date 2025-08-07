@@ -66,6 +66,13 @@ public class RealizacijaPredmetaService {
                 .collect(Collectors.toList());
     }
 
+    public List<RealizacijaPredmetaDTO> findRealizacijaPredmetaByStudijskiProgramId(Long id) {
+        return ((List<RealizacijaPredmeta>) realizacijaPredmetaRepository.findRealizacijaPredmetaByStudijskiProgramId(id))
+                .stream()
+                .map(RealizacijaPredmeta::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<RealizacijaPredmetaDTO> findById(Long id) {
         return realizacijaPredmetaRepository.findById(id).map(RealizacijaPredmeta::toDto);
     }
