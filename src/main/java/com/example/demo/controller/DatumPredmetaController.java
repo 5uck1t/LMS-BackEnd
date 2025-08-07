@@ -35,6 +35,11 @@ public class DatumPredmetaController {
         return datumPredmetaService.findAllDeleted();
     }
 
+    @GetMapping("/rok/{id}")
+    public List<DatumPredmetaDTO> getByRokId(@PathVariable Long id) {
+        return datumPredmetaService.findByRokId(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<DatumPredmetaDTO> getById(@PathVariable Long id) {
         Optional<DatumPredmetaDTO> result = datumPredmetaService.findById(id);
@@ -47,11 +52,13 @@ public class DatumPredmetaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DatumPredmetaDTO> update(@PathVariable Long id, @RequestBody DatumPredmetaDTO updatedDatumPredmeta) {
+    public ResponseEntity<DatumPredmetaDTO> update(@PathVariable Long id, @RequestBody DatumPredmetaSaveDTO updatedDatumPredmeta) {
         Optional<DatumPredmetaDTO> optional = datumPredmetaService.findById(id);
         if (optional.isPresent()) {
+            System.out.println(optional.get().getRealizacijaPredmeta().getId());
             DatumPredmetaSaveDTO existing = optional.get().toSaveDto();
-            // TODO: Manually copy fields from updatedDrzava to existing
+            existing.setDatum(updatedDatumPredmeta.getDatum());
+            existing.setRealizacijaPredmeta_id(updatedDatumPredmeta.getRealizacijaPredmeta_id());
             return ResponseEntity.ok(datumPredmetaService.save(existing));
         }
         return ResponseEntity.notFound().build();

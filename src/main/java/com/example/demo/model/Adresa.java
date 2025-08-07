@@ -24,6 +24,9 @@ public class Adresa {
     private Set<Univerzitet> univerziteti;
 
     @OneToMany(mappedBy = "adresa")
+    private Set<Fakultet> fakulteti;
+
+    @OneToMany(mappedBy = "adresa")
     private Set<Osoba> osobe;
 
     @ColumnDefault("false")

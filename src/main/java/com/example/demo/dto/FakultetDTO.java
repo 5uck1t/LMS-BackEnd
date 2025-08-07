@@ -11,19 +11,21 @@ public class FakultetDTO {
     private String naziv;
     private UniverzitetDTO univerzitet;
     private NastavnikDTO dekan;
+    private AdresaDTO adresa;
     private Set<KatedraDTO> katedre;
     private Boolean obrisano = false;
 
     public FakultetDTO() {
     }
 
-    public FakultetDTO(Long id, String naziv, UniverzitetDTO univerzitet, NastavnikDTO dekan, Set<KatedraDTO> katedre, Boolean obrisano) {
+    public FakultetDTO(Long id, String naziv, UniverzitetDTO univerzitet, NastavnikDTO dekan, Set<KatedraDTO> katedre, Boolean obrisano, AdresaDTO adresa) {
         this.id = id;
         this.naziv = naziv;
         this.univerzitet = univerzitet;
         this.dekan = dekan;
         this.katedre = katedre;
         this.obrisano = obrisano;
+        this.adresa = adresa;
     }
 
     public Long getId() { return id; }
@@ -44,6 +46,14 @@ public class FakultetDTO {
     public Boolean getObrisano() { return obrisano; }
     public void setObrisano(Boolean obrisano) { this.obrisano = obrisano; }
 
+    public AdresaDTO getAdresa() {
+        return adresa;
+    }
+
+    public void setAdresa(AdresaDTO adresa) {
+        this.adresa = adresa;
+    }
+
     public Fakultet toEntity() {
         Fakultet e = new Fakultet();
         e.setId(id);
@@ -52,6 +62,7 @@ public class FakultetDTO {
         e.setDekan(dekan.toEntity());
         e.setKatedre(null);
         e.setObrisano(obrisano);
+        e.setAdresa(adresa.toEntity());
         return e;
     }
 
@@ -60,6 +71,7 @@ public class FakultetDTO {
         e.setId(id);
         e.setNaziv(naziv);
         e.setUniverzitet_id(univerzitet.getId());
+        e.setAdresa_id(adresa.getId());
         e.setDekan_id(dekan.getId());
         e.setObrisano(obrisano);
         return e;

@@ -3,6 +3,8 @@ package com.example.demo.security;
 import java.util.HashMap;
 import java.util.Map;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -38,6 +42,27 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return (HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.AuthenticationException authException) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            String message = "{\"message\": \"Unauthorized: " + authException.getMessage() + "\"}";
+            response.getWriter().write(message);
+        };
+    }
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler() {
+        return (HttpServletRequest request, HttpServletResponse response, org.springframework.security.access.AccessDeniedException accessDeniedException) -> {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setContentType("application/json");
+            String message = "{\"message\": \"Unauthorized: " + accessDeniedException.getMessage() + "\"}";
+            System.out.println(message);
+            response.getWriter().write(message);
+        };
+    }
+
+    @Bean
     public AuthenticationFilterBean getAuthenticationFilterBean(AuthenticationConfiguration conf) throws Exception {
         AuthenticationFilterBean authFilter = new AuthenticationFilterBean();
         authFilter.setAuthenticationManager(conf.getAuthenticationManager());
@@ -53,6 +78,10 @@ public class SecurityConfiguration {
                 .sessionManagement(m -> {
                     m.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler())
+                )
                 .addFilterBefore(this.getAuthenticationFilterBean(conf), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

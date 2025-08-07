@@ -45,6 +45,13 @@ public class StudijskiProgramService {
                 .collect(Collectors.toList());
     }
 
+    public List<StudijskiProgramDTO> findByKatedraId(Long id) {
+        return ((List<StudijskiProgram>) studijskiProgramRepository.findByKatedra_IdAndObrisanoFalse(id))
+                .stream()
+                .map(StudijskiProgram::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<StudijskiProgramDTO> findById(Long id) {
         return studijskiProgramRepository.findById(id).map(StudijskiProgram::toDto);
     }
