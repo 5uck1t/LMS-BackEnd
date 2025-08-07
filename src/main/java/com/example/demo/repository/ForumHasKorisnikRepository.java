@@ -15,6 +15,6 @@ public interface ForumHasKorisnikRepository extends CrudRepository<ForumHasKoris
     List<ForumHasKorisnik> findByObrisanoFalse();
     List<ForumHasKorisnik> findByObrisanoTrue();
 
-    @Query("SELECT fhk.forum FROM ForumHasKorisnik fhk WHERE fhk.ulogovaniKorisnik.id = :userId AND fhk.obrisano = false AND fhk.forum.obrisano = false")
+    @Query("SELECT fhk.forum FROM ForumHasKorisnik fhk WHERE fhk.ulogovaniKorisnik.id = :userId")
     List<Forum> findActiveForumsByUserId(@Param("userId") Long userId);
 }

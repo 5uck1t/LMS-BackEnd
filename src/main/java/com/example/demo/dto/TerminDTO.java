@@ -21,14 +21,18 @@ public class TerminDTO {
     private RealizacijaPredmetaDTO realizacijaPredmeta;
 
     private Boolean obrisano;
+    
+    private String ishod;
 
-    public TerminDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, RealizacijaPredmetaDTO realizacijaPredmeta, Boolean obrisano) {
+    public TerminDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, RealizacijaPredmetaDTO realizacijaPredmeta, Boolean obrisano, String ishod) {
+
         this.id = id;
         this.datum = datum;
         this.vremePocetka = vremePocetka;
         this.vremeKraja = vremeKraja;
         this.realizacijaPredmeta = realizacijaPredmeta;
         this.obrisano = obrisano;
+        this.ishod = ishod;
     }
 
     public TerminDTO() {
@@ -90,6 +94,7 @@ public class TerminDTO {
         e.setVremeKraja(vremeKraja);
         e.setRealizacijaPredmeta(realizacijaPredmeta.toEntity());
         e.setObrisano(obrisano);
+        e.setIshod(ishod);
         return e;
     }
 
@@ -101,6 +106,16 @@ public class TerminDTO {
         e.setVremeKraja(vremeKraja);
         e.setRealizacijaPredmeta_id(realizacijaPredmeta.getId());
         e.setObrisano(obrisano);
+
+        e.setIshod(ishod);
         return e;
     }
+
+	public String getIshod() {
+		return ishod;
+	}
+
+	public void setIshod(String ishod) {
+		this.ishod = ishod;
+	}
 }

@@ -3,6 +3,7 @@ package com.example.demo.model;
 import com.example.demo.dto.StudijskiProgramDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Set;
 

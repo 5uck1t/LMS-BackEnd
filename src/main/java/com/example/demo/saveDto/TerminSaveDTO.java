@@ -18,19 +18,31 @@ public class TerminSaveDTO {
 
     private Long realizacijaPredmeta_id;
 
-    private Boolean obrisano = false;
+    private Boolean obrisano;
+    
+    private String ishod;
 
-    public TerminSaveDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, Long realizacijaPredmeta_id, Boolean obrisano) {
+    public TerminSaveDTO(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, Long realizacijaPredmeta_id, Boolean obrisano, String ishod) {
         this.id = id;
         this.datum = datum;
         this.vremePocetka = vremePocetka;
         this.vremeKraja = vremeKraja;
         this.realizacijaPredmeta_id = realizacijaPredmeta_id;
         this.obrisano = obrisano;
+        this.ishod = ishod;
     }
 
-    public TerminSaveDTO() {
+    public String getIshod() {
+		return ishod;
+	}
+
+	public void setIshod(String ishod) {
+		this.ishod = ishod;
+	}
+
+	public TerminSaveDTO() {
     }
+
 
     public Long getId() {
         return id;
@@ -87,6 +99,7 @@ public class TerminSaveDTO {
         e.setVremePocetka(vremePocetka);
         e.setVremeKraja(vremeKraja);
         e.setObrisano(obrisano);
+        e.setIshod(ishod);
         return e;
     }
 }

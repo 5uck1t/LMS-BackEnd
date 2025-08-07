@@ -20,17 +20,21 @@ public class Termin {
     private LocalTime vremeKraja;
 
     private Boolean obrisano;
+    
+    private String ishod;
 
     @ManyToOne
     private RealizacijaPredmeta realizacijaPredmeta;
 
-    public Termin(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, Boolean obrisano, RealizacijaPredmeta realizacijaPredmeta) {
+    public Termin(Long id, LocalDate datum, LocalTime vremePocetka, LocalTime vremeKraja, Boolean obrisano, RealizacijaPredmeta realizacijaPredmeta, String ishod) {
         this.id = id;
         this.datum = datum;
         this.vremePocetka = vremePocetka;
         this.vremeKraja = vremeKraja;
         this.obrisano = obrisano;
         this.realizacijaPredmeta = realizacijaPredmeta;
+        this.ishod = ishod;
+
     }
 
     public Termin() {
@@ -40,7 +44,15 @@ public class Termin {
         return id;
     }
 
-    public void setId(Long id) {
+    public String getIshod() {
+		return ishod;
+	}
+
+	public void setIshod(String ishod) {
+		this.ishod = ishod;
+	}
+
+	public void setId(Long id) {
         this.id = id;
     }
 
@@ -85,6 +97,6 @@ public class Termin {
     }
 
     public TerminDTO toDto(){
-        return new TerminDTO(this.id,this.datum,this.vremePocetka,this.vremeKraja,this.realizacijaPredmeta.toDto(),this.obrisano);
+        return new TerminDTO(this.id,this.datum,this.vremePocetka,this.vremeKraja,this.realizacijaPredmeta.toDto(),this.obrisano, this.ishod);
     }
 }

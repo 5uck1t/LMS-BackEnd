@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import com.example.demo.model.Nastavnik;
 import com.example.demo.model.Predmet;
 import com.example.demo.model.RealizacijaPredmeta;
 import com.example.demo.model.Student;
@@ -18,6 +19,14 @@ public interface RealizacijaPredmetaRepository extends CrudRepository<Realizacij
 
     @Query("SELECT rp.predmet FROM RealizacijaPredmeta rp WHERE rp.nastavnik.id = :nastavnikId AND rp.obrisano = false")
     List<Predmet> findPredmetiByNastavnikId(@Param("nastavnikId") Long nastavnikId);
+    
+    List<RealizacijaPredmeta> findByNastavnikIdAndObrisanoFalse(Long nastavnikId);
+    
+    List<RealizacijaPredmeta> findByNastavnik(Nastavnik nastavnik);
+    
+    List<RealizacijaPredmeta> findByPredmetId(Long predmetId);
+
+
 
     @Query("SELECT rp FROM RealizacijaPredmeta rp WHERE rp.godinaStudija.id = :godinaStudijaid AND rp.obrisano = false")
     List<RealizacijaPredmeta> findRealizacijaPredmetaByGodinaStudijaId(@Param("godinaStudijaid") Long godinaStudijaid);

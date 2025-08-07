@@ -63,5 +63,17 @@ public class PohadjanjePredmetaDTO {
         e.setObrisano(obrisano);
         return e;
     }
+    
+    public static PohadjanjePredmetaDTO toDto(PohadjanjePredmeta pohadjanjePredmeta) {
+        if (pohadjanjePredmeta == null) return null;
+
+        PohadjanjePredmetaDTO dto = new PohadjanjePredmetaDTO();
+        dto.setId(pohadjanjePredmeta.getId());
+        dto.setObrisano(pohadjanjePredmeta.getObrisano());
+
+        // Dodaj ostala polja po potrebi
+
+        return dto;
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+ package com.example.demo.service;
 
 import com.example.demo.dto.TipZvanjaDTO;
 import com.example.demo.dto.UlogovaniKorisnikDTO;
@@ -95,5 +95,8 @@ public class UlogovaniKorisnikService {
 
     public UlogovaniKorisnikDTO findByUsernameAndPassword(String username, String password){
         return ulogovaniKorisnikRepository.findUlogovaniKorisnikByUsernameAndPassword(username, password).map(UlogovaniKorisnik::toDto).orElse(null);
+    }
+    public Optional<UlogovaniKorisnik> findByUsernameWithRoles(String username) {
+        return ulogovaniKorisnikRepository.findByUsernameWithRoles(username);
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/pohadjanjepredmetas")
 public class PohadjanjePredmetaController {
@@ -65,13 +65,16 @@ public class PohadjanjePredmetaController {
     }
 
     @GetMapping("/predmeti/polozeni/{studentId}")
-    public ResponseEntity<List<PredmetDTO>> getPredmetiByStudentIdAndKonacnaOcenaNotNull(@PathVariable Long studentId){
+    public ResponseEntity<List<PredmetDTO>> getPredmetiByStudentIdAndKonacnaOcenaNotNull(@PathVariable Long studentId) {
+        System.out.println(">>> Polozeni pozvan za studenta: " + studentId);
         List<PredmetDTO> result = pohadjanjePredmetaService.findPredmetiByStudentIdAndKonacnaOcenaNotNull(studentId);
 
-        if(result.isEmpty()){
-            return new ResponseEntity<List<PredmetDTO>>(HttpStatus.NOT_FOUND);
-        }else {
-            return new ResponseEntity<List<PredmetDTO>>(result, HttpStatus.OK);
+        if (result.isEmpty()) {
+            System.out.println(">>> Nema položenih predmeta.");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            System.out.println(">>> Vraćam " + result.size() + " položenih predmeta.");
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
     }
 
@@ -84,7 +87,7 @@ public class PohadjanjePredmetaController {
             return new ResponseEntity<List<PredmetDTO>>(result, HttpStatus.OK);
         }
     }
-
+ 
     @PostMapping
     public PohadjanjePredmetaDTO create(@RequestBody PohadjanjePredmetaSaveDTO pohadjanjePredmeta) {
         return pohadjanjePredmetaService.save(pohadjanjePredmeta);

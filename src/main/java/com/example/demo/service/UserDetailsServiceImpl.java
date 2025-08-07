@@ -1,7 +1,5 @@
 package com.example.demo.service;
-
 import java.util.ArrayList;
-
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.UlogovaniKorisnik;
 import com.example.demo.model.UserDetailsImpl;
@@ -13,15 +11,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import jakarta.transaction.Transactional;
-
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     @Autowired
     private UlogovaniKorisnikService ulogovaniKorisnikService;
-
     @Autowired
     private DodeljenoPravoPristupaService dodeljenoPravoPristupaService;
 
@@ -29,9 +23,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UlogovaniKorisnik k = ulogovaniKorisnikService.findByUsername(username).toEntity();
-
         if (k != null) {
             ArrayList<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+            for (DodeljenoPravoPristupa dodeljenoPravo : dodeljenoPravoPristupaService.findByUlogovaniKorisnikUsername(k.getUsername())) {
+                grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
+            }
 
             for (DodeljenoPravoPristupa dodeljenoPravo : dodeljenoPravoPristupaService.findByUlogovaniKorisnikUsername(k.getUsername())) {
                 grantedAuthorities.add(new SimpleGrantedAuthority(dodeljenoPravo.getPravoPristupa().getNaziv()));
@@ -41,6 +37,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
         throw new UsernameNotFoundException("nepostojeci korisnik!");
     }
-
 }
-

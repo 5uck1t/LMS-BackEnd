@@ -72,6 +72,12 @@ public class ObavestenjeService {
     public ObavestenjeDTO save(ObavestenjeSaveDTO obavestenje) {
 
         Obavestenje novo = obavestenje.toEntity();
+        
+        if (obavestenje.getUlogovaniKorisnik_id() == null)
+            throw new IllegalArgumentException("ulogovaniKorisnik_id ne sme biti null");
+
+        if (obavestenje.getForum_id() == null)
+            throw new IllegalArgumentException("forum_id ne sme biti null");
 
         novo.setForum(forumService.findEntityById(obavestenje.getForum_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + obavestenje.getForum_id() + " not found")));

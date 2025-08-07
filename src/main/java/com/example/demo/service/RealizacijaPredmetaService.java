@@ -1,11 +1,16 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.StudentNaPredmetuDTO;
 import com.example.demo.dto.PredmetDTO;
 import com.example.demo.dto.RealizacijaPredmetaDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
+import com.example.demo.model.Osoba;
+import com.example.demo.model.PohadjanjePredmeta;
 import com.example.demo.model.Predmet;
 import com.example.demo.model.RealizacijaPredmeta;
+import com.example.demo.model.Student;
+import com.example.demo.model.StudentNaGodini;
 import com.example.demo.repository.RealizacijaPredmetaRepository;
 import com.example.demo.saveDto.RealizacijaPredmetaSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -124,4 +130,35 @@ public class RealizacijaPredmetaService {
             realizacijaPredmetaRepository.save(realizacijaPredmeta);
         }
     }
+    
+    public List<RealizacijaPredmetaDTO> findByNastavnikId(Long nastavnikId) {
+        return realizacijaPredmetaRepository.findByNastavnikIdAndObrisanoFalse(nastavnikId)
+                .stream()
+                .map(RealizacijaPredmeta::toDto)
+                .toList();
+    }
+    
+    public List<StudentNaPredmetuDTO> getStudentiZaPredmet(Long predmetId) {
+        List<RealizacijaPredmeta> realizacije = realizacijaPredmetaRepository.findByPredmetId(predmetId);
+
+        return realizacije.stream()
+            .flatMap(rp -> rp.getPohadjanjaPredmeta().stream())
+            .filter(p -> !Boolean.TRUE.equals(p.getObrisano()))
+            .map(p -> {
+                StudentNaGodini sng = p.getStudentNaGodini();
+                Student student = sng.getStudent();
+                Osoba osoba = student.getOsoba();
+
+                return new StudentNaPredmetuDTO(
+                    student.getId(),
+                    osoba.getIme(),
+                    osoba.getPrezime(),
+                    osoba.getJmbg(),
+                    sng.getBrojIndeksa()
+                );
+            })
+            .toList();
+    }
+
+
 }
