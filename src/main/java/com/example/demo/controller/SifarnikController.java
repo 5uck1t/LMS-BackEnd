@@ -6,6 +6,9 @@ import com.example.demo.saveDto.RokSaveDTO;
 import com.example.demo.service.SifarnikService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,11 +21,13 @@ public class SifarnikController {
     @Autowired
     private SifarnikService sifarnikService;
 
+    @Secured("ROLE_ADMIN")
     @GetMapping
     public Iterable<Sifarnik> getAll() {
         return sifarnikService.findAll();
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/active")
     public List<Sifarnik> getAllActive() {
         return sifarnikService.findAllActive();

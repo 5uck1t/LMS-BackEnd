@@ -12,13 +12,15 @@ public class FakultetSaveDTO {
     private Long id;
     private String naziv;
     private Long univerzitet_id;
+    private Long adresa_id;
     private Long dekan_id;
     private Boolean obrisano = false;
 
-    public FakultetSaveDTO(Long id, String naziv, Long univerzitet_id, Long dekan_id, Boolean obrisano) {
+    public FakultetSaveDTO(Long id, String naziv, Long univerzitet_id, Long dekan_id, Boolean obrisano, Long adresa_id) {
         this.id = id;
         this.naziv = naziv;
         this.univerzitet_id = univerzitet_id;
+        this.adresa_id = adresa_id;
         this.dekan_id = dekan_id;
         this.obrisano = obrisano;
     }
@@ -64,6 +66,14 @@ public class FakultetSaveDTO {
 
     public void setObrisano(Boolean obrisano) {
         this.obrisano = obrisano;
+    }
+
+    public Long getAdresa_id() {
+        return adresa_id;
+    }
+
+    public void setAdresa_id(Long adresa_id) {
+        this.adresa_id = adresa_id;
     }
 
     public Fakultet toEntity() {
