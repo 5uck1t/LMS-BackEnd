@@ -6,6 +6,7 @@ import com.example.demo.service.DrzavaService;
 import com.example.demo.model.Drzava;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,11 +40,13 @@ public class DrzavaController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PostMapping
     public DrzavaDTO create(@RequestBody DrzavaSaveDTO drzava) {
         return drzavaService.save(drzava);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PutMapping("/{id}")
     public ResponseEntity<DrzavaDTO> update(@PathVariable Long id, @RequestBody DrzavaSaveDTO updatedDrzava) {
         Optional<DrzavaDTO> optional = drzavaService.findById(id);
@@ -59,12 +62,14 @@ public class DrzavaController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         drzavaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         drzavaService.vrati(id);

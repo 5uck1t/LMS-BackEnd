@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.ProfilePhoto;
 import com.example.demo.repository.ProfilePhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,13 @@ public class ProfilePhotoController {
 
     @GetMapping("/photo/{ime}")
     public ResponseEntity<byte[]> getPhoto(@PathVariable String ime) {
-        ProfilePhoto photo = profilePhotoRepository.findByIme(ime).orElseThrow();
+        Optional<ProfilePhoto> photo = profilePhotoRepository.findByIme(ime);
+        if(photo.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        byte[] imageData = photo.get().getData();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(photo.getData());
+                .body(imageData);
     }
 }

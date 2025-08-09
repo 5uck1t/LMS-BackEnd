@@ -21,13 +21,11 @@ public class SifarnikController {
     @Autowired
     private SifarnikService sifarnikService;
 
-    @Secured("ROLE_ADMIN")
     @GetMapping
     public Iterable<Sifarnik> getAll() {
         return sifarnikService.findAll();
     }
 
-    @Secured("ROLE_ADMIN")
     @GetMapping("/active")
     public List<Sifarnik> getAllActive() {
         return sifarnikService.findAllActive();

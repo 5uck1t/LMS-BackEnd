@@ -16,6 +16,8 @@ public interface UlogovaniKorisnikRepository extends CrudRepository<UlogovaniKor
     List<UlogovaniKorisnik> findByObrisanoFalse();
     List<UlogovaniKorisnik> findByObrisanoTrue();
 
+    boolean existsByUsername(String username);
+
     Optional<UlogovaniKorisnik> findUlogovaniKorisnikByUsername(String username);
 
     Optional<UlogovaniKorisnik> findUlogovaniKorisnikByUsernameAndPassword(String username, String password);

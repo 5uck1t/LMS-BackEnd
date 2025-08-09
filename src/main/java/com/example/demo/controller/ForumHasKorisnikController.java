@@ -7,6 +7,7 @@ import com.example.demo.service.ForumHasKorisnikService;
 import com.example.demo.model.ForumHasKorisnik;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,17 +40,20 @@ public class ForumHasKorisnikController {
         return forumHasKorisnikService.getForumsByUserId(id);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<ForumHasKorisnikDTO> getById(@PathVariable Long id) {
         Optional<ForumHasKorisnikDTO> result = forumHasKorisnikService.findById(id);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PostMapping
     public ForumHasKorisnikDTO create(@RequestBody ForumHasKorisnikSaveDTO forumHasKorisnik) {
         return forumHasKorisnikService.save(forumHasKorisnik);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PutMapping("/{id}")
     public ResponseEntity<ForumHasKorisnikDTO> update(@PathVariable Long id, @RequestBody ForumHasKorisnikSaveDTO updatedForumHasKorisnik) {
         Optional<ForumHasKorisnikDTO> optional = forumHasKorisnikService.findById(id);
@@ -61,12 +65,14 @@ public class ForumHasKorisnikController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         forumHasKorisnikService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         forumHasKorisnikService.vrati(id);
