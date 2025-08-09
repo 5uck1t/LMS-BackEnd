@@ -48,6 +48,12 @@ public class NastavnikController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/osoba/{id}")
+    public ResponseEntity<NastavnikDTO> getByOsobaId(@PathVariable Long id) {
+        Optional<NastavnikDTO> result = nastavnikService.findByOsobaId(id);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public NastavnikDTO create(@RequestBody NastavnikSaveDTO nastavnik) {
         return nastavnikService.save(nastavnik);
@@ -62,7 +68,6 @@ public class NastavnikController {
             existing.setId(id);
             existing.setBiografija(updatedNastavnik.getBiografija());
             existing.setOsoba_id(updatedNastavnik.getOsoba_id());
-            existing.setFakultet_id(updatedNastavnik.getFakultet_id());
             existing.setObrisano(updatedNastavnik.getObrisano());
 
             return ResponseEntity.ok(nastavnikService.save(existing));

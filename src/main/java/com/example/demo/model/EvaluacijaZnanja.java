@@ -2,10 +2,7 @@ package com.example.demo.model;
 
 import com.example.demo.dto.EvaluacijaZnanjaDTO;
 import com.example.demo.dto.PolaganjeDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
@@ -14,6 +11,7 @@ import java.util.Set;
 @Entity
 public class EvaluacijaZnanja {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String naziv;

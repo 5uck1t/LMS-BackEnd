@@ -7,6 +7,7 @@ import com.example.demo.service.DatumPredmetaService;
 import com.example.demo.service.DrzavaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,11 +47,13 @@ public class DatumPredmetaController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PostMapping
     public DatumPredmetaDTO create(@RequestBody DatumPredmetaSaveDTO datumPredmeta) {
         return datumPredmetaService.save(datumPredmeta);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PutMapping("/{id}")
     public ResponseEntity<DatumPredmetaDTO> update(@PathVariable Long id, @RequestBody DatumPredmetaSaveDTO updatedDatumPredmeta) {
         Optional<DatumPredmetaDTO> optional = datumPredmetaService.findById(id);
@@ -64,12 +67,14 @@ public class DatumPredmetaController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         datumPredmetaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         datumPredmetaService.vrati(id);

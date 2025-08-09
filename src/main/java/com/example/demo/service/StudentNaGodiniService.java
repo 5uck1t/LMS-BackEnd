@@ -77,6 +77,13 @@ public class StudentNaGodiniService {
         return studentNaGodiniRepository.findById(id).map(StudentNaGodini::toDto);
     }
 
+    public List<StudentNaGodiniDTO> findByStudentId(Long id) {
+        return ((List<StudentNaGodini>) studentNaGodiniRepository.findByStudentId(id))
+                .stream()
+                .map(StudentNaGodini::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<StudentNaGodini> findEntityById(Long id) {
         return studentNaGodiniRepository.findById(id);
     }

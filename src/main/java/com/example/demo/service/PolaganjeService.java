@@ -24,6 +24,9 @@ public class PolaganjeService {
     private EvaluacijaZnanjaService evaluacijaZnanjaService;
 
     @Autowired
+    private RokService rokService;
+
+    @Autowired
     private DatumPredmetaService datumPredmetaService;
 
     public List<PolaganjeDTO> findAll() {
@@ -62,15 +65,8 @@ public class PolaganjeService {
         novo.setEvaluacijaZnanja(evaluacijaZnanjaService.findEntityById(polaganje.getEvaluacijaZnanja_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Evaluacija znanja with id:" + polaganje.getEvaluacijaZnanja_id() + " not found")));
 
-        //trazenje datuma iz evaluacije znanja po roku iz evaluacije znanja i predmetu iz polaganje>evaluacijaZnanja>RealizacijaPredmeta>predmet
-        Optional<DatumPredmetaDTO> datum = datumPredmetaService.findByRokIdAndPredmetId(polaganje.getRok_id(), novo.getEvaluacijaZnanja().getRealizacijaPredmeta().getPredmet().getId());
+        novo.setRok(rokService.findEntityById(polaganje.getRok_id()).orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + polaganje.getRok_id() + " not found")));
 
-
-        if(datum.isEmpty()){
-            throw new ResourceNotFoundException("DatumPredmeta not found");
-        }
-
-        novo.setDatum(datum.get().getDatum());
 
         return polaganjeRepository.save(novo).toDto();
     }

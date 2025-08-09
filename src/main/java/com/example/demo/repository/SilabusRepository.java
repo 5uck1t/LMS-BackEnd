@@ -16,6 +16,4 @@ public interface SilabusRepository extends CrudRepository<Silabus, Long> {
     List<Silabus> findByPredmetInAndObrisanoFalse(List<Predmet> predmeti);
     Optional<Silabus> findByPredmetIdAndObrisanoFalse(Long predmetId);
     List<Silabus> findByPredmetId(Long predmetId);
-
-
 }

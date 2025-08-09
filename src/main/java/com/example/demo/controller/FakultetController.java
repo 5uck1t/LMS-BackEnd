@@ -6,6 +6,7 @@ import com.example.demo.service.FakultetService;
 import com.example.demo.model.Fakultet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,11 +40,13 @@ public class FakultetController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping
     public FakultetDTO create(@RequestBody FakultetSaveDTO fakultet) {
         return fakultetService.save(fakultet);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PutMapping("/{id}")
     public ResponseEntity<FakultetDTO> update(@PathVariable Long id, @RequestBody FakultetSaveDTO updatedFakultet) {
         Optional<FakultetDTO> optional = fakultetService.findById(id);
@@ -61,12 +64,14 @@ public class FakultetController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         fakultetService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         fakultetService.vrati(id);

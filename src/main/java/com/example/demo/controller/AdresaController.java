@@ -10,6 +10,7 @@ import com.example.demo.service.AdresaService;
 import com.example.demo.model.Adresa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -24,32 +25,38 @@ public class AdresaController {
     @Autowired
     private AdresaService adresaService;
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @GetMapping
     public Iterable<AdresaDTO> getAll() {
         return adresaService.findAll();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @GetMapping("/active")
     public List<AdresaDTO> getAllActive() {
         return adresaService.findAllActive();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @GetMapping("/deleted")
     public List<AdresaDTO> getAllDeleted() {
         return adresaService.findAllDeleted();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @GetMapping("/{id}")
     public ResponseEntity<AdresaDTO> getById(@PathVariable Long id) {
         Optional<AdresaDTO> result = adresaService.findById(id);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping
     public AdresaDTO create(@RequestBody AdresaSaveDTO adresa) {
         return adresaService.save(adresa);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PutMapping("/{id}")
     public ResponseEntity<AdresaDTO> update(@PathVariable Long id, @RequestBody AdresaSaveDTO updatedAdresa) {
         Optional<AdresaDTO> optional = adresaService.findById(id);
@@ -67,12 +74,14 @@ public class AdresaController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         adresaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         adresaService.vrati(id);
