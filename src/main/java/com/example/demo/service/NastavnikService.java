@@ -51,6 +51,10 @@ public class NastavnikService {
         return nastavnikRepository.findById(id).map(Nastavnik::toDto);
     }
 
+    public Optional<NastavnikDTO> findByOsobaId(Long id) {
+        return nastavnikRepository.findByOsoba_Id(id).map(Nastavnik::toDto);
+    }
+
     public Optional<Nastavnik> findEntityById(Long id) {
         return nastavnikRepository.findById(id);
     }
@@ -58,9 +62,6 @@ public class NastavnikService {
     public NastavnikDTO save(NastavnikSaveDTO nastavnik) {
 
         Nastavnik novi = nastavnik.toEntity();
-
-        novi.setFakultet(fakultetService.findEntityById(nastavnik.getFakultet_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Fakultet with id:" + nastavnik.getFakultet_id() + " not found")));
 
         novi.setOsoba(osobaService.findEntityById(nastavnik.getOsoba_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Osoba with id:" + nastavnik.getOsoba_id() + " not found")));

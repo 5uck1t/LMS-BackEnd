@@ -1,14 +1,13 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.ForumHasKorisnikDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 public class ForumHasKorisnik {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

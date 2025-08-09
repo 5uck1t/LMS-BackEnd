@@ -11,8 +11,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Year;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +60,18 @@ public class UlogovaniKorisnikService {
 
         novi.setOsoba(osobaService.findEntityById(ulogovaniKorisnik.getOsoba_id())
                 .orElseThrow(() -> new EntityNotFoundException("Osoba with id:" + ulogovaniKorisnik.getOsoba_id() + " not found")));
+
+        String baseUsername = novi.getUsername();
+        String yearSuffix = String.valueOf(Year.now().getValue()).substring(2);
+        String finalUsername = baseUsername + yearSuffix;
+
+        while (ulogovaniKorisnikRepository.existsByUsername(finalUsername)) {
+            int randomDigit = new Random().nextInt(10);
+            finalUsername = baseUsername + yearSuffix + randomDigit;
+        }
+
+        novi.setUsername(finalUsername);
+
         return ulogovaniKorisnikRepository.save(novi).toDto();
     }
 

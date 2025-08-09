@@ -77,7 +77,6 @@ public class NastavnikDTO {
         e.setId(id);
         e.setBiografija(biografija);
         e.setOsoba_id(osoba.getId());
-        e.setFakultet_id(fakultet.getId());
         e.setObrisano(obrisano);
         return e;
     }

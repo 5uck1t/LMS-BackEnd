@@ -18,5 +18,7 @@ public interface NastavnikRepository extends CrudRepository<Nastavnik, Long> {
     List<Nastavnik> findByObrisanoTrue();
     
     Optional<Nastavnik> findByOsoba(Osoba osoba);
+
+    Optional<Nastavnik> findByOsoba_Id(Long osobaId);
     
 }

@@ -6,6 +6,7 @@ import com.example.demo.service.ForumService;
 import com.example.demo.model.Forum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -46,11 +47,13 @@ public class ForumController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping
     public ForumDTO create(@RequestBody ForumSaveDTO forum) {
         return forumService.save(forum);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PutMapping("/{id}")
     public ResponseEntity<ForumDTO> update(@PathVariable Long id, @RequestBody ForumSaveDTO updatedForum) {
         Optional<ForumDTO> optional = forumService.findById(id);
@@ -67,12 +70,14 @@ public class ForumController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         forumService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         forumService.vrati(id);
