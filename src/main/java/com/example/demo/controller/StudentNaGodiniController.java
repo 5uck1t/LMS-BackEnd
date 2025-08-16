@@ -35,6 +35,11 @@ public class StudentNaGodiniController {
         return studentNaGodiniService.findAllDeleted();
     }
 
+    @GetMapping("/student/{id}")
+    public List<StudentNaGodiniDTO> getByStudentId(@PathVariable Long id) {
+        return studentNaGodiniService.findByStudentId(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<StudentNaGodiniDTO> getById(@PathVariable Long id) {
         Optional<StudentNaGodiniDTO> result = studentNaGodiniService.findById(id);

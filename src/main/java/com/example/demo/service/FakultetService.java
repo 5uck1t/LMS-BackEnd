@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.FakultetDTO;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.Adresa;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.EvaluacijaZnanja;
 import com.example.demo.model.Fakultet;
@@ -24,6 +25,9 @@ public class FakultetService {
 
     @Autowired
     private UniverzitetService univerzitetService;
+
+    @Autowired
+    private AdresaService adresaService;
 
     @Autowired
     @Lazy
@@ -65,6 +69,9 @@ public class FakultetService {
         Fakultet novi = fakultet.toEntity();
         novi.setDekan(nastavnikService.findEntityById(fakultet.getDekan_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Dekan/Nastavnik with id:" + fakultet.getDekan_id() + " not found")));
+
+        novi.setAdresa(adresaService.findEntityById(fakultet.getAdresa_id())
+                .orElseThrow(() -> new ResourceNotFoundException("Adresa with id:" + fakultet.getAdresa_id() + " not found")));
 
         novi.setUniverzitet(univerzitetService.findEntityById(fakultet.getUniverzitet_id())
                 .orElseThrow(() -> new ResourceNotFoundException("Rok with id:" + fakultet.getUniverzitet_id() + " not found")));

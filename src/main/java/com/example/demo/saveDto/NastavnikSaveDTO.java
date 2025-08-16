@@ -10,14 +10,12 @@ public class NastavnikSaveDTO {
     private Long id;
     private String biografija;
     private Long osoba_id;
-    private Long fakultet_id;
     private Boolean obrisano = false;
 
-    public NastavnikSaveDTO(Long id, String biografija, Long osoba_id, Long fakultet_id, Boolean obrisano) {
+    public NastavnikSaveDTO(Long id, String biografija, Long osoba_id, Boolean obrisano) {
         this.id = id;
         this.biografija = biografija;
         this.osoba_id = osoba_id;
-        this.fakultet_id = fakultet_id;
         this.obrisano = obrisano;
     }
 
@@ -46,14 +44,6 @@ public class NastavnikSaveDTO {
 
     public void setOsoba_id(Long osoba_id) {
         this.osoba_id = osoba_id;
-    }
-
-    public Long getFakultet_id() {
-        return fakultet_id;
-    }
-
-    public void setFakultet_id(Long fakultet_id) {
-        this.fakultet_id = fakultet_id;
     }
 
     public Boolean getObrisano() {

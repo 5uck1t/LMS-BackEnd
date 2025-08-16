@@ -11,4 +11,6 @@ public interface StudijskiProgramRepository extends CrudRepository<StudijskiProg
 
     List<StudijskiProgram> findByObrisanoFalse();
     List<StudijskiProgram> findByObrisanoTrue();
+
+    List<StudijskiProgram> findByKatedra_IdAndObrisanoFalse(Long katedraId);
 }

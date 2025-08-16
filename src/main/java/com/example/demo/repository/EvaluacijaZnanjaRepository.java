@@ -13,4 +13,6 @@ public interface EvaluacijaZnanjaRepository extends CrudRepository<EvaluacijaZna
     List<EvaluacijaZnanja> findByObrisanoTrue();
     
     List<EvaluacijaZnanja> findByRealizacijaPredmeta_Predmet_IdAndObrisanoFalse(Long predmetId);
+
+    List<EvaluacijaZnanja> findByRealizacijaPredmeta_Id(Long realizacijaPredmetaId);
 }

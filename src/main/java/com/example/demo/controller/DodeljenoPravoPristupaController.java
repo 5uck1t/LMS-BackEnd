@@ -6,6 +6,7 @@ import com.example.demo.service.DodeljenoPravoPristupaService;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,11 +46,13 @@ public class DodeljenoPravoPristupaController {
         return dodeljenoPravoPristupaService.findByUlogovaniKorisnikId(id);
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PostMapping
     public DodeljenoPravoPristupaDTO create(@RequestBody DodeljenoPravoPristupaSaveDTO dodeljenoPravoPristupa) {
         return dodeljenoPravoPristupaService.save(dodeljenoPravoPristupa);
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PutMapping("/{id}")
     public ResponseEntity<DodeljenoPravoPristupaDTO> update(@PathVariable Long id, @RequestBody DodeljenoPravoPristupaDTO updatedDodeljenoPravoPristupa) {
         Optional<DodeljenoPravoPristupaDTO> optional = dodeljenoPravoPristupaService.findById(id);
@@ -61,12 +64,14 @@ public class DodeljenoPravoPristupaController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         dodeljenoPravoPristupaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         dodeljenoPravoPristupaService.vrati(id);

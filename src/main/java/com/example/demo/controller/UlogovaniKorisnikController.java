@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import com.example.demo.model.UlogovaniKorisnik;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,8 +40,7 @@ public class UlogovaniKorisnikController {
     public List<UlogovaniKorisnikDTO> getAllDeleted() {
         return ulogovaniKorisnikService.findAllDeleted();
     }
-    
-    
+
     @GetMapping("/profil")
     public ResponseEntity<UlogovaniKorisnikDTO> getProfil(HttpServletRequest request) {
         String token = extractToken(request);
@@ -73,7 +73,7 @@ public class UlogovaniKorisnikController {
         return header != null && header.startsWith("Bearer ") ? header.substring(7) : null;
     }
 
-
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @GetMapping("/{id}")
     public ResponseEntity<UlogovaniKorisnikDTO> getById(@PathVariable Long id) {
         Optional<UlogovaniKorisnikDTO> result = ulogovaniKorisnikService.findById(id);
@@ -85,6 +85,7 @@ public class UlogovaniKorisnikController {
         return ulogovaniKorisnikService.save(ulogovaniKorisnik);
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @PutMapping("/{id}")
     public ResponseEntity<UlogovaniKorisnikDTO> update(@PathVariable Long id, @RequestBody UlogovaniKorisnikSaveDTO updatedUlogovaniKorisnik) {
         Optional<UlogovaniKorisnikDTO> optional = ulogovaniKorisnikService.findById(id);
@@ -114,7 +115,7 @@ public class UlogovaniKorisnikController {
         ulogovaniKorisnikService.vrati(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @GetMapping("/idByUsername/{username}")
     public ResponseEntity<Long> getUlogovaniKorisnikIdByUsername(@PathVariable String username) {
     	UlogovaniKorisnikDTO korisnikDto = ulogovaniKorisnikService.findByUsername(username);

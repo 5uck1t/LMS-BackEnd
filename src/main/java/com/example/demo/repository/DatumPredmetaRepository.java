@@ -18,4 +18,7 @@ public interface DatumPredmetaRepository extends CrudRepository<DatumPredmeta, L
     @Query("SELECT d FROM DatumPredmeta d WHERE d.rok.id = :rokId AND d.realizacijaPredmeta.predmet.id = :predmetId AND d.obrisano = false")
     Optional<DatumPredmeta> findOneByRokIdAndPredmetId(@Param("rokId") Long rokId, @Param("predmetId") Long predmetId);
 
+    @Query("SELECT d FROM DatumPredmeta d WHERE d.rok.id = :rokId AND d.obrisano = false")
+    List<DatumPredmeta> findByRokId(@Param("rokId") Long rokId);
+
 }

@@ -14,6 +14,7 @@ import com.example.demo.model.Zadatak;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,12 +46,18 @@ public class EvaluacijaZnanjaController {
         return evaluacijaZnanjaService.findAllDeleted();
     }
 
+    @GetMapping("/realizacija/{id}")
+    public List<EvaluacijaZnanjaDTO> getByRealizacijaId(@PathVariable Long id) {
+        return evaluacijaZnanjaService.findByRealizacijaId(id);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EvaluacijaZnanjaDTO> getById(@PathVariable Long id) {
         Optional<EvaluacijaZnanjaDTO> result = evaluacijaZnanjaService.findById(id);
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PostMapping
     public EvaluacijaZnanjaDTO create(@RequestBody EvaluacijaZnanjaSaveDTO evaluacijaZnanja) {
         return evaluacijaZnanjaService.save(evaluacijaZnanja);
@@ -88,6 +95,7 @@ public class EvaluacijaZnanjaController {
 
 
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PutMapping("/{id}")
     public ResponseEntity<EvaluacijaZnanjaDTO> update(@PathVariable Long id, @RequestBody EvaluacijaZnanjaSaveDTO updatedEvaluacijaZnanja) {
         Optional<EvaluacijaZnanjaDTO> optional = evaluacijaZnanjaService.findById(id);
@@ -104,12 +112,14 @@ public class EvaluacijaZnanjaController {
         return ResponseEntity.notFound().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         evaluacijaZnanjaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
     @PostMapping("/restore/{id}")
     public ResponseEntity<Void> restore(@PathVariable Long id) {
         evaluacijaZnanjaService.vrati(id);

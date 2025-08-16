@@ -49,6 +49,14 @@ public class EvaluacijaZnanjaService {
                 .collect(Collectors.toList());
     }
 
+    public List<EvaluacijaZnanjaDTO> findByRealizacijaId(Long id) {
+
+        return ((List<EvaluacijaZnanja>) evaluacijaZnanjaRepository.findByRealizacijaPredmeta_Id(id))
+                .stream()
+                .map(EvaluacijaZnanja::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<EvaluacijaZnanjaDTO> findById(Long id) {
         return evaluacijaZnanjaRepository.findById(id).map(EvaluacijaZnanja::toDto);
     }
