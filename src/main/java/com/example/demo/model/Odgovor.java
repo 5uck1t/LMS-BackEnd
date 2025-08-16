@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.example.demo.dto.OdgovorDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -15,6 +17,7 @@ public class Odgovor {
     private String odgovor;
 
     @ManyToOne
+    @JsonIgnore
     private Zadatak zadatak;
 
     @ColumnDefault("false")
@@ -64,6 +67,6 @@ public class Odgovor {
 
     public OdgovorDTO toDto(){
 
-        return new OdgovorDTO(this.id, this.odgovor, this.zadatak.toDto(), this.obrisano);
+        return new OdgovorDTO(this.id, this.odgovor, null, this.obrisano);
     }
 }

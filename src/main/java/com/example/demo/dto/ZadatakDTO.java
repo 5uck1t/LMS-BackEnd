@@ -1,27 +1,32 @@
 package com.example.demo.dto;
 
+import java.util.List;
+
 import com.example.demo.model.Zadatak;
 import com.example.demo.saveDto.ZadatakSaveDTO;
 import com.example.demo.saveDto.ZvanjeSaveDTO;
 
 public class ZadatakDTO {
-
     private Long id;
-
     private String pitanje;
-
     private EvaluacijaZnanjaDTO evaluacijaZnanja;
+    private Boolean obrisano;
+    private List<OdgovorDTO> odgovori;  // dodaj listu odgovora
 
-    private Boolean obrisano = false;
-
-    public ZadatakDTO(Long id, String pitanje, EvaluacijaZnanjaDTO evaluacijaZnanja, Boolean obrisano) {
+    public ZadatakDTO(Long id, String pitanje, EvaluacijaZnanjaDTO evaluacijaZnanja, Boolean obrisano, List<OdgovorDTO> odgovori) {
         this.id = id;
         this.pitanje = pitanje;
         this.evaluacijaZnanja = evaluacijaZnanja;
         this.obrisano = obrisano;
+        this.odgovori = odgovori;
     }
-
-    public ZadatakDTO() {
+    public List<OdgovorDTO> getOdgovori() {
+		return odgovori;
+	}
+	public void setOdgovori(List<OdgovorDTO> odgovori) {
+		this.odgovori = odgovori;
+	}
+	public ZadatakDTO() {
     }
 
     public Long getId() {

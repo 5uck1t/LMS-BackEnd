@@ -94,4 +94,8 @@ public class EvaluacijaZnanjaService {
             evaluacijaZnanjaRepository.save(evaluacijaZnanja);
         }
     }
+    
+    public List<EvaluacijaZnanja> findByPredmetId(Long predmetId) {
+        return evaluacijaZnanjaRepository.findByRealizacijaPredmeta_Predmet_IdAndObrisanoFalse(predmetId);
+    }
 }
