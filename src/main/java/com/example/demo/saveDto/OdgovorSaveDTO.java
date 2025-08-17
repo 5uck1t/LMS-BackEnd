@@ -12,13 +12,16 @@ public class OdgovorSaveDTO {
 
     private Long zadatak_id;
 
+    private Boolean tacan;
+
     private Boolean obrisano = false;
 
-    public OdgovorSaveDTO(Long id, String odgovor, Long zadatak_id, Boolean obrisano) {
+    public OdgovorSaveDTO(Long id, String odgovor, Long zadatak_id, Boolean obrisano,Boolean tacan) {
         this.id = id;
         this.odgovor = odgovor;
         this.zadatak_id = zadatak_id;
         this.obrisano = obrisano;
+        this.tacan = tacan;
     }
 
     public OdgovorSaveDTO() {
@@ -56,12 +59,21 @@ public class OdgovorSaveDTO {
         this.obrisano = obrisano;
     }
 
+    public Boolean getTacan() {
+        return tacan;
+    }
+
+    public void setTacan(Boolean tacan) {
+        this.tacan = tacan;
+    }
+
     public Odgovor toEntity(){
         Odgovor e = new Odgovor();
 
         e.setId(id);
         e.setOdgovor(odgovor);
         e.setObrisano(obrisano);
+        e.setTacan(tacan);
         return e;
     }
 }
