@@ -20,14 +20,17 @@ public class Odgovor {
     @JsonIgnore
     private Zadatak zadatak;
 
+    private Boolean tacan;
+
     @ColumnDefault("false")
     private Boolean obrisano;
 
-    public Odgovor(Long id, String odgovor, Zadatak zadatak, Boolean obrisano) {
+    public Odgovor(Long id, String odgovor, Zadatak zadatak, Boolean obrisano, Boolean tacan) {
         this.id = id;
         this.odgovor = odgovor;
         this.zadatak = zadatak;
         this.obrisano = obrisano;
+        this.tacan = tacan;
     }
 
     public Odgovor() {
@@ -65,8 +68,16 @@ public class Odgovor {
         this.obrisano = obrisano;
     }
 
+    public Boolean getTacan() {
+        return tacan;
+    }
+
+    public void setTacan(Boolean tacan) {
+        this.tacan = tacan;
+    }
+
     public OdgovorDTO toDto(){
 
-        return new OdgovorDTO(this.id, this.odgovor, null, this.obrisano);
+        return new OdgovorDTO(this.id, this.odgovor, null, this.obrisano,this.tacan);
     }
 }

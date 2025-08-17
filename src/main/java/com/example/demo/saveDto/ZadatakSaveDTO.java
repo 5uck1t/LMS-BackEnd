@@ -1,5 +1,6 @@
 package com.example.demo.saveDto;
 
+import com.example.demo.dto.OdgovorDTO;
 import com.example.demo.model.Zadatak;
 import com.example.demo.model.Odgovor;
 
@@ -10,7 +11,7 @@ public class ZadatakSaveDTO {
 
     private Long id;
     private String pitanje;
-    private List<String> odgovori = new ArrayList<>();
+    private List<OdgovorDTO> odgovori = new ArrayList<>();
     private Long evaluacijaZnanja_id;
     private Boolean obrisano = false;
 
@@ -24,7 +25,7 @@ public class ZadatakSaveDTO {
 
 	public ZadatakSaveDTO() {}
 
-    public ZadatakSaveDTO(Long id, String pitanje, List<String> odgovori, Long evaluacijaZnanja_id) {
+    public ZadatakSaveDTO(Long id, String pitanje, List<OdgovorDTO> odgovori, Long evaluacijaZnanja_id) {
         this.id = id;
         this.pitanje = pitanje;
         this.odgovori = odgovori;
@@ -43,9 +44,10 @@ public class ZadatakSaveDTO {
     public List<Odgovor> toOdgovorEntities(Zadatak zadatak) {
         List<Odgovor> lista = new ArrayList<>();
         if (this.odgovori != null) {
-            for (String tekst : this.odgovori) {
+            for (OdgovorDTO tekst : this.odgovori) {
                 Odgovor odg = new Odgovor();
-                odg.setOdgovor(tekst);
+                odg.setOdgovor(tekst.getOdgovor());
+                odg.setTacan(tekst.getTacan());
                 odg.setZadatak(zadatak);
                 lista.add(odg);
             }
@@ -68,10 +70,10 @@ public class ZadatakSaveDTO {
         this.pitanje = pitanje;
     }
 
-    public List<String> getOdgovori() {
+    public List<OdgovorDTO> getOdgovori() {
         return odgovori;
     }
-    public void setOdgovori(List<String> odgovori) {
+    public void setOdgovori(List<OdgovorDTO> odgovori) {
         this.odgovori = odgovori;
     }
 

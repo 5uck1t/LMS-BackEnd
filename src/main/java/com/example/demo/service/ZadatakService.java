@@ -83,7 +83,7 @@ public class ZadatakService {
         } else {
             System.out.println("Broj odgovora: " + dto.getOdgovori().size());
             for (int i = 0; i < dto.getOdgovori().size(); i++) {
-                String odgovorTekst = dto.getOdgovori().get(i);
+                String odgovorTekst = dto.getOdgovori().get(i).getOdgovor();
                 System.out.println("Odgovor[" + i + "]: " + odgovorTekst);
             }
         }
