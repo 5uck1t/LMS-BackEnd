@@ -42,4 +42,6 @@ public interface PrijavaPolaganjaRepository extends CrudRepository<PrijavaPolaga
     List<PrijavaPolaganja> findByPohadjanjePredmeta_StudentNaGodini_Id(Long studentId);
 
 
+    List<PrijavaPolaganja> findByPohadjanjePredmeta_IdAndPolaganje_Id(Long pohId, Long polaganjeId);
+
 }

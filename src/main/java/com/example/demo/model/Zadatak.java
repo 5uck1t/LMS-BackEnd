@@ -1,10 +1,14 @@
 package com.example.demo.model;
 
+import com.example.demo.dto.OdgovorDTO;
 import com.example.demo.dto.ZadatakDTO;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Zadatak {
@@ -77,6 +81,14 @@ public class Zadatak {
     }
 
     public ZadatakDTO toDto(){
-        return new ZadatakDTO(this.id, this.pitanje, this.getEvaluacijaZnanja().toDto(), this.obrisano);
+        List<OdgovorDTO> odgovorDTOs = (odgovori == null) ? 
+            new ArrayList<>() : 
+            odgovori.stream()
+                .filter(o -> o.getObrisano() == null || !o.getObrisano()) // filtriraj obrisane ako treba
+                .map(Odgovor::toDto)
+                .collect(Collectors.toList());
+
+        return new ZadatakDTO(this.id, this.pitanje, this.getEvaluacijaZnanja().toDto(), this.obrisano, odgovorDTOs);
     }
+
 }
