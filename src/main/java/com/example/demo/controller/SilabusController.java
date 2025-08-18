@@ -24,9 +24,6 @@ public class SilabusController {
 
     @Autowired
     private SilabusService silabusService;
-    
-    @Autowired
-    private SilabusRepository silabusRepository;
 
     @GetMapping
     public Iterable<SilabusDTO> getAll() {

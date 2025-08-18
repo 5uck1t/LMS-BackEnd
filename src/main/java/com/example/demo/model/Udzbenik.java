@@ -27,6 +27,9 @@ public class Udzbenik {
     @OneToMany(mappedBy = "udzbenik")
     private Set<Dopunjavanje> dopunjavanja;
 
+    @OneToMany(mappedBy = "udzbenik")
+    private Set<Stranica> stranice;
+
     @ColumnDefault("false")
     private Boolean obrisano;
 
@@ -59,6 +62,8 @@ public class Udzbenik {
     public void setDopunjavanja(Set<Dopunjavanje> dopunjavanja) { this.dopunjavanja = dopunjavanja; }
     public Boolean getObrisano() { return obrisano; }
     public void setObrisano(Boolean obrisano) { this.obrisano = obrisano; }
+    public Set<Stranica> getStranice() { return stranice; }
+    public void setStranice(Set<Stranica> stranice) { this.stranice = stranice; }
 
     public UdzbenikDTO toDto() {
         return new UdzbenikDTO(
