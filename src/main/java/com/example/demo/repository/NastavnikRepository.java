@@ -21,4 +21,14 @@ public interface NastavnikRepository extends CrudRepository<Nastavnik, Long> {
 
     Optional<Nastavnik> findByOsoba_Id(Long osobaId);
     
+    @Query("""
+            SELECT uk.email 
+            FROM RealizacijaPredmeta r
+            JOIN r.nastavnik n
+            JOIN n.osoba o
+            JOIN UlogovaniKorisnik uk ON uk.osoba.id = o.id
+            WHERE r.predmet.id = :predmetId
+        """)
+        List<String> findEmailsByPredmetId(@Param("predmetId") Long predmetId);
+    
 }

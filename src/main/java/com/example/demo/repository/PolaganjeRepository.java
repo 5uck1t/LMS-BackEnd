@@ -38,5 +38,8 @@ public interface PolaganjeRepository extends CrudRepository<Polaganje, Long> {
 
 
     List<Polaganje> findByEvaluacijaZnanja_IdAndObrisanoFalse(Long evaluacijaId);
+    
+    List<Polaganje> findByRok_IdAndEvaluacijaZnanja_RealizacijaPredmeta_Predmet_IdAndObrisanoFalse(Long rokId, Long predmetId);
+
 
 }
