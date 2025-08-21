@@ -10,13 +10,16 @@ public class OdgovorDTO {
 
     private ZadatakDTO zadatak;
 
+    private Boolean tacan;
+
     private Boolean obrisano = false;
 
-    public OdgovorDTO(Long id, String odgovor, ZadatakDTO zadatak, Boolean obrisano) {
+    public OdgovorDTO(Long id, String odgovor, ZadatakDTO zadatak, Boolean obrisano,Boolean tacan) {
         this.id = id;
         this.odgovor = odgovor;
         this.zadatak = zadatak;
         this.obrisano = obrisano;
+        this.tacan = tacan;
     }
 
     public OdgovorDTO() {
@@ -54,6 +57,14 @@ public class OdgovorDTO {
         this.obrisano = obrisano;
     }
 
+    public Boolean getTacan() {
+        return tacan;
+    }
+
+    public void setTacan(Boolean tacan) {
+        this.tacan = tacan;
+    }
+
     public Odgovor toEntity(){
         Odgovor e = new Odgovor();
 
@@ -61,6 +72,7 @@ public class OdgovorDTO {
         e.setOdgovor(odgovor);
         e.setObrisano(obrisano);
         e.setZadatak(zadatak.toEntity());
+        e.setTacan(tacan);
 
         return e;
     }
