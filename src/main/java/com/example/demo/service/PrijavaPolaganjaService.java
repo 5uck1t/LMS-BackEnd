@@ -108,7 +108,7 @@ public class PrijavaPolaganjaService {
 
         List<Polaganje> svaPolaganja = polaganjeRepository.findByEvaluacijaZnanja_RealizacijaPredmeta_Predmet_IdInAndObrisanoFalse(predmetIds);
 
-        List<Long> vecPrijavljenaPolaganja = prijavaPolaganjaRepository.findByPohadjanjePredmetaStudentNaGodiniStudentId(studentId)
+        List<Long> vecPrijavljenaPolaganja = prijavaPolaganjaRepository.findByPohadjanjePredmetaStudentNaGodiniId(studentId)
                 .stream()
                 .map(p -> p.getPolaganje().getId())
                 .collect(Collectors.toList());
@@ -226,7 +226,7 @@ public class PrijavaPolaganjaService {
     
     
     public List<PrijavaPolaganjaDTO> findByStudentId(Long studentId) {
-        return prijavaPolaganjaRepository.findByPohadjanjePredmeta_StudentNaGodini_Student_Id(studentId)
+        return prijavaPolaganjaRepository.findByPohadjanjePredmeta_StudentNaGodini_Id(studentId)
                 .stream()
                 .map(PrijavaPolaganja::toDto)
                 .collect(Collectors.toList());
@@ -251,4 +251,15 @@ public class PrijavaPolaganjaService {
             })
             .collect(Collectors.toList());
     }
+    
+    
+    public List<PrijavaPolaganjaDTO> findActivePrijaveForStudent(Long studentId) {
+        Date sada = new Date();
+
+        return prijavaPolaganjaRepository.findByPohadjanjePredmetaStudentNaGodiniStudentId(studentId).stream()
+                .filter(prijava -> prijava.getPolaganje().getDatum().after(sada)) // samo ako datum polaganja još nije prošao
+                .map(PrijavaPolaganja::toDto) // ili ručno napravi DTO
+                .collect(Collectors.toList());
+    }
+
 }

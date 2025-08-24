@@ -77,6 +77,13 @@ public class PrijavaPolaganjaController {
         List<PrijavaPolaganjaDTO> prijave = prijavaPolaganjaService.findAllForStudentWithin15Days(studentId);
         return ResponseEntity.ok(prijave);
     }
+    
+    @GetMapping("/student/{studentId}/aktivne")
+    public ResponseEntity<List<PrijavaPolaganjaDTO>> findActivePrijaveForStudent(@PathVariable Long studentId) {
+        List<PrijavaPolaganjaDTO> prijave = prijavaPolaganjaService.findActivePrijaveForStudent(studentId);
+        return ResponseEntity.ok(prijave);
+    }
+
 
 
     

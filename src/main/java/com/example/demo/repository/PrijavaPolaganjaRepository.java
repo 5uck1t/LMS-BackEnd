@@ -27,11 +27,13 @@ public interface PrijavaPolaganjaRepository extends CrudRepository<PrijavaPolaga
 
     List<PrijavaPolaganja> findByPohadjanjePredmeta_Id(Long pohadjanjePredmetaId);
     
+    List<PrijavaPolaganja> findByPohadjanjePredmetaStudentNaGodiniId(Long studentId);
+    
     List<PrijavaPolaganja> findByPohadjanjePredmetaStudentNaGodiniStudentId(Long studentId);
 
     boolean existsByPohadjanjePredmetaAndPolaganje(PohadjanjePredmeta pohadjanjePredmeta, Polaganje polaganje);
     
-    List<PrijavaPolaganja> findByPohadjanjePredmeta_StudentNaGodini_Student_Id(Long studentId);
+    List<PrijavaPolaganja> findByPohadjanjePredmeta_StudentNaGodini_Id(Long studentId);
     
     @Query("""
     	    SELECT p FROM PrijavaPolaganja p
@@ -39,9 +41,11 @@ public interface PrijavaPolaganjaRepository extends CrudRepository<PrijavaPolaga
     	""")
     	List<PrijavaPolaganja> findByStudentId(@Param("studentId") Long studentId);
     
-    List<PrijavaPolaganja> findByPohadjanjePredmeta_StudentNaGodini_Id(Long studentId);
 
 
     List<PrijavaPolaganja> findByPohadjanjePredmeta_IdAndPolaganje_Id(Long pohId, Long polaganjeId);
+    
+    List<PrijavaPolaganja> findByPolaganje_IdIn(List<Long> polaganjeIds);
+
 
 }
