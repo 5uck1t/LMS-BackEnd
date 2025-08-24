@@ -82,6 +82,7 @@ public class RealizacijaPredmetaController {
             existing.setId(id);
             existing.setGodinaStudija_id(updatedRealizacijaPredmeta.getGodinaStudija_id());
             existing.setPredmet_id(updatedRealizacijaPredmeta.getPredmet_id());
+            existing.setNastavnik_id(updatedRealizacijaPredmeta.getNastavnik_id());
             existing.setObrisano(updatedRealizacijaPredmeta.getObrisano());
 
             return ResponseEntity.ok(realizacijaPredmetaService.save(existing));

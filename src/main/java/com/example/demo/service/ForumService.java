@@ -47,7 +47,7 @@ public class ForumService {
     }
 
     public Optional<ForumDTO> findByNaziv(String naziv) {
-        return forumRepository.findByForum_Naziv(naziv).map(Forum::toDto);
+        return forumRepository.findByNaziv(naziv).map(Forum::toDto);
     }
 
     public Optional<Forum> findEntityById(Long id) {
@@ -58,8 +58,10 @@ public class ForumService {
 
         Forum novi = forum.toEntity();
 
-        novi.setForum(forumRepository.findById(forum.getForum_id())
-                .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + forum.getForum_id() + " not found")));
+        if(forum.getForum_id() != null) {
+            novi.setForum(forumRepository.findById(forum.getForum_id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Forum with id:" + forum.getForum_id() + " not found")));
+        }
         return forumRepository.save(novi).toDto();
     }
 

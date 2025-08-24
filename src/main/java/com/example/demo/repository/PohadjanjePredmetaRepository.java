@@ -25,6 +25,8 @@ public interface PohadjanjePredmetaRepository extends CrudRepository<PohadjanjeP
             "WHERE pp.studentNaGodini.student.id = :studentId AND pp.obrisano = false")
     List<Predmet> findPredmetiByStudentId(@Param("studentId") Long studentId);
 
+    List<PohadjanjePredmeta> findByStudentNaGodini_Id(Long studentNaGodiniId);
+
     @Query("SELECT pp.realizacijaPredmeta.predmet FROM PohadjanjePredmeta pp " +
             "WHERE pp.studentNaGodini.student.id = :studentId " +
             "AND pp.konacnaOcena > 5")
