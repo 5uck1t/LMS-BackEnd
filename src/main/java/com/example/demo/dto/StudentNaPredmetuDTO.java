@@ -1,21 +1,31 @@
 package com.example.demo.dto;
 
 public class StudentNaPredmetuDTO {
+    private Long studentNaGodini_id;
     private Long studentId;
     private String ime;
     private String prezime;
     private String jmbg;
     private Long brojIndeksa;
 
-    public StudentNaPredmetuDTO(Long studentId, String ime, String prezime, String jmbg, Long brojIndeksa) {
+    public StudentNaPredmetuDTO(Long studentId, String ime, String prezime, String jmbg, Long brojIndeksa,Long studentNaGodini_id) {
         this.studentId = studentId;
         this.ime = ime;
         this.prezime = prezime;
         this.jmbg = jmbg;
         this.brojIndeksa = brojIndeksa;
+        this.studentNaGodini_id = studentNaGodini_id;
     }
 
-	public Long getStudentId() {
+    public Long getStudentNaGodini_id() {
+        return studentNaGodini_id;
+    }
+
+    public void setStudentNaGodini_id(Long studentNaGodini_id) {
+        this.studentNaGodini_id = studentNaGodini_id;
+    }
+
+    public Long getStudentId() {
 		return studentId;
 	}
 

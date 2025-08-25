@@ -154,7 +154,8 @@ public class RealizacijaPredmetaService {
                     osoba.getIme(),
                     osoba.getPrezime(),
                     osoba.getJmbg(),
-                    sng.getBrojIndeksa()
+                    sng.getBrojIndeksa(),
+                    sng.getId()
                 );
             })
             .toList();

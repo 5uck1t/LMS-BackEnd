@@ -47,7 +47,7 @@ public class ForumHasKorisnikController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK"})
+    @Secured({"ROLE_ADMIN","ROLE_NASTAVNIK","ROLE_STUDENT"})
     @PostMapping
     public ForumHasKorisnikDTO create(@RequestBody ForumHasKorisnikSaveDTO forumHasKorisnik) {
         return forumHasKorisnikService.save(forumHasKorisnik);
