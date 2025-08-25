@@ -58,10 +58,10 @@ public class RealizacijaPredmetaService {
                 .collect(Collectors.toList());
     }
 
-    public List<PredmetDTO> findPredmetiByNastavnikId(Long id) {
-        return ((List<Predmet>) realizacijaPredmetaRepository.findPredmetiByNastavnikId(id))
+    public List<RealizacijaPredmetaDTO> findPredmetiByNastavnikId(Long id) {
+        return ((List<RealizacijaPredmeta>) realizacijaPredmetaRepository.findPredmetiByNastavnikId(id))
                 .stream()
-                .map(Predmet::toDto)
+                .map(RealizacijaPredmeta::toDto)
                 .collect(Collectors.toList());
     }
 

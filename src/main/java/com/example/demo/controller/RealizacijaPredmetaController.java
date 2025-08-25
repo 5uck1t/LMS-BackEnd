@@ -48,7 +48,7 @@ public class RealizacijaPredmetaController {
     }
 
     @GetMapping("/nastavnik/{nastavnikId}")
-    public List<PredmetDTO> getPredmetiByNastavnikId(@PathVariable Long nastavnikId) {
+    public List<RealizacijaPredmetaDTO> getPredmetiByNastavnikId(@PathVariable Long nastavnikId) {
         return realizacijaPredmetaService.findPredmetiByNastavnikId(nastavnikId);
     }
 
