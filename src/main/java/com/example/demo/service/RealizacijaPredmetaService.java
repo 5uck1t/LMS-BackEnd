@@ -58,12 +58,14 @@ public class RealizacijaPredmetaService {
                 .collect(Collectors.toList());
     }
 
-    public List<PredmetDTO> findPredmetiByNastavnikId(Long id) {
-        return ((List<Predmet>) realizacijaPredmetaRepository.findPredmetiByNastavnikId(id))
-                .stream()
-                .map(Predmet::toDto)
-                .collect(Collectors.toList());
+    public List<RealizacijaPredmetaDTO> findRealizacijeByNastavnikId(Long nastavnikId) {
+        List<RealizacijaPredmeta> realizacije = realizacijaPredmetaRepository.findByNastavnikIdAndObrisanoFalse(nastavnikId);
+
+        return realizacije.stream()
+            .map(RealizacijaPredmeta::toDto) // ili mapiraj ručno ako nema toDto()
+            .toList();
     }
+
 
     public List<RealizacijaPredmetaDTO> findRealizacijaPredmetaByGodinaStudijaId(Long id) {
         return ((List<RealizacijaPredmeta>) realizacijaPredmetaRepository.findRealizacijaPredmetaByGodinaStudijaId(id))
@@ -138,11 +140,13 @@ public class RealizacijaPredmetaService {
                 .toList();
     }
     
-    public List<StudentNaPredmetuDTO> getStudentiZaPredmet(Long predmetId) {
-        List<RealizacijaPredmeta> realizacije = realizacijaPredmetaRepository.findByPredmetId(predmetId);
+    public List<StudentNaPredmetuDTO> getStudentiZaRealizaciju(Long realizacijaId) {
+        RealizacijaPredmeta rp = realizacijaPredmetaRepository.findActiveById(realizacijaId);
+        if (rp == null) {
+            throw new EntityNotFoundException("Realizacija predmeta ne postoji ili je obrisana");
+        }
 
-        return realizacije.stream()
-            .flatMap(rp -> rp.getPohadjanjaPredmeta().stream())
+        return rp.getPohadjanjaPredmeta().stream()
             .filter(p -> !Boolean.TRUE.equals(p.getObrisano()))
             .map(p -> {
                 StudentNaGodini sng = p.getStudentNaGodini();
@@ -159,6 +163,7 @@ public class RealizacijaPredmetaService {
             })
             .toList();
     }
+
 
 
 }

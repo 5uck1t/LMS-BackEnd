@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.IstorijaStudiranjaDTO;
 import com.example.demo.dto.StudentDTO;
+import com.example.demo.dto.StudenttDTO;
 import com.example.demo.saveDto.StudentSaveDTO;
 import com.example.demo.service.PohadjanjePredmetaService;
 import com.example.demo.service.StudentService;
@@ -91,18 +92,19 @@ public class StudentController {
         return ResponseEntity.noContent().build();
     }
     
-    @GetMapping("/idByUsername/{username}")
-    public ResponseEntity<Long> getStudentIdByUsername(@PathVariable String username) {
-        Optional<UlogovaniKorisnik> korisnikOpt = ulogovaniKorisnikRepository.findUlogovaniKorisnikByUsername(username);
-        if (korisnikOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Osoba osoba = korisnikOpt.get().getOsoba();
-        Optional<Student> studentOpt = studentService.findByOsoba(osoba);
-        if (studentOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(studentOpt.get().getId());
+    @GetMapping("/idByUser/{userId}")
+    public ResponseEntity<Long> getStudentIdByUserId(@PathVariable Long userId) {
+        return studentService.findStudentIdByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/available")
+    public ResponseEntity<List<StudenttDTO>> getAvailableStudents(
+            @RequestParam("forumId") Long forumId,
+            @RequestParam(value = "filter", required = false) String filter) {
+        return ResponseEntity.ok(studentService.getAvailableStudents(forumId, filter));
+    }
+    
+
 }

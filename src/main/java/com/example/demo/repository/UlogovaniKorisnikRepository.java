@@ -24,6 +24,10 @@ public interface UlogovaniKorisnikRepository extends CrudRepository<UlogovaniKor
     
     @Query("SELECT u FROM UlogovaniKorisnik u LEFT JOIN FETCH u.dodeljenaPravaPristupa d LEFT JOIN FETCH d.pravoPristupa WHERE u.username = :username")
     Optional<UlogovaniKorisnik> findByUsernameWithRoles(@Param("username") String username);
+    
+    @Query("SELECT uk.id FROM UlogovaniKorisnik uk WHERE uk.osoba.id = :osobaId")
+    Long findUlogovaniKorisnikIdByOsobaId(@Param("osobaId") Long osobaId);
+
 
 
 }

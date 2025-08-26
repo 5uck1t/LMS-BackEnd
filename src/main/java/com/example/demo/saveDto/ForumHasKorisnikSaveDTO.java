@@ -55,7 +55,6 @@ public class ForumHasKorisnikSaveDTO {
 
     public ForumHasKorisnik toEntity() {
         ForumHasKorisnik e = new ForumHasKorisnik();
-        e.setId(id);
         e.setObrisano(obrisano);
         return e;
     }

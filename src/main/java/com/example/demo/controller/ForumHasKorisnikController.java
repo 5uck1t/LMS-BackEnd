@@ -2,6 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ForumDTO;
 import com.example.demo.dto.ForumHasKorisnikDTO;
+import com.example.demo.dto.KorisnikDTO;
+import com.example.demo.dto.NastavnikDTO;
+import com.example.demo.dto.NastavnikForumDTO;
+import com.example.demo.dto.UlogovaniKorisnikDTO;
 import com.example.demo.saveDto.ForumHasKorisnikSaveDTO;
 import com.example.demo.service.ForumHasKorisnikService;
 import com.example.demo.model.ForumHasKorisnik;
@@ -78,4 +82,51 @@ public class ForumHasKorisnikController {
         forumHasKorisnikService.vrati(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/forum/{forumId}/korisnici")
+    public ResponseEntity<List<KorisnikDTO>> getKorisniciForuma(@PathVariable Long forumId) {
+        List<KorisnikDTO> korisnici = forumHasKorisnikService.findKorisniciByForumId(forumId);
+        return ResponseEntity.ok(korisnici);
+    }
+    
+    @Secured("ROLE_NASTAVNIK")
+    @PostMapping("/forum/{forumId}/student/{studentId}")
+    public ResponseEntity<Void> dodajStudentaNaForum(@PathVariable Long forumId, @PathVariable Long studentId) {
+        forumHasKorisnikService.dodajStudenta(forumId, studentId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/forum/{forumId}/student/{studentId}")
+    public ResponseEntity<Void> ukloniStudentaSaForuma(@PathVariable Long forumId, @PathVariable Long studentId) {
+        forumHasKorisnikService.ukloniStudenta(forumId, studentId);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @Secured({"ROLE_NASTAVNIK", "ROLE_SLUZBA"})
+    @PostMapping("/forum/{forumId}/nastavnik/{nastavnikId}")
+    public ResponseEntity<Void> dodajNastavnikaNaForum(
+            @PathVariable Long forumId,
+            @PathVariable Long nastavnikId) {
+        forumHasKorisnikService.dodajNastavnikaNaForum(forumId, nastavnikId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured({"ROLE_NASTAVNIK", "ROLE_SLUZBA"})
+    @DeleteMapping("/forum/{forumId}/nastavnik/{nastavnikId}")
+    public ResponseEntity<Void> ukloniNastavnikaSaForuma(
+            @PathVariable Long forumId,
+            @PathVariable Long nastavnikId) {
+        forumHasKorisnikService.ukloniNastavnikaSaForuma(forumId, nastavnikId);
+        return ResponseEntity.ok().build();
+    }
+    
+    @Secured({"ROLE_NASTAVNIK", "ROLE_SLUZBA"})
+    @GetMapping("/available-nastavnici")
+    public ResponseEntity<List<NastavnikForumDTO>> getAvailableNastavnici(
+            @RequestParam Long forumId,
+            @RequestParam(required = false) String filter) {
+        return ResponseEntity.ok(forumHasKorisnikService.getAvailableNastavnici(forumId, filter));
+    }
+
+
 }

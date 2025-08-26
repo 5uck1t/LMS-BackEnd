@@ -87,18 +87,10 @@ public class NastavnikController {
         return ResponseEntity.noContent().build();
     }
     
-    @GetMapping("/idByUsername/{username}")
-    public ResponseEntity<Long> getNastavnikIdByUsername(@PathVariable String username) {
-        Optional<UlogovaniKorisnik> korisnikOpt = ulogovaniKorisnikRepository.findUlogovaniKorisnikByUsername(username);
-        if (korisnikOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        Osoba osoba = korisnikOpt.get().getOsoba();
-        Optional<Nastavnik> nastavnikOpt = nastavnikService.findByOsoba(osoba);
-        if (nastavnikOpt.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(nastavnikOpt.get().getId());
+    @GetMapping("/idByUser/{userId}")
+    public ResponseEntity<Long> getNastavnikIdByUserId(@PathVariable Long userId) {
+        return nastavnikService.findNastavnikIdByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

@@ -25,14 +25,14 @@ public class Forum {
     private Set<Obavestenje> obavjestenja;
 
     @OneToMany(mappedBy = "forum")
-    private Set<ForumHasKorisnik> forumHasKorinsik;
+    private Set<ForumHasKorisnik> forumHasKorisnik;
 
     @ColumnDefault("false")
     private Boolean obrisano;
 
     public Forum(Forum forum, Set<ForumHasKorisnik> forumHasKorinsik, Set<Forum> forumi, Long id, String naziv, Set<Obavestenje> obavjestenja, Boolean obrisano) {
         this.forum = forum;
-        this.forumHasKorinsik = forumHasKorinsik;
+        this.forumHasKorisnik = forumHasKorinsik;
         this.forumi = forumi;
         this.id = id;
         this.naziv = naziv;
@@ -76,11 +76,11 @@ public class Forum {
     }
 
     public Set<ForumHasKorisnik> getForumHasKorinsik() {
-        return forumHasKorinsik;
+        return forumHasKorisnik;
     }
 
     public void setForumHasKorinsik(Set<ForumHasKorisnik> forumHasKorinsik) {
-        this.forumHasKorinsik = forumHasKorinsik;
+        this.forumHasKorisnik = forumHasKorinsik;
     }
 
     public Set<Forum> getForumi() {

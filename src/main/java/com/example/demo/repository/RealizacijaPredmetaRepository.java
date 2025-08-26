@@ -16,9 +16,6 @@ public interface RealizacijaPredmetaRepository extends CrudRepository<Realizacij
 
     List<RealizacijaPredmeta> findByObrisanoFalse();
     List<RealizacijaPredmeta> findByObrisanoTrue();
-
-    @Query("SELECT rp.predmet FROM RealizacijaPredmeta rp WHERE rp.nastavnik.id = :nastavnikId AND rp.obrisano = false")
-    List<Predmet> findPredmetiByNastavnikId(@Param("nastavnikId") Long nastavnikId);
     
     List<RealizacijaPredmeta> findByNastavnikIdAndObrisanoFalse(Long nastavnikId);
     
@@ -33,5 +30,9 @@ public interface RealizacijaPredmetaRepository extends CrudRepository<Realizacij
 
     @Query("SELECT rp FROM RealizacijaPredmeta rp WHERE rp.godinaStudija.studijskiProgram.id = :studijskiProgramid AND rp.obrisano = false")
     List<RealizacijaPredmeta> findRealizacijaPredmetaByStudijskiProgramId(@Param("studijskiProgramid") Long studijskiProgramid);
+    
+    @Query("SELECT rp FROM RealizacijaPredmeta rp WHERE rp.id = :id AND rp.obrisano = false")
+    RealizacijaPredmeta findActiveById(@Param("id") Long id);
+
 
 }

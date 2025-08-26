@@ -48,9 +48,10 @@ public class RealizacijaPredmetaController {
     }
 
     @GetMapping("/nastavnik/{nastavnikId}")
-    public List<PredmetDTO> getPredmetiByNastavnikId(@PathVariable Long nastavnikId) {
-        return realizacijaPredmetaService.findPredmetiByNastavnikId(nastavnikId);
+    public List<RealizacijaPredmetaDTO> getRealizacijeByNastavnikId(@PathVariable Long nastavnikId) {
+        return realizacijaPredmetaService.findRealizacijeByNastavnikId(nastavnikId);
     }
+
 
     @GetMapping("/godinastudija/{godinastudijaid}")
     public List<RealizacijaPredmetaDTO> getRealizacijaPredmetaByGodinaStudijaId(@PathVariable Long godinastudijaid) {
@@ -101,11 +102,10 @@ public class RealizacijaPredmetaController {
         return ResponseEntity.noContent().build();
     }
     
-    @GetMapping("/studentipredmet/{predmetId}")
-    public ResponseEntity<List<StudentNaPredmetuDTO>> getStudentiZaPredmet(@PathVariable Long predmetId) {
-        return ResponseEntity.ok(realizacijaPredmetaService.getStudentiZaPredmet(predmetId));
+    @GetMapping("/studentirealizacija/{realizacijaId}")
+    public ResponseEntity<List<StudentNaPredmetuDTO>> getStudentiZaRealizaciju(@PathVariable Long realizacijaId) {
+        return ResponseEntity.ok(realizacijaPredmetaService.getStudentiZaRealizaciju(realizacijaId));
     }
-
 
     
 //    @GetMapping("/nastavnik/{nastavnikId}")

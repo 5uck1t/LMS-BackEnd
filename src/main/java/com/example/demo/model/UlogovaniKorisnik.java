@@ -91,18 +91,16 @@ public class UlogovaniKorisnik {
         this.osoba = osoba;
     }
 
+
     public Set<DodeljenoPravoPristupa> getDodeljenaPravaPristupa() {
-        if (dodeljenaPravaPristupa == null) {
-            dodeljenaPravaPristupa = new HashSet<>();
-        }
-        return dodeljenaPravaPristupa;
-    }
+		return dodeljenaPravaPristupa;
+	}
 
-    public void setDodeljenaPravaPristupa(Set<DodeljenoPravoPristupa> dodeljenaPravaPristupa) {
-        this.dodeljenaPravaPristupa = dodeljenaPravaPristupa;
-    }
+	public void setDodeljenaPravaPristupa(Set<DodeljenoPravoPristupa> dodeljenaPravaPristupa) {
+		this.dodeljenaPravaPristupa = dodeljenaPravaPristupa;
+	}
 
-    public Set<ForumHasKorisnik> getForumHasKorisnik() {
+	public Set<ForumHasKorisnik> getForumHasKorisnik() {
         return forumHasKorisnik;
     }
 

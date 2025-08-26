@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.NastavnikDTO;
+import com.example.demo.dto.NastavnikForumDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Nastavnik;
 import com.example.demo.model.NastavnikHasZvanje;
 import com.example.demo.model.Osoba;
 import com.example.demo.repository.NastavnikRepository;
+import com.example.demo.repository.UlogovaniKorisnikRepository;
 import com.example.demo.saveDto.NastavnikSaveDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class NastavnikService {
 
     @Autowired
     private NastavnikRepository nastavnikRepository;
+    
+    @Autowired
+    private UlogovaniKorisnikRepository ulogovaniKorisnikRepository;
 
     @Autowired
     private OsobaService osobaService;
@@ -97,8 +102,36 @@ public class NastavnikService {
         }
     }
     
+    public Optional<Long> findNastavnikIdByUserId(Long userId) {
+        return nastavnikRepository.findNastavnikIdByUserId(userId);
+    }
+    
     
     public Optional<Nastavnik> findByOsoba(Osoba osoba) {
         return nastavnikRepository.findByOsoba(osoba);
     }
+    
+    public List<NastavnikForumDTO> getAvailableNastavnici(Long forumId, String filter) {
+        List<Nastavnik> nastavnici;
+        if (filter == null || filter.isBlank()) {
+            nastavnici = nastavnikRepository.findNastavniciNotInForum(forumId);
+        } else {
+            nastavnici = nastavnikRepository.searchNastavniciNotInForum(forumId, filter);
+        }
+
+        return nastavnici.stream().map(n -> {
+            NastavnikForumDTO dto = new NastavnikForumDTO();
+            dto.setNastavnikId(n.getId());
+            dto.setIme(n.getOsoba().getIme());
+            dto.setPrezime(n.getOsoba().getPrezime());
+            dto.setJmbg(n.getOsoba().getJmbg());
+
+            Long ukId = ulogovaniKorisnikRepository.findUlogovaniKorisnikIdByOsobaId(n.getOsoba().getId());
+            dto.setUlogovaniKorisnikId(ukId);
+
+            return dto;
+        }).toList();
+    }
+
+
 }

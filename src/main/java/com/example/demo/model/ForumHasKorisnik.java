@@ -1,4 +1,4 @@
-package com.example.demo.model;
+ package com.example.demo.model;
 
 import com.example.demo.dto.ForumHasKorisnikDTO;
 import jakarta.persistence.*;
@@ -21,7 +21,6 @@ public class ForumHasKorisnik {
 
     public ForumHasKorisnik(Forum forum, Long id, Boolean obrisano, UlogovaniKorisnik ulogovaniKorisnik) {
         this.forum = forum;
-        this.id = id;
         this.obrisano = obrisano;
         this.ulogovaniKorisnik = ulogovaniKorisnik;
     }
