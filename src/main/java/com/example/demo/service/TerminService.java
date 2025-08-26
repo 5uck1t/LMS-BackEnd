@@ -42,6 +42,13 @@ public class TerminService {
                 .collect(Collectors.toList());
     }
 
+    public List<TerminDTO> findByRealizacijaId(Long realizacijaId) {
+        return ((List<Termin>) terminRepository.findByRealizacijaPredmeta_Id(realizacijaId))
+                .stream()
+                .map(Termin::toDto)
+                .collect(Collectors.toList());
+    }
+
     public Optional<TerminDTO> findById(Long id) {
         return terminRepository.findById(id).map(Termin::toDto);
     }

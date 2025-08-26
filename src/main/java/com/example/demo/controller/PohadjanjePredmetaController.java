@@ -64,6 +64,16 @@ public class PohadjanjePredmetaController {
         }
     }
 
+    @GetMapping("/studentnagodini/{studentNaGodiniId}")
+    public ResponseEntity<List<PohadjanjePredmetaDTO>> getByStudentNaGodiniId(@PathVariable Long studentNaGodiniId) {
+        List<PohadjanjePredmetaDTO> result = pohadjanjePredmetaService.findByStudentNaGodiniId(studentNaGodiniId);
+        if(result.isEmpty()){
+            return new ResponseEntity<List<PohadjanjePredmetaDTO>>(HttpStatus.NOT_FOUND);
+        }else {
+            return new ResponseEntity<List<PohadjanjePredmetaDTO>>(result, HttpStatus.OK);
+        }
+    }
+
     @GetMapping("/predmeti/polozeni/{studentId}")
     public ResponseEntity<List<PredmetDTO>> getPredmetiByStudentIdAndKonacnaOcenaNotNull(@PathVariable Long studentId) {
         System.out.println(">>> Polozeni pozvan za studenta: " + studentId);

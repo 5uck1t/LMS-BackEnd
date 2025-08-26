@@ -29,6 +29,11 @@ public class TerminController {
         return terminService.findAllActive();
     }
 
+    @GetMapping("/predmet/{id}")
+    public List<TerminDTO> getByRealizacijaId(@PathVariable Long id) {
+        return terminService.findByRealizacijaId(id);
+    }
+
     @GetMapping("/deleted")
     public List<TerminDTO> getAllDeleted() {
         return terminService.findAllDeleted();

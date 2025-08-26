@@ -164,7 +164,7 @@ public class StudentNaGodiniService {
         for (PrijavaPolaganja pp : prijave) {
             if (pp.getBrojBodova() == null) continue;
 
-            boolean polozio = pp.getBrojBodova() >= 51;
+            boolean polozio = pp.getBrojBodova() >= 15;
             Predmet predmet = pp.getPohadjanjePredmeta().getRealizacijaPredmeta().getPredmet();
             int espb = predmet.getEspb();
 

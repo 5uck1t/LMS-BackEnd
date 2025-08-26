@@ -119,6 +119,14 @@ public class PohadjanjePredmetaService {
                 .collect(Collectors.toList());
     }
 
+    public List<PohadjanjePredmetaDTO>findByStudentNaGodiniId(Long id){
+
+        return ((List<PohadjanjePredmeta>) pohadjanjePredmetaRepository.findByStudentNaGodini_Id(id))
+                .stream()
+                .map(PohadjanjePredmeta::toDto)
+                .collect(Collectors.toList());
+    }
+
     public List<PredmetDTO>findPredmetiByStudentIdAndKonacnaOcenaNotNull(Long id){
 
         return ((List<Predmet>) pohadjanjePredmetaRepository.findPredmetiByStudentIdAndKonacnaOcenaNotNull(id))

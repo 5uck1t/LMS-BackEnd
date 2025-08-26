@@ -58,12 +58,11 @@ public class RealizacijaPredmetaService {
                 .collect(Collectors.toList());
     }
 
-    public List<RealizacijaPredmetaDTO> findRealizacijeByNastavnikId(Long nastavnikId) {
-        List<RealizacijaPredmeta> realizacije = realizacijaPredmetaRepository.findByNastavnikIdAndObrisanoFalse(nastavnikId);
-
-        return realizacije.stream()
-            .map(RealizacijaPredmeta::toDto) // ili mapiraj ručno ako nema toDto()
-            .toList();
+    public List<RealizacijaPredmetaDTO> findPredmetiByNastavnikId(Long id) {
+        return ((List<RealizacijaPredmeta>) realizacijaPredmetaRepository.findPredmetiByNastavnikId(id))
+                .stream()
+                .map(RealizacijaPredmeta::toDto)
+                .collect(Collectors.toList());
     }
 
 
@@ -158,7 +157,8 @@ public class RealizacijaPredmetaService {
                     osoba.getIme(),
                     osoba.getPrezime(),
                     osoba.getJmbg(),
-                    sng.getBrojIndeksa()
+                    sng.getBrojIndeksa(),
+                    sng.getId()
                 );
             })
             .toList();

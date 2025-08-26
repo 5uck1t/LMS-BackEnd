@@ -104,6 +104,6 @@ public class EvaluacijaZnanjaService {
     }
     
     public List<EvaluacijaZnanja> findByPredmetId(Long predmetId) {
-        return evaluacijaZnanjaRepository.findByRealizacijaPredmeta_Predmet_IdAndObrisanoFalse(predmetId);
+        return evaluacijaZnanjaRepository.findByRealizacijaPredmeta_IdAndObrisanoFalse(predmetId);
     }
 }

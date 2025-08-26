@@ -80,6 +80,12 @@ public class UlogovaniKorisnikController {
         return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/osoba/{id}")
+    public ResponseEntity<UlogovaniKorisnikDTO> getByOsobaId(@PathVariable Long id) {
+        Optional<UlogovaniKorisnikDTO> result = ulogovaniKorisnikService.findByOsobaId(id);
+        return result.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public UlogovaniKorisnikDTO create(@RequestBody UlogovaniKorisnikSaveDTO ulogovaniKorisnik) {
         return ulogovaniKorisnikService.save(ulogovaniKorisnik);

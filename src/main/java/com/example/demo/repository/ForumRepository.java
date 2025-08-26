@@ -13,5 +13,5 @@ public interface ForumRepository extends CrudRepository<Forum, Long> {
     List<Forum> findByObrisanoFalse();
     List<Forum> findByObrisanoTrue();
 
-    Optional<Forum> findByForum_Naziv(String naziv);
+    Optional<Forum> findByNaziv(String naziv);
 }

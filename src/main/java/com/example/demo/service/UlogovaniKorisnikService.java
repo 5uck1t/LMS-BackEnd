@@ -51,6 +51,10 @@ public class UlogovaniKorisnikService {
         return ulogovaniKorisnikRepository.findById(id).map(UlogovaniKorisnik::toDto);
     }
 
+    public Optional<UlogovaniKorisnikDTO> findByOsobaId(Long id) {
+        return ulogovaniKorisnikRepository.findUlogovaniKorisnikByOsoba_Id(id).map(UlogovaniKorisnik::toDto);
+    }
+
     public Optional<UlogovaniKorisnik> findEntityById(Long id) {
         return ulogovaniKorisnikRepository.findById(id);
     }
