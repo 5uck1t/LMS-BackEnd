@@ -57,6 +57,7 @@ public class TerminController {
             TerminSaveDTO existing = optional.get().toSaveDto();
 
             existing.setId(id);
+            existing.setIshod(updatedTermin.getIshod());
             existing.setDatum(updatedTermin.getDatum());
             existing.setVremePocetka(updatedTermin.getVremePocetka());
             existing.setVremeKraja(updatedTermin.getVremeKraja());

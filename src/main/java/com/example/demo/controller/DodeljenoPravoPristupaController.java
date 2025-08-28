@@ -46,7 +46,7 @@ public class DodeljenoPravoPristupaController {
         return dodeljenoPravoPristupaService.findByUlogovaniKorisnikId(id);
     }
 
-    @Secured({"ROLE_ADMIN"})
+    @Secured({"ROLE_ADMIN","ROLE_SLUZBA"})
     @PostMapping
     public DodeljenoPravoPristupaDTO create(@RequestBody DodeljenoPravoPristupaSaveDTO dodeljenoPravoPristupa) {
         return dodeljenoPravoPristupaService.save(dodeljenoPravoPristupa);

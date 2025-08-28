@@ -131,16 +131,22 @@ public class ForumHasKorisnikService {
                        .stream()
                        .findFirst() // ako je više rola, uzmi prvu
                        .map(d -> d.getPravoPristupa().getNaziv())
-                       .orElse("ROLE_STUDENT"); // fallback
+                       .orElse("NO_ROLE"); // fallback
         dto.setRola(rola);
+        System.out.println(rola + k.getOsoba().getIme() + k.getOsoba().getPrezime());
 
-        // Postavi broj indeksa samo za studente
-        if ("ROLE_STUDENT".equals(rola)) {
-            Long brojIndeksa = k.getOsoba().getStudent().getStudentNaGodini().stream()
-                                 .findFirst()
-                                 .map(sng -> sng.getBrojIndeksa())
-                                 .orElse(null);
-            dto.setBrojIndeksa(brojIndeksa != null ? brojIndeksa.toString() : null);
+        if(k.getOsoba().getNastavnik() != null){
+            return  dto;
+        }else {
+            if (k.getOsoba().getStudent() != null) {
+                if(!k.getOsoba().getStudent().getStudentNaGodini().isEmpty()){
+                    Long brojIndeksa = k.getOsoba().getStudent().getStudentNaGodini().stream()
+                            .findFirst()
+                            .map(sng -> sng.getBrojIndeksa())
+                            .orElse(null);
+                    dto.setBrojIndeksa(brojIndeksa != null ? brojIndeksa.toString() : null);
+                }
+            }
         }
 
         return dto;

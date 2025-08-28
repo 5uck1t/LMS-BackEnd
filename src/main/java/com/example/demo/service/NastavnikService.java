@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -112,25 +113,23 @@ public class NastavnikService {
     }
     
     public List<NastavnikForumDTO> getAvailableNastavnici(Long forumId, String filter) {
-        List<Nastavnik> nastavnici;
-        if (filter == null || filter.isBlank()) {
-            nastavnici = nastavnikRepository.findNastavniciNotInForum(forumId);
-        } else {
-            nastavnici = nastavnikRepository.searchNastavniciNotInForum(forumId, filter);
-        }
+        List<Nastavnik> nastavnici = nastavnikRepository.findNastavniciNotInForum(forumId);
 
         return nastavnici.stream().map(n -> {
-            NastavnikForumDTO dto = new NastavnikForumDTO();
-            dto.setNastavnikId(n.getId());
-            dto.setIme(n.getOsoba().getIme());
-            dto.setPrezime(n.getOsoba().getPrezime());
-            dto.setJmbg(n.getOsoba().getJmbg());
-
             Long ukId = ulogovaniKorisnikRepository.findUlogovaniKorisnikIdByOsobaId(n.getOsoba().getId());
-            dto.setUlogovaniKorisnikId(ukId);
+            if(ukId != null) {
+                NastavnikForumDTO dto = new NastavnikForumDTO();
+                dto.setNastavnikId(n.getId());
+                dto.setIme(n.getOsoba().getIme());
+                dto.setPrezime(n.getOsoba().getPrezime());
+                dto.setJmbg(n.getOsoba().getJmbg());
 
-            return dto;
-        }).toList();
+                dto.setUlogovaniKorisnikId(ukId);
+
+                return dto;
+            }
+            return null;
+        }).filter(Objects::nonNull).toList();
     }
 
 

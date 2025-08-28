@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.StudentDTO;
 import com.example.demo.dto.StudenttDTO;
+import com.example.demo.dto.UlogovaniKorisnikDTO;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.DodeljenoPravoPristupa;
 import com.example.demo.model.Osoba;
@@ -22,6 +23,9 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private UlogovaniKorisnikService ulogovaniKorisnikService;
 
     @Autowired
     private OsobaService osobaService;
@@ -106,25 +110,32 @@ public class StudentService {
     
     public List<StudenttDTO> getAvailableStudents(Long forumId, String filter) {
         List<Student> studenti;
-        if (filter == null || filter.isBlank()) {
-            studenti = studentRepository.findStudentsNotInForum(forumId);
-        } else {
-            studenti = studentRepository.searchStudentsNotInForum(forumId, filter);
-        }
+        studenti = studentRepository.findStudentsNotInForum(forumId);
+
 
         return studenti.stream().map(s -> {
-            Long brojIndeksa = null;
-            if (s.getStudentNaGodini() != null && !s.getStudentNaGodini().isEmpty()) {
-                // npr. uzimamo poslednji
-                brojIndeksa = s.getStudentNaGodini().iterator().next().getBrojIndeksa();
+            UlogovaniKorisnikDTO ulogovaniKorisnik = ulogovaniKorisnikService.findByOsobaId(s.getOsoba().getId()).orElse(null);
+
+            if (ulogovaniKorisnik != null) {
+                Long ukId = ulogovaniKorisnik.getId();
+
+
+                Long brojIndeksa = null;
+                if (s.getStudentNaGodini() != null && !s.getStudentNaGodini().isEmpty()) {
+                    // npr. uzimamo poslednji
+                    brojIndeksa = s.getStudentNaGodini().iterator().next().getBrojIndeksa();
+                }
+                return new StudenttDTO(
+                    s.getId(),
+                    s.getOsoba().getIme(),
+                    s.getOsoba().getPrezime(),
+                    s.getOsoba().getJmbg(),
+                    brojIndeksa,
+                        ukId
+                );
             }
-            return new StudenttDTO(
-                s.getId(),
-                s.getOsoba().getIme(),
-                s.getOsoba().getPrezime(),
-                s.getOsoba().getJmbg(),
-                brojIndeksa
-            );
+            return null;
+
         }).toList();
     }
 }

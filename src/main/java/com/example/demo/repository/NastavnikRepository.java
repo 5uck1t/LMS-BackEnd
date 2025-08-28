@@ -44,7 +44,7 @@ public interface NastavnikRepository extends CrudRepository<Nastavnik, Long> {
     @Query("""
     	    SELECT n FROM Nastavnik n
     	    WHERE n.id NOT IN (
-    	        SELECT fhk.ulogovaniKorisnik.id FROM ForumHasKorisnik fhk
+    	        SELECT fhk.ulogovaniKorisnik.osoba.nastavnik.id FROM ForumHasKorisnik fhk
     	        WHERE fhk.forum.id = :forumId
     	    )
     	""")
@@ -54,7 +54,7 @@ public interface NastavnikRepository extends CrudRepository<Nastavnik, Long> {
     @Query("""
     	    SELECT n FROM Nastavnik n
     	    WHERE n.id NOT IN (
-    	        SELECT fhk.ulogovaniKorisnik.id FROM ForumHasKorisnik fhk
+    	        SELECT fhk.ulogovaniKorisnik.osoba.nastavnik.id FROM ForumHasKorisnik fhk
     	        WHERE fhk.forum.id = :forumId
     	    )
     	    AND (LOWER(n.osoba.ime) LIKE LOWER(CONCAT('%', :filter, '%')) 

@@ -44,8 +44,6 @@ public interface StudentRepository extends CrudRepository<Student, Long> {
      List<Student> searchStudentsNotInForum(@Param("forumId") Long forumId, @Param("filter") String filter);
 
      @Query("SELECT DISTINCT s FROM Student s " +
-            "JOIN s.osoba o " +
-            "LEFT JOIN s.studentNaGodini sn " +
             "WHERE s.id NOT IN ( " +
             "   SELECT fks.ulogovaniKorisnik.id FROM ForumHasKorisnik fks " +
             "   WHERE fks.forum.id = :forumId AND fks.obrisano = false" +
